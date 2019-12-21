@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1227716355 source:d:\adat\tanitas\progalap\osszetett_tetelek_2\metszet_unio\main.cpp
+	<iostream>
+	<fstream>
+
+1574881497 source:c:\egyetem\progalap\metszet_unio_keret\main.cpp
+	<iostream>
+	<fstream>
+
