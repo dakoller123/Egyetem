@@ -6,12 +6,11 @@ const int maxCountOfCities = 1000;
 const int maxCountOfDays = 1000;
 const bool verboseMode = false;
 
-
 struct inputStruct
 {
 	int countOfCities;
 	int countOfDays;
-	short samples[maxCountOfCities][maxCountOfDays];
+	signed char samples[maxCountOfCities][maxCountOfDays];
 };
 
 struct outputStruct
@@ -19,10 +18,6 @@ struct outputStruct
 	int maxTempCitiesCount;
 	int maxTempCities[maxCountOfCities];
 };
-
-static inputStruct inputData;
-static outputStruct outputData;
-
 
 void printVerbose(string text)
 {
@@ -49,13 +44,15 @@ inputStruct readInput()
 		printVerbose("Now it's time to read the " + i );
 		for (int j=0; j<input.countOfDays; j++)
 		{
-			cin >> input.samples[i][j];
+			int number;
+			cin >> number;
+			input.samples[i][j] = (char)number;
 		}
 	}
 	return input;
 }
 
-int getMaxTemp()
+int getMaxTemp(inputStruct inputData)
 {
 	int maxTempValue;
 	for (int i=0; i<inputData.countOfCities; i++)
@@ -78,7 +75,7 @@ int getMaxTemp()
 	return maxTempValue;
 }
 
-outputStruct getCitiesWithMaxTemp(int maxTempValue)
+outputStruct getCitiesWithMaxTemp(inputStruct inputData, int maxTempValue)
 {
 	outputStruct result;
 	result.maxTempCitiesCount = 0;
@@ -109,7 +106,7 @@ outputStruct getCitiesWithMaxTemp(int maxTempValue)
 	return result;
 }
 
-void printOutput()
+void printOutput(outputStruct outputData)
 {
 	cout << outputData.maxTempCitiesCount;
 	for (int i=0; i<outputData.maxTempCitiesCount; i++)
@@ -121,12 +118,10 @@ void printOutput()
 
 int main()
 {	
-	inputData = readInput();	
-	int maxTempValue = getMaxTemp();
-	printVerbose("maxTempValue:");
-	printVerbose(maxTempValue);
-	outputData = getCitiesWithMaxTemp(maxTempValue);
-	printOutput();
+	inputStruct inputData = readInput();	
+	int maxTempValue = getMaxTemp(inputData);
+	outputStruct outputData = getCitiesWithMaxTemp(inputData, maxTempValue);
+	printOutput(outputData);
 		
 	return 0;
 }
