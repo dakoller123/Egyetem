@@ -2,53 +2,95 @@
 
 using namespace std;
 
-int main()
+const int maxCountOfCities = 1000;
+const int maxCountOfDays = 1000;
+const bool verboseMode = false;
+
+
+struct inputStruct
 {
 	int countOfCities;
 	int countOfDays;
-	int *samples[1000];
-	
-	int maxTempValue;
-	int maxTempCities[10];
-	int maxTempCitiesCount = 0;
-	
-	cin >> countOfCities >> countOfDays;
+	short samples[maxCountOfCities][maxCountOfDays];
+};
 
-	//allocate memory for the samples
-	for (int i=0; i<countOfCities; i++)
-	{
-		samples[i]=new int[1000];	
-	}
+struct outputStruct
+{
+	int maxTempCitiesCount;
+	int maxTempCities[maxCountOfCities];
+};
+
+static inputStruct inputData;
+static outputStruct outputData;
+
+
+void printVerbose(string text)
+{
+	if (verboseMode){ cout << text << endl;}
+}
+
+void printVerbose(int text)
+{
+	if (verboseMode){ cout << text << endl;}
+}
+
+
+inputStruct readInput()
+{
+	inputStruct input;
+	printVerbose("Please Type in the number of the cities the temp. samples have been made in:");
+	cin >> input.countOfCities;
+
+	printVerbose("Please Type in the number of the days when temp. samples have been made:");
+	cin >> input.countOfDays;
 	
-	//read the samples and get the max temp value
-	for (int i=0; i<countOfCities; i++)
+	for (int i=0; i<input.countOfCities; i++)
 	{
-		for (int j=0; j<countOfDays; j++)
+		printVerbose("Now it's time to read the " + i );
+		for (int j=0; j<input.countOfDays; j++)
 		{
-			cin >> samples[i][j];
-			
+			cin >> input.samples[i][j];
+		}
+	}
+	return input;
+}
+
+int getMaxTemp()
+{
+	int maxTempValue;
+	for (int i=0; i<inputData.countOfCities; i++)
+	{
+		for (int j=0; j<inputData.countOfDays; j++)
+		{
 			if (i==0&&j==0)
 			{
-				maxTempValue = samples[i][j];
+				maxTempValue = inputData.samples[0][0];
 			}
 			
-			if (samples[i][j] > maxTempValue)
+			if (inputData.samples[i][j] > maxTempValue)
 			{
-				maxTempValue = samples[i][j];
+				maxTempValue = inputData.samples[i][j];
 			} 
 			
 		}
 	}
 	
+	return maxTempValue;
+}
+
+outputStruct getCitiesWithMaxTemp(int maxTempValue)
+{
+	outputStruct result;
+	result.maxTempCitiesCount = 0;
 	//calculate how many cities there are which contain the maxtemp
-	for (int i=0; i<countOfCities; i++)
+	for (int i=0; i<inputData.countOfCities; i++)
 	{
 		bool cityIsInMax = false;
 		
 		int j= 0;
-		while(j<countOfDays && cityIsInMax==false)
+		while(j<inputData.countOfDays && cityIsInMax==false)
 		{
-			if (samples[i][j] == maxTempValue)
+			if (inputData.samples[i][j] == maxTempValue)
 			{
 				cityIsInMax = true;
 			}
@@ -59,22 +101,32 @@ int main()
 		
 		if (cityIsInMax)
 		{
-			maxTempCities[maxTempCitiesCount] = i;
-			maxTempCitiesCount++;
+			result.maxTempCities[result.maxTempCitiesCount] = i;
+			result.maxTempCitiesCount++;
 		}
 	}
 	
-	cout << maxTempCitiesCount;
-	for (int i=0; i<maxTempCitiesCount; i++)
+	return result;
+}
+
+void printOutput()
+{
+	cout << outputData.maxTempCitiesCount;
+	for (int i=0; i<outputData.maxTempCitiesCount; i++)
 	{
-		cout << " " << maxTempCities[i]+1;
+		cout << " " << outputData.maxTempCities[i]+1;
 	}
-	cout << endl;
-	
-	for (int i=0; i<countOfCities; i++)
-	{
-		delete[] samples[i];
-	}
-	
+	cout << endl;	
+}
+
+int main()
+{	
+	inputData = readInput();	
+	int maxTempValue = getMaxTemp();
+	printVerbose("maxTempValue:");
+	printVerbose(maxTempValue);
+	outputData = getCitiesWithMaxTemp(maxTempValue);
+	printOutput();
+		
 	return 0;
 }
