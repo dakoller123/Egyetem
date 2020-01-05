@@ -1,33 +1,54 @@
+/*   
+    Szerzo: Koller David Daniel 
+	Neptun: IDJJQ2   
+	E-mail: david.daniel.koller@gmail.com
+	Feladat: "Legmelegebb telepulesek"
+*/ 
+
 #include <iostream>
 #include<limits>
 
 using namespace std;
 
+/*
+------------------ Config params ------------------
+*/
+
+//These define the possible min and max values for each input parameters
 const short minCountOfCities = 1;
 const short maxCountOfCities = 1000;
-
 const short minCountOfDays = 1;
 const short maxCountOfDays = 1000;
-
 const short minSampleValue = -50;
 const short maxSampleValue = 50;
 
+//If this is enabled, requests and responses towards the user are printed out
 const bool verboseMode = false;
+
+//If this is enabled, input validation is mostly skipped. Shortens runtime.
 const bool skipInputValidation = true;
 
+/*
+------------------ End of config params ---------------
+*/
+
+
+//structure that holds together everything the user will provide
 struct inputStruct
 {
-	int countOfCities;
-	int countOfDays;
+	short countOfCities;
+	short countOfDays;
 	signed char samples[maxCountOfCities][maxCountOfDays];
 };
 
+//structure that holds together everything that will be printed out as the solution
 struct outputStruct
 {
-	int maxTempCitiesCount;
-	int maxTempCities[maxCountOfCities];
+	short maxTempCitiesCount;
+	short maxTempCities[maxCountOfCities];
 };
 
+//simple function that uses the verboseMode global variable to decided whether to print or not
 void printVerbose(string text, bool endline=true)
 {
 	if (verboseMode)
@@ -40,9 +61,17 @@ void printVerbose(string text, bool endline=true)
 	}
 }
 
-int readNumber(int minValue, short maxValue, string repeatText = "")
+//reads a number from console, does simple validation, unless overwritten by the skipInputValidation global parameter
+short readNumber(short minValue, short maxValue, string repeatText = "")
 {
-	int number;	
+	short number;
+
+	//skips the entire function and just acts as a wrapper for cin
+	if (skipInputValidation)
+	{
+		cin >> number;
+		return number;
+	}
 	
 	if (repeatText != ""){printVerbose(repeatText, false);}
 	while (true)
@@ -51,9 +80,12 @@ int readNumber(int minValue, short maxValue, string repeatText = "")
 		
 		if (cin.fail())
 		{
-			printVerbose("Failed to read number from the screen, please try again!");
+			printVerbose("Error! Input is not an integer!");
 			cin.clear();
+			
+			//purge the cin buffer
 			cin.ignore(numeric_limits<streamsize>::max(),'\n');
+			
 			if (repeatText != ""){printVerbose(repeatText, false);}
 		}
 		else
@@ -81,7 +113,7 @@ int readNumber(int minValue, short maxValue, string repeatText = "")
 	return number;
 }
 
-
+//the method that grabs all the required data from the user and puts them into one record
 inputStruct readInput()
 {
 	inputStruct input;
@@ -92,33 +124,31 @@ inputStruct readInput()
 	printVerbose("Please Type in the number of the days when temp. samples have been made: ", false);
 	input.countOfDays = readNumber(minCountOfDays, maxCountOfDays);
 	
-	for (int i=0; i<input.countOfCities; i++)
+	for (short i=0; i<input.countOfCities; i++)
 	{
 		printVerbose("Now it's time to read the temperature samples for city #" + to_string(i+1));
-		for (int j=0; j<input.countOfDays; j++)
+		for (short j=0; j<input.countOfDays; j++)
 		{
-			if (skipInputValidation)
+			string sampleInputText = "";
+			if (verboseMode)
 			{
-				int number;
-				cin >> number;
-				input.samples[i][j] = (signed char) number;
+				//Note: calculation is performance heavy due to lot of casting, hence the check for verboseMode, where its only ever used
+				sampleInputText=  "City #" + to_string(i+1) + " Sample #" + to_string(j+1) + ": ";
 			}
-			else
-			{			
-				string sampleInputText =  "City #" + to_string(i+1) + " Sample #" + to_string(j+1) + ": ";
-				input.samples[i][j] = (signed char)readNumber(minSampleValue, maxSampleValue, sampleInputText);
-			}
+			
+			input.samples[i][j] = (signed char)readNumber(minSampleValue, maxSampleValue, sampleInputText);
 		}
 	}
 	return input;
 }
 
-int getMaxTemp(inputStruct inputData)
+//enumerates across every temperature sample and outputs the highest value seen
+short getMaxTemp(inputStruct inputData)
 {
-	int maxTempValue;
-	for (int i=0; i<inputData.countOfCities; i++)
+	short maxTempValue;
+	for (short i=0; i<inputData.countOfCities; i++)
 	{
-		for (int j=0; j<inputData.countOfDays; j++)
+		for (short j=0; j<inputData.countOfDays; j++)
 		{
 			if (i==0&&j==0)
 			{
@@ -128,24 +158,24 @@ int getMaxTemp(inputStruct inputData)
 			if (inputData.samples[i][j] > maxTempValue)
 			{
 				maxTempValue = inputData.samples[i][j];
-			} 
-			
+			} 		
 		}
 	}
 	
 	return maxTempValue;
 }
 
+//counts the cities where the max temp has been measured and also stores their indexes
 outputStruct getCitiesWithMaxTemp(inputStruct inputData, short maxTempValue)
 {
 	outputStruct result;
 	result.maxTempCitiesCount = 0;
 	//calculate how many cities there are which contain the maxtemp
-	for (int i=0; i<inputData.countOfCities; i++)
+	for (short i=0; i<inputData.countOfCities; i++)
 	{
 		bool cityIsInMax = false;
 		
-		int j= 0;
+		short j= 0;
 		while(j<inputData.countOfDays && cityIsInMax==false)
 		{
 			if (inputData.samples[i][j] == maxTempValue)
@@ -167,6 +197,7 @@ outputStruct getCitiesWithMaxTemp(inputStruct inputData, short maxTempValue)
 	return result;
 }
 
+//prints the solution to the output, with some verbose text if verboseMode global var is set that way
 void printOutput(outputStruct outputData)
 {
 	printVerbose("The number of cities with the highest temperatures measured: ", false);
@@ -174,17 +205,21 @@ void printOutput(outputStruct outputData)
 	if (verboseMode){cout << endl;}
 	
 	printVerbose("The list of the cities:", false);
-	for (int i=0; i<outputData.maxTempCitiesCount; i++)
+	
+	for (short i=0; i<outputData.maxTempCitiesCount; i++)
 	{
 		cout << " " << outputData.maxTempCities[i]+1;
 	}
+	
 	cout << endl;	
 }
 
+//main method grabs the input, calculated the max. temperature value that has been measured
+// then solves and prints out the solution
 int main()
 {	
 	inputStruct inputData = readInput();	
-	int maxTempValue = getMaxTemp(inputData);
+	short maxTempValue = getMaxTemp(inputData);
 	outputStruct outputData = getCitiesWithMaxTemp(inputData, maxTempValue);
 	printOutput(outputData);
 		
