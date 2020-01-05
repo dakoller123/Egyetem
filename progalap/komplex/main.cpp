@@ -3,14 +3,14 @@
 
 using namespace std;
 
-const int minCountOfCities = 1;
-const int maxCountOfCities = 1000;
+const short minCountOfCities = 1;
+const short maxCountOfCities = 1000;
 
-const int minCountOfDays = 1;
-const int maxCountOfDays = 1000;
+const short minCountOfDays = 1;
+const short maxCountOfDays = 1000;
 
-const int minSampleValue = -50;
-const int maxSampleValue = 50;
+const short minSampleValue = -50;
+const short maxSampleValue = 50;
 
 const bool verboseMode = false;
 const bool skipInputValidation = true;
@@ -40,15 +40,9 @@ void printVerbose(string text, bool endline=true)
 	}
 }
 
-int readNumber(int minValue, int maxValue, string repeatText = "")
+int readNumber(int minValue, short maxValue, string repeatText = "")
 {
 	int number;	
-	
-	if (skipInputValidation)
-	{
-		cin >> number;
-		return number;
-	}
 	
 	if (repeatText != ""){printVerbose(repeatText, false);}
 	while (true)
@@ -103,8 +97,17 @@ inputStruct readInput()
 		printVerbose("Now it's time to read the temperature samples for city #" + to_string(i+1));
 		for (int j=0; j<input.countOfDays; j++)
 		{
-			string sampleInputText =  "City #" + to_string(i+1) + " Sample #" + to_string(j+1) + ": ";
-			input.samples[i][j] = (signed char)readNumber(minSampleValue, maxSampleValue, sampleInputText);
+			if (skipInputValidation)
+			{
+				int number;
+				cin >> number;
+				input.samples[i][j] = (signed char) number;
+			}
+			else
+			{			
+				string sampleInputText =  "City #" + to_string(i+1) + " Sample #" + to_string(j+1) + ": ";
+				input.samples[i][j] = (signed char)readNumber(minSampleValue, maxSampleValue, sampleInputText);
+			}
 		}
 	}
 	return input;
@@ -133,7 +136,7 @@ int getMaxTemp(inputStruct inputData)
 	return maxTempValue;
 }
 
-outputStruct getCitiesWithMaxTemp(inputStruct inputData, int maxTempValue)
+outputStruct getCitiesWithMaxTemp(inputStruct inputData, short maxTempValue)
 {
 	outputStruct result;
 	result.maxTempCitiesCount = 0;
