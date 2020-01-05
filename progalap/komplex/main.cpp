@@ -6,9 +6,7 @@
 */ 
 
 #include <iostream>
-#include<limits>
-
-using namespace std;
+#include <limits>
 
 /*
 ------------------ Config params ------------------
@@ -32,6 +30,7 @@ const bool skipInputValidation = true;
 ------------------ End of config params ---------------
 */
 
+using namespace std;
 
 //structure that holds together everything the user will provide
 struct inputStruct
@@ -78,7 +77,7 @@ short readNumber(short minValue, short maxValue, string repeatText = "")
 	{
 		cin >> number;
 		
-		if (cin.fail())
+		if (cin.fail() || (!(cin.peek()=='\n' || cin.peek() =='\r' || cin.peek() == ' ')))
 		{
 			printVerbose("Error! Input is not an integer!");
 			cin.clear();
@@ -118,10 +117,10 @@ inputStruct readInput()
 {
 	inputStruct input;
 	
-	printVerbose("Please Type in the number of the cities the temp. samples have been made in: ", false);
+	printVerbose("Please Type in the number of the cities the temperature samples have been made in: ", false);
 	input.countOfCities = readNumber(minCountOfCities, maxCountOfCities);
 
-	printVerbose("Please Type in the number of the days when temp. samples have been made: ", false);
+	printVerbose("Please Type in the number of the days when temperature samples have been made: ", false);
 	input.countOfDays = readNumber(minCountOfDays, maxCountOfDays);
 	
 	for (short i=0; i<input.countOfCities; i++)
