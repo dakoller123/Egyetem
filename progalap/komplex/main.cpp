@@ -12,6 +12,9 @@
 ------------------ Config params ------------------
 */
 
+//disable this for automated testing
+const bool userFriendlyMode = true;
+
 //These define the possible min and max values for each input parameters
 const short minCountOfCities = 1;
 const short maxCountOfCities = 1000;
@@ -21,10 +24,10 @@ const short minSampleValue = -50;
 const short maxSampleValue = 50;
 
 //If this is enabled, requests and responses towards the user are printed out
-const bool verboseMode = false;
+const bool verboseMode = userFriendlyMode;
 
 //If this is enabled, input validation is mostly skipped. Shortens runtime.
-const bool skipInputValidation = true;
+const bool skipInputValidation = !userFriendlyMode;
 
 /*
 ------------------ End of config params ---------------
@@ -77,7 +80,7 @@ short readNumber(short minValue, short maxValue, string repeatText = "")
 	{
 		cin >> number;
 		
-		if (cin.fail() || (!(cin.peek()=='\n' || cin.peek() =='\r' || cin.peek() == ' ')))
+		if (cin.fail() || (!(cin.peek()=='\n' || cin.peek() =='\r' || cin.peek() == ' ' )))
 		{
 			printVerbose("Error! Input is not an integer!");
 			cin.clear();
@@ -222,5 +225,11 @@ int main()
 	outputStruct outputData = getCitiesWithMaxTemp(inputData, maxTempValue);
 	printOutput(outputData);
 		
+	//simply wait for a keypress so the user can see the output before window closes down automatically
+	if (userFriendlyMode)
+	{
+		cout << "Program ran successfully."<< endl;
+		system("pause");
+	}		
 	return 0;
 }
