@@ -1,0 +1,1 @@
+g++ -std=c++11 .\integerBag_unittests.cpp .\countedInteger.cpp .\integerBag.cpp; .\a.exe

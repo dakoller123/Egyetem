@@ -2,7 +2,7 @@
 
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-
+#include <stdexcept>
 TEST_CASE("empty sequence", "[GetCount, IsEmpty, ToString]")
 {
     IntegerBag b = IntegerBag();
@@ -59,7 +59,9 @@ SCENARIO("elements can be added to IntegerBags and removed", "[IntegerBag]")
 		REQUIRE(b.IsEmpty());
 		REQUIRE(b.GetCount(0) == 0);
 		REQUIRE(b.GetCount(1) == 0);
+		REQUIRE(b.GetCount(32131) == 0);
 		REQUIRE(b.ToString() == "{ }");
+		REQUIRE_THROWS_AS(b.BiggestNumber(), std::invalid_argument);
 		
 		WHEN("we add a new element")
 		{
@@ -71,8 +73,9 @@ SCENARIO("elements can be added to IntegerBags and removed", "[IntegerBag]")
 			{
 				REQUIRE(b.IsEmpty() == false);
 				REQUIRE(b.GetCount(x) == 1);
-				REQUIRE(b.BiggestNumber() == x);
 				REQUIRE(b.ToString() == "{ (5,1) }");
+				REQUIRE_NOTHROW(b.BiggestNumber());
+				REQUIRE(b.BiggestNumber() == x);
 			}
 			
 			WHEN("we add some more");
@@ -122,7 +125,22 @@ SCENARIO("elements can be added to IntegerBags and removed", "[IntegerBag]")
 										REQUIRE(b.GetCount(x) == 1);	
 										REQUIRE(b.GetCount(y) == 0);
 										REQUIRE(b.BiggestNumber() == x);	
-									}	
+									}
+
+									WHEN ("we remove the last element")
+									{
+										b.Remove(x);
+										
+										THEN("the bag behaves just like in the beginning")
+										{
+											REQUIRE(b.IsEmpty());
+											REQUIRE(b.GetCount(x) == 0);
+											REQUIRE(b.GetCount(y) == 0);
+											REQUIRE(b.ToString() == "{ }");
+											REQUIRE_THROWS_AS(b.BiggestNumber(), std::invalid_argument);
+										}
+
+									}
 								}															
 							}
 						}

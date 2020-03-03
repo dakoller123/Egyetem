@@ -1,6 +1,6 @@
 #include <string>
 #include "integerBag.h"
-
+#include <stdexcept>
 bool IntegerBag::IsEmpty() const
 {
 	return content.size() == 0;
@@ -10,8 +10,7 @@ int IntegerBag::BiggestNumber() const
 {
 	if (IsEmpty())
 	{
-		//Todo: ErrorHandling
-		exit(1);
+		throw std::invalid_argument("Bag is empty, there is no max");
 	}
 	else
 	{
