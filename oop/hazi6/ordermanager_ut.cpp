@@ -74,11 +74,8 @@ SCENARIO("elements can be added to IntegerBags and removed", "[IntegerBag]")
 								THEN("the first is the MVP");
 								{
 									REQUIRE(mgr.MostProfitableFood() == firstFoodName);
-								}	
-
-								
+								}								
 							}	
-							
 						}	
 					}
 				}
