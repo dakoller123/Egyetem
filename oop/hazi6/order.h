@@ -11,5 +11,7 @@ class Order
 		std::string TimeOfOrder;
 		int Count;
 		int UnitPrice;
+		int TotalPrice() const;
 		Order(std::string foodName, int tableId, std::string timeOfOrder, int count, int unitPrice);
+		Order(std::string foodName, int count, int unitPrice);
 };
