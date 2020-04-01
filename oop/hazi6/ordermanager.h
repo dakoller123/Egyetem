@@ -10,7 +10,8 @@ class OrderManager
 		int mostProfitableFoodTotalProfit;
 		int lastAddedFoodTotalProfit;
 		bool isEmpty;
-		void switchMostToCurrent();
+		void setMostToLast();
+		void setLast(Order order);
 	public:
 		OrderManager();
 		void AddOrder(Order order);

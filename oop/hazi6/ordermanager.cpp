@@ -2,10 +2,16 @@
 #include "ordermanager.h"
 #include <stdexcept>
 
-void OrderManager::switchMostToCurrent()
+void OrderManager::setMostToLast()
 {
 	mostProfitableFoodTotalProfit = lastAddedFoodTotalProfit;
 	mostProfitableFoodName = lastAddedFoodName;
+}
+
+void OrderManager::setLast(Order order)
+{
+	lastAddedFoodName = order.FoodName;
+	lastAddedFoodTotalProfit = order.TotalPrice();
 }
 
 OrderManager::OrderManager()
@@ -17,12 +23,9 @@ void OrderManager::AddOrder(Order order)
 {
 	if (isEmpty)
 	{
-		isEmpty = false;
-		
-		lastAddedFoodName = order.FoodName;
-		lastAddedFoodTotalProfit = order.TotalPrice();
-		
-		switchMostToCurrent();
+		isEmpty = false;		
+		setLast(order);
+		setMostToLast();
 	}
 	else
 	{
@@ -32,13 +35,12 @@ void OrderManager::AddOrder(Order order)
 		}
 		else
 		{
-			lastAddedFoodName = order.FoodName;
-			lastAddedFoodTotalProfit = order.TotalPrice();			
+			setLast(order);
 		}
 		
 		if (lastAddedFoodTotalProfit > mostProfitableFoodTotalProfit)
 		{
-			switchMostToCurrent();				
+			setMostToLast();				
 		}
 	}
 }
