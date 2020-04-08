@@ -5,6 +5,7 @@
 class RecipeEnumerator
 {
     private:
+        std::string _sugarName;
         std::ifstream _fileStream;     
         bool _currentSugar;
         std::string _currentRecipeName;
@@ -15,5 +16,5 @@ class RecipeEnumerator
         void Next();
         bool End();
         bool Current() const;
-        RecipeEnumerator(std::string path);
+        RecipeEnumerator(std::string path, std::string sugarName);
 };

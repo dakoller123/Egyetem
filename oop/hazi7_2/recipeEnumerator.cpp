@@ -2,9 +2,10 @@
 #include <iostream>
 #include <fstream>
 
-RecipeEnumerator::RecipeEnumerator(std::string path)
+RecipeEnumerator::RecipeEnumerator(std::string path, std::string sugarName)
 {
     _fileStream = std::ifstream(path);
+    _sugarName = sugarName;
 }
 
 void RecipeEnumerator::First()
@@ -20,13 +21,13 @@ void RecipeEnumerator::Next()
     std::string unit; 
 
     _fileStream >> recipeName >> componentName >> count >> unit;
-    _currentSugar = (componentName == "cukor" && count > 0);
+    _currentSugar = (componentName == _sugarName && count > 0);
     _currentRecipeName = recipeName;
     
     while (_currentRecipeName == recipeName && !(_fileStream.eof()))
     {
         _fileStream >> recipeName >> componentName >> count >> unit;
-        _currentSugar = _currentSugar || (componentName == "cukor" && count > 0);
+        _currentSugar = _currentSugar || (componentName == _sugarName && count > 0);
     }
 }
 

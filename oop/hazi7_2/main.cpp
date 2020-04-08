@@ -1,4 +1,4 @@
-#include "recipeEnumerator.h"
+#include "recipeHandler.h"
 #include <string>
 #include <iostream>
 
@@ -6,19 +6,7 @@ using namespace std;
 
 int main()
 {
-    std::string filePath = "input.txt";
-    RecipeEnumerator recipes = RecipeEnumerator(filePath);
-
-    bool everyRecipeContainsSugar = true;
-    recipes.First();
-    
-    while (!recipes.End() && everyRecipeContainsSugar)
-    {
-        everyRecipeContainsSugar = everyRecipeContainsSugar && recipes.Current();
-        recipes.Next();        
-   }
-
-    if (everyRecipeContainsSugar)
+    if (RecipeHandler().EveryRecipeContainsSugar("input.txt", "cukor"))
     {
         cout << "every recipe has sugar";
     }
@@ -26,5 +14,7 @@ int main()
     {
         cout << "not every recipe has sugar";
     }
+
+
     return 0;
 }
