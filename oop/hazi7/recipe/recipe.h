@@ -1,5 +1,5 @@
 #pragma once
-#include 'recipeComponentEnumerator.h'
+#include "../recipeComponentEnumerator/recipeComponentEnumerator.h"
 
 class Recipe
 {

@@ -1,16 +1,21 @@
 #pragma once
-#include 'RecipeHandler.h'
+#include "RecipeHandler.h"
 
-RecipeHandler::EveryRecipeContainsSugar() const
+RecipeHandler::RecipeHandler()
 {
-    result = false;
+    _everyRecipeContainsSugar = false;
     _recipes.First();
     
     while (!_recipes.End())
     {
-        result = result || _recipes.Current().ContainsSugar();
+        _everyRecipeContainsSugar = _everyRecipeContainsSugar || _recipes.Current().ContainsSugar();
         _recipes.Next();        
    }
 
-    return result;  
+}
+
+
+RecipeHandler::EveryRecipeContainsSugar() const
+{
+    return _everyRecipeContainsSugar;  
 };

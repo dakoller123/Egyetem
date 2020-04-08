@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1582008778 source:c:\egyetem\oop\kor_pont_torzo\main.cpp
+	<iostream>
+	<fstream>
+	<vector>
+	"point.h"
+	"circle.h"
+
+1582139316 c:\egyetem\oop\kor_pont_torzo\point.h
+	<cmath>
+
+1582139035 c:\egyetem\oop\kor_pont_torzo\circle.h
+	"point.h"
+

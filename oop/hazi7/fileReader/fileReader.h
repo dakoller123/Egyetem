@@ -1,11 +1,14 @@
 #pragma once
 
-int FileReaderEndException = 68;
+#include <fstream>
+#include "../recipeComponent/recipeComponent.h"
 
 class FileReader
 {
+    private:
+        std::ifstream _fileStream;        
     public:
-        FileReader(std::string path);
+        FileReader();
         RecipeComponent GetLine();
         bool End();
-}
+};

@@ -1,7 +1,7 @@
 #pragma once
-#include 'recipeComponent.h'
+#include "../recipe/recipe.h"
 
-class RecipeEnumerator()
+class RecipeEnumerator
 {
     private:
         Recipe _current;
@@ -12,4 +12,4 @@ class RecipeEnumerator()
         bool End();
         Recipe Current();
 
-}
+};

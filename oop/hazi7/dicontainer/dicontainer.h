@@ -1,31 +1,20 @@
 #pragma once
-#include 'FileReader.h';
+#include "../fileReader/fileReader.h"
 
-
-const int FileReaderNotInitializedException = 98;
-
-//Container for Dependency Injection
+//Container for Dependency Injection or various classes (currently just one)
 class DIContainer
 {
     private:
-        bool _fileReaderInitialized;
         FileReader _fileReaderInstance;
 
     public:
-        AddFileReader(FileReader fileReader)
+        DIContainer(FileReader fileReader)
         {
-            _fileReader = fileReader;
+            _fileReaderInstance = fileReader;
         }
 
-        GetFileReader()
+        FileReader GetFileReader()
         {
-            if (_fileReaderInitialized)
-            {
-                return _fileReaderInstance;
-            }
-            else
-            {
-                throw FileReaderNotInitializedException;
-            }
+            return _fileReaderInstance;
         }
 };

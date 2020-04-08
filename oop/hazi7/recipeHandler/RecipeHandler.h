@@ -1,13 +1,13 @@
 #pragma once
-#include 'recipeComponentEnumerator.h'
+#include "../recipeEnumerator/recipeEnumerator.h"
 
 class RecipeHandler
 {
     private:
-        FileReader _fileReader;
         RecipeEnumerator _recipes;
+        bool everyRecipeContainsSugar;
 
     public:
-        RecipeHandler(FileReader fileReader);
+        RecipeHandler();
         bool EveryRecipeContainsSugar() const;
 };

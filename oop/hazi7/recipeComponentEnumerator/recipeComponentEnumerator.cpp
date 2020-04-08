@@ -1,9 +1,9 @@
-#include 'recipeComponentEnumerator.cpp'
 
-RecipeComponentEnumerator::RecipeComponentEnumerator()
-{
-    _fileReader = g_DIContainer.GetFileReader;
-}
+
+// RecipeComponentEnumerator::RecipeComponentEnumerator()
+// {
+//     _fileReader = FileReader();
+// }
 
 RecipeComponentEnumerator::Current()
 {
@@ -12,27 +12,19 @@ RecipeComponentEnumerator::Current()
 
 RecipeComponentEnumerator::First()
 {
-    _current = _fileReader.ReadLine();
+    _current = g_fileReader.ReadLine();
     _recipeName = _current.RecipeName;
 }
 
 
 RecipeComponentEnumerator::Next()
 {
-    try
-    {
-        _current = _fileReader.ReadLine();
-        
-        if (_current.RecipeName != _recipeName)
-        {
-            _end = true;
-        }
-    }
-    catch (FileReaderEndException)
+    _current = g_fileReader.ReadLine();
+    
+    if (_current.RecipeName != _recipeName || g_fileReader.End())
     {
         _end = true;
     }
-    
 }
 
 RecipeComponentEnumerator::End()

@@ -1,11 +1,11 @@
-#include 'dicontainer.h'
+#include "recipeHandler/recipeHandler.h"
 
-DIContainer g_DIContainer;
+FileReader g_fileReader;
 
 int main()
 {
-
-    FileReader fileReader("path_goes_here");
-    g_DIContainer.AddFileReader();
+    g_fileReader = FileReader("path_goes_here")
+    RecipeHander recipeHandler = RecipeHandler();
+    bool result = recipeHandler.EveryRecipeContainsSugar();
     return 0;
 }

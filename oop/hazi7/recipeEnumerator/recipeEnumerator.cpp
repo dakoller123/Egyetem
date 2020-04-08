@@ -1,9 +1,8 @@
-import 'recipeEnumerator.h'
+#import "recipeEnumerator.h"
 
 void RecipeEnumerator::First()
 {
     _current = new Recipe(new RecipeComponentEnumerator());
-    _fileReader = g_DIContainer.GetFileReader();
 }
 
 Recipe RecipeEnumerator::Current()
@@ -18,5 +17,5 @@ void RecipeEnumerator::Next()
 
 bool RecipeEnumerator::End()
 {
-    return _fileReader.End();
+    return g_fileReader.End();
 }
