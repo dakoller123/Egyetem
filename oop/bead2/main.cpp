@@ -13,10 +13,19 @@ int main()
     }
     else
     {
-        cout << "No carp has been caught by anybody";
+        cout << "No carp has been caught by anybody" << endl;
     }
     
-    cout << smallestCatch.anyCarpCaught;
     bool everyParticipantCaughtAtLeastTwoCarps = raceHandler.EveryParticipantCaughtAtLeastTwoCarps("input.txt", "carp");
+
+    if (everyParticipantCaughtAtLeastTwoCarps)
+    {
+        cout << "Every participant had 2 contests at least where they caught at least one carp" << endl;
+    }
+    else
+    {
+        cout << "Not every participant had 2 contests at least where they caught at least one carp" << endl;
+    }
+
     return 0;
 }

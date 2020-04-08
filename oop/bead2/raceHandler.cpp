@@ -1,10 +1,23 @@
 #include "raceHandler.h"
 #include <string>
 #include "raceEnumerator.h"
+#include "participantEnumerator.h"
 
 bool RaceHandler::EveryParticipantCaughtAtLeastTwoCarps(std::string filePath, std::string carpName)
 {
-    return false;
+    ParticipantEnumerator participantEnumerator = ParticipantEnumerator(filePath, carpName);
+    
+    participantEnumerator.First();
+
+    bool result = (participantEnumerator.Current() > 1);
+
+    while (!participantEnumerator.End())
+    {
+        result = result && (participantEnumerator.Current() > 1);
+        participantEnumerator.Next();
+    }
+
+    return result;
 }
 
 

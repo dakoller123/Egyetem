@@ -23,5 +23,5 @@ class RaceEnumerator
         Race Current() const;
         void Next();
         RaceEnumerator(std::string path, std::string carpName);
-               
+        RaceEnumerator(){}
 };
