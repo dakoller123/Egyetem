@@ -27,7 +27,7 @@ void RaceEnumerator::Next()
 {
     std::string line;
     std::getline(_fileStream , line);
-    _end = _fileStream.fail() || _fileStream.eof();
+    _end = _fileStream.fail();
     if(!_end){
         std::istringstream stringStream = std::istringstream(line);
         stringStream >> _current.participantName >> _current.raceId;
