@@ -15,7 +15,7 @@ Race RaceEnumerator::Current() const
 
 bool RaceEnumerator::End()
 {
-    return _fileStream.eof() || _end;
+    return _end;
 }
 
 void RaceEnumerator::First()
@@ -27,14 +27,15 @@ void RaceEnumerator::Next()
 {
     std::string line;
     std::getline(_fileStream , line);
-    if( !(_end = _fileStream.fail()) ){
+    _end = _fileStream.fail() || _fileStream.eof();
+    if(!_end){
         std::istringstream stringStream = std::istringstream(line);
         stringStream >> _current.participantName >> _current.raceId;
         
         _current.anyCarpCaught = false;
         std::string fishName;
         float fishSize;
-        
+
         for( stringStream >> fishName >> fishSize ; !stringStream.fail(); stringStream >> fishName >> fishSize )
         {
             if(fishName == _carpName)
