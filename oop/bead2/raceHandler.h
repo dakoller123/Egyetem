@@ -6,8 +6,8 @@ struct SmallestCarpCaughtResult
     float smallestCaughtSize;
     std::string raceId;
     std::string participantName;
-    bool anyCaught;
-}
+    bool anyCarpCaught;
+};
 
 class RaceHandler
 {

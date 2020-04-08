@@ -1,6 +1,6 @@
 #include "raceHandler.h"
 #include <string>
-#include "raceEnumerator"
+#include "raceEnumerator.h"
 
 bool RaceHandler::EveryParticipantCaughtAtLeastTwoCarps(std::string filePath, std::string carpName)
 {
@@ -31,7 +31,7 @@ SmallestCarpCaughtResult RaceHandler::SmallestCarpCaught(std::string filePath, s
     {
         if (raceEnumerator.Current().anyCarpCaught)
         {
-            if (anyCarpCaughtTotal == false)
+            if (result.anyCarpCaught == false)
             {
                 result.smallestCaughtSize  = raceEnumerator.Current().smallestCarpCaught;
                 result.raceId = raceEnumerator.Current().raceId;
@@ -47,6 +47,9 @@ SmallestCarpCaughtResult RaceHandler::SmallestCarpCaught(std::string filePath, s
                 }
             }
         }
+
+        raceEnumerator.Next();
     }
 
+    return result;
 }

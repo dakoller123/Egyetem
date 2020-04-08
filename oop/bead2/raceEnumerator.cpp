@@ -34,6 +34,7 @@ void RaceEnumerator::Next()
         _current.anyCarpCaught = false;
         std::string fishName;
         float fishSize;
+        
         for( stringStream >> fishName >> fishSize ; !stringStream.fail(); stringStream >> fishName >> fishSize )
         {
             if(fishName == _carpName)
