@@ -1,0 +1,18 @@
+{
+    "name": "kollerdavid_test_bot",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "appId": "01778245-1c38-4a19-92c9-0f12c9c72cf5",
+            "appPassword": "tigxFQ2)!curLUQEX1326%$",
+            "endpoint": "http://localhost:19081/BotFrameworkCustomerConnectorSvc/BotFrameworkConnector/api/messages/231?listenerName=OWINListener",
+            "id": "2be018f0-2192-11ea-8d88-45addd7b8c92",
+            "name": "http://localhost:19081/BotFrameworkCustomerConnectorSvc/BotFrameworkConnector/api/messages/231?listenerName=OWINListener"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0",
+    "overrides": null,
+    "path": "C:\\Users\\dkoller\\Desktop\\kollerdavid_test_bot.bot"
+}
