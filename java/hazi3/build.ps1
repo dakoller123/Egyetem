@@ -1,0 +1,1 @@
+javac .\hu\elte\javagyak\library\Book.java .\hu\elte\javagyak\library\tests\BookTests.java .\hu\elte\javagyak\library\tests\TestRunner.java
