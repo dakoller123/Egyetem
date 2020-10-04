@@ -1,0 +1,5 @@
+D:\Egyetem\java\circles_from_array_orig\Circles.java
+D:\Egyetem\java\circles_from_array_orig\hu\elte\geometry\Circle.java
+D:\Egyetem\java\circles_from_array_orig\hu\elte\geometry\Point.java
+D:\Egyetem\java\circles_from_array_orig\hu\elte\geometry\Rectangle.java
+D:\Egyetem\java\circles_from_array_orig\hu\elte\image\Canvas.java
