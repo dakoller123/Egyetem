@@ -1,1 +1,1 @@
-C:\jdk-15\bin\java.exe  hu.elte.javagyak.library.tests.TestRunner
+java  hu.elte.javagyak.library.tests.TestRunner
