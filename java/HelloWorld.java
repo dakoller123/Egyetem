@@ -1,6 +1,7 @@
 public class HelloWorld {
 	public static void main(String [] args){
-
-		System.out.println("Hello World");
+		int[] array = new int[0];
+		array.freeze();
+		// System.out.println(array[0]);
 	}
 }
