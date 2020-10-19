@@ -1,0 +1,4 @@
+D:\Egyetem\java\hazi6\geometry_from_file_orig\GeometryMain.java
+D:\Egyetem\java\hazi6\geometry_from_file_orig\hu\elte\geometry\Circle.java
+D:\Egyetem\java\hazi6\geometry_from_file_orig\hu\elte\geometry\GeometryTypes.java
+D:\Egyetem\java\hazi6\geometry_from_file_orig\hu\elte\geometry\Point.java
