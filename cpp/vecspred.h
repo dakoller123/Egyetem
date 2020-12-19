@@ -1,62 +1,38 @@
-#ifndef SL__H
-#define SL__H
-#include <list>
-#include <algorithm>
-#include <functional>
-template <class T, class Comp = std::less<T> >
-class SortedList
-{
-std::list<T> c;
-typedef 
-typename std::list<T>::iterator 
-it;
-public:
-template <class Iter>
-SortedList( Iter first, Iter last ): c( first, last )
-{
-c.sort( Comp() );
-}
-SortedList() { }
+#include <vector>
+#include <iostream>    
+#include <algorithm>  
 
-void insert( const T& t )
-{
-c.insert( std::lower_bound( c.begin(), c.end(), t, Comp() ),
-   t );
-}
-int size() const
-{
-return c.size();
+void print (int i) 
+{  
+  std::cout << ' ' << i;
 }
 
-const T& front() const
+class vectors_predicate_view
 {
-return c.front();
-}
-
-const T& back() const
-{
-return c.back();
-}
-
-void remove( const T& t )
-{
-std::pair<it, it > p = 
-std::equal_range( c.begin(), c.end(), t, Comp() );
-c.erase( p.first, p.second );
-}
-
-typedef 
-typename std::list<T>::const_iterator 
-iterator;
-
-iterator begin() const
-{
-return c.begin();
-}
-
-iterator end() const
-{
-return c.end();
-}
+    private:
+        std::vector<int>& original;
+        std::vector<int> original_copy;
+        
+    public:
+        vectors_predicate_view(std::vector<int>& original_): original(original_)
+        {
+            std::cout << "original vector start :";
+            for_each (original.begin(), original.end(), print);
+            std::cout << std::endl;
+                      
+            copy(original.begin(), original.end(), back_inserter(original_copy)); 
+            
+            original[0]  = 999;
+            original.push_back(888);
+            
+            std::cout << "original vector now :";
+            for_each (original.begin(), original.end(), print);
+            std::cout << std::endl;
+            
+            original.assign(original_copy.begin(), original_copy.end()); 
+            
+            std::cout << "original vector after copy back :";
+            for_each (original.begin(), original.end(), print);
+            std::cout << std::endl;
+        }
 };
-#endif
