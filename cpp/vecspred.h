@@ -2,10 +2,7 @@
 #include <iostream>    
 #include <algorithm>  
 
-void print (int i) 
-{  
-  std::cout << ' ' << i;
-}
+
 
 class vectors_predicate_view
 {
@@ -16,23 +13,14 @@ class vectors_predicate_view
     public:
         vectors_predicate_view(std::vector<int>& original_): original(original_)
         {
-            std::cout << "original vector start :";
-            for_each (original.begin(), original.end(), print);
-            std::cout << std::endl;
-                      
-            copy(original.begin(), original.end(), back_inserter(original_copy)); 
+            original_copy.assign(original.begin(), original.end()); 
             
             original[0]  = 999;
-            original.push_back(888);
-            
-            std::cout << "original vector now :";
-            for_each (original.begin(), original.end(), print);
-            std::cout << std::endl;
-            
+            original.push_back(888);           
+        }
+        
+        ~vectors_predicate_view()
+        {
             original.assign(original_copy.begin(), original_copy.end()); 
-            
-            std::cout << "original vector after copy back :";
-            for_each (original.begin(), original.end(), print);
-            std::cout << std::endl;
         }
 };

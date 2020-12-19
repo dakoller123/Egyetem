@@ -17,16 +17,35 @@
 #include <string>
 #include <numeric>
 #include <functional>
+#include <vector>
+ 
 
+void print (int i) 
+{  
+    std::cout << ' ' << i;
+}
 
-
-bool check()
+void check()
 {
-  std::vector<int> a{ 10, 20, 30 };;
-
-  const vectors_predicate_view va( a);
+    std::vector<int> a{ 10, 20, 30 };
   
-  return true;
+    std::cout << "original vector start :";
+    for_each (a.begin(), a.end(), print);
+    std::cout << std::endl;
+  
+    if (true)
+    {
+        const vectors_predicate_view va( a);
+        
+        std::cout << "original vector middle :";
+        for_each (a.begin(), a.end(), print);
+        std::cout << std::endl;
+    }
+
+    std::cout << "original vector after :";
+    for_each (a.begin(), a.end(), print);
+    std::cout << std::endl;
+  
 }
 
 int main()
