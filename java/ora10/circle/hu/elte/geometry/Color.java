@@ -1,0 +1,6 @@
+package hu.elte.geometry;
+
+public enum Color {
+
+    WHITE, RED, CYAN, PURPLE, GREEN, BLUE, YELLOW, ORANGE, BROWN, LIGHT_RED, DARK_GREY, GREY, LIGHT_GREEN, LIGHT_BLUE, LIGHT_GREY
+}

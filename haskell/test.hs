@@ -1,10 +1,8 @@
-module Test1 where
+import Data.List
 
--- inc :: Integer -> Integer
--- inc x = x +1
+-- compress :: Eq a => [a] -> [(Int,a)]
+-- compress l = map (\x -> ([head x], length x)) (group l)
 
--- even' :: Integer -> Bool
--- even' a = mod a 2 == 0
+numbersMadeOfThrees :: [Integer]
 
--- triangleSides :: Integer -> Integer -> Integer -> Bool
--- triangleSides a b c = a + b > c && a + c > b && b + c > a
+numbersMadeOfThrees = map (\x -> 3 * 10 ^ x) [1..] 

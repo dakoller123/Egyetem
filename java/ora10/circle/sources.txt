@@ -1,0 +1,5 @@
+D:\Egyetem\java\ora10\circle\CircleMain.java
+D:\Egyetem\java\ora10\circle\hu\elte\geometry\Circle.java
+D:\Egyetem\java\ora10\circle\hu\elte\geometry\Color.java
+D:\Egyetem\java\ora10\circle\hu\elte\geometry\ColoredCircle.java
+D:\Egyetem\java\ora10\circle\hu\elte\geometry\Point.java
