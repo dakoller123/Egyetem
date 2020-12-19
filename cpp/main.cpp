@@ -18,8 +18,22 @@
 #include <numeric>
 #include <functional>
 #include <vector>
- 
 
+struct is_even: std::unary_function<int, bool>
+{
+  bool operator()( int i ) const
+  {
+    return 0 == i % 2;
+  }
+};
+
+struct is_good_language: std::unary_function<std::string, bool>
+{
+  bool operator()( const std::string& s ) const
+  {
+    return s == "C++" || s == "C";
+  }
+};
 void print (int i) 
 {  
     std::cout << ' ' << i;
@@ -27,23 +41,36 @@ void print (int i)
 
 void check()
 {
-    std::vector<int> a{ 10, 20, 30 };
+    std::vector<int> a{ 10, 20, 21, 49, 30 };
+    std::vector<int> b{ 5, 6, 9, 0, 1 };
   
-    std::cout << "original vector start :";
+    std::cout << "A start :";
     for_each (a.begin(), a.end(), print);
+    std::cout << std::endl;
+  
+    std::cout << "B start :";
+    for_each (b.begin(), b.end(), print);
     std::cout << std::endl;
   
     if (true)
     {
-        const vectors_predicate_view va( a);
+        const vectors_predicate_view<int, is_even> va( a, b );
         
-        std::cout << "original vector middle :";
+        std::cout << "A middle :";
         for_each (a.begin(), a.end(), print);
+        std::cout << std::endl;
+        
+        std::cout << "B middle :";
+        for_each (b.begin(), b.end(), print);
         std::cout << std::endl;
     }
 
-    std::cout << "original vector after :";
+    std::cout << "A after :";
     for_each (a.begin(), a.end(), print);
+    std::cout << std::endl;
+    
+    std::cout << "B after :";
+    for_each (b.begin(), b.end(), print);
     std::cout << std::endl;
   
 }
