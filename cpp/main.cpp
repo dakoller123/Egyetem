@@ -54,16 +54,39 @@ void check()
   
     if (true)
     {
+        std::cout << "With pred" << std::endl;
         const vectors_predicate_view<int, is_even> va( a, b );
         
-        std::cout << "A middle :";
+        std::cout << "A pred :";
         for_each (a.begin(), a.end(), print);
         std::cout << std::endl;
         
-        std::cout << "B middle :";
+        std::cout << "B pred :";
         for_each (b.begin(), b.end(), print);
         std::cout << std::endl;
     }
+    
+    std::cout << "A between :";
+    for_each (a.begin(), a.end(), print);
+    std::cout << std::endl;
+    
+    std::cout << "B between :";
+    for_each (b.begin(), b.end(), print);
+    std::cout << std::endl;
+    
+    if (true)
+    {
+        std::cout << "without pred" << std::endl;
+        const vectors_predicate_view<int> va( a, b );
+        
+        std::cout << "a without :";
+        for_each (a.begin(), a.end(), print);
+        std::cout << std::endl;
+        
+        std::cout << "b without :";
+        for_each (b.begin(), b.end(), print);
+        std::cout << std::endl;
+    } 
 
     std::cout << "A after :";
     for_each (a.begin(), a.end(), print);
