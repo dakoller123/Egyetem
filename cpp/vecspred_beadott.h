@@ -5,7 +5,7 @@
 #include <iostream>    
 #include <algorithm>  
 
-//FYI: this will never be used, just a placeholder
+//ez sose lesz lefuttatva
 template<class T> 
 class default_predicate:std::unary_function<T, bool>
 {
@@ -46,7 +46,6 @@ class vectors_predicate_view
             first.assign(first_copy.begin(), first_copy.end()); 
             second.assign(second_copy.begin(), second_copy.end());
         }
-		
         int size() const { return first.size() + second.size();}
         void negate() {first.swap(second);}
 };

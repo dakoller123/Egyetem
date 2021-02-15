@@ -17,7 +17,7 @@
 #include <string>
 #include <numeric>
 #include <functional>
-#include <vector>
+#include "vecspred.h"
 
 struct is_even: std::unary_function<int, bool>
 {
@@ -34,71 +34,75 @@ struct is_good_language: std::unary_function<std::string, bool>
     return s == "C++" || s == "C";
   }
 };
-void print (int i) 
-{  
-    std::cout << ' ' << i;
-}
 
-void check()
+const int max = 1024;
+
+bool check()
 {
-    std::vector<int> a{ 10, 20, 21, 49, 30 };
-    std::vector<int> b{ 5, 6, 9, 0, 1 };
-  
-    std::cout << "A start :";
-    for_each (a.begin(), a.end(), print);
-    std::cout << std::endl;
-  
-    std::cout << "B start :";
-    for_each (b.begin(), b.end(), print);
-    std::cout << std::endl;
-  
-    if (true)
-    {
-        std::cout << "With pred" << std::endl;
-        const vectors_predicate_view<int, is_even> va( a, b );
-        
-        std::cout << "A pred :";
-        for_each (a.begin(), a.end(), print);
-        std::cout << std::endl;
-        
-        std::cout << "B pred :";
-        for_each (b.begin(), b.end(), print);
-        std::cout << std::endl;
-    }
-    
-    std::cout << "A between :";
-    for_each (a.begin(), a.end(), print);
-    std::cout << std::endl;
-    
-    std::cout << "B between :";
-    for_each (b.begin(), b.end(), print);
-    std::cout << std::endl;
-    
-    if (true)
-    {
-        std::cout << "without pred" << std::endl;
-        const vectors_predicate_view<int> va( a, b );
-        
-        std::cout << "a without :";
-        for_each (a.begin(), a.end(), print);
-        std::cout << std::endl;
-        
-        std::cout << "b without :";
-        for_each (b.begin(), b.end(), print);
-        std::cout << std::endl;
-    } 
+  bool c = false;
+  std::vector<int> a;
+  std::vector<int> b;
 
-    std::cout << "A after :";
-    for_each (a.begin(), a.end(), print);
-    std::cout << std::endl;
-    
-    std::cout << "B after :";
-    for_each (b.begin(), b.end(), print);
-    std::cout << std::endl;
-  
+  for( int i = 0; i < max; ++i )
+  {
+    if ( i < max / 2 )
+    {
+      a.push_back( i );
+    }
+    else
+    {
+      b.push_back( i );
+    }
+  }
+
+  std::vector<std::string> x;
+  x.push_back( "Cobol" );
+  x.push_back( "Ada" );
+
+  std::vector<std::string> y;
+  y.push_back( "Javascript" );
+  y.push_back( "C++" );
+  y.push_back( "ABAP" );
+
+  if ( !c )
+  {
+    vectors_predicate_view<int, is_even> va( a, b );
+    vectors_predicate_view<std::string, is_good_language> vb( x, y );
+
+    c = ( 1 == x.size() && 1 == b[ 0 ] && 2 == a[ 1 ] && "Cobol" == y[ 0 ] );
+  }
+  if ( !c || "Ada" != x[ 1 ] || "ABAP" != y[ 2 ] || max / 2 != b[ 0 ] )
+  {
+    return false;
+  }
+
+  if ( c )
+  {
+    const vectors_predicate_view<int, is_even> va( a, b );
+    vectors_predicate_view<std::string, is_good_language> vb( x, y );
+
+    vb.negate();
+
+    if ( va.size() != max || 4 != x.size() )
+    {
+      return false;
+    }
+  }
+
+  if ( c )
+  {
+    vectors_predicate_view<int> va( a, b );
+    vectors_predicate_view<std::string> vb( x, y );
+
+    return ( 2 == x.size() && "C++" == y[ 1 ] && 5 == vb.size() &&
+         max / 2 == b[ 0 ] && max == va.size() );
+  }
+  return false;
 }
 
 int main()
 {
-  check();
+  std::cout
+    << "Your solution is " << (check() ? "" : "not ")
+    << "ready for submission.\n";
 }
