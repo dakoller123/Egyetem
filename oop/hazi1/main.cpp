@@ -3,15 +3,6 @@
 #include <fstream>
 #include <vector>
 
-#define NORMAL_MODE
-#ifdef NORMAL_MODE
-
-struct solutionStruct
-{
-    int countOfSmallWeeks;
-    std::vector<int> weeksWithSmallNumbers;
-};
-
 std::vector<std::vector<int>> readFile(std::string filePath)
 {
     std::vector<std::vector <int>> lotteryResults;
@@ -19,16 +10,18 @@ std::vector<std::vector<int>> readFile(std::string filePath)
     
     if(f.fail())
     {
-        throw  "File open error!";
+        std::cout <<   "File open error!" << std::endl;
+        throw; 
     }
 
-    int countOfWeeks; 
+    int countOfWeeks = -1; 
     
     f >> countOfWeeks;
     
     if(countOfWeeks<1)
     {
-        throw  "Count of weeks is invalid";
+        std::cout <<  "Count of weeks is invalid" << std::endl;
+        throw;
     }
     else
     {
@@ -98,21 +91,53 @@ std::vector<int> solve(std::vector<std::vector<int>> lotteryResults)
     return weeksWithSmallNumbers;
 }
 
-int main()
+#define NORMAL_MODE
+#ifdef NORMAL_MODE
+
+int main(int argc, char *argv[])
 {
-    solve(readFile("input.txt"));
+    if (argc > 1) 
+    {
+       std::string filepath(argv[1]);
+       solve(readFile(filepath));
+    }
+    else   
+    {
+       std::cout << "No filepath specified!" << std::endl;
+       throw;
+    }   
 }
 
 #else
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "bag_test.h"
 
 TEST_CASE("empty")
 {
-    var x = solve(readFile("ures.txt"));
-    REQUIRE(m>=0);    
+    REQUIRE_THROWS(solve(readFile("ures.txt")));    
 }
 
+TEST_CASE("everyweek")
+{
+    std::vector<int> result = solve(readFile("t1.txt"));
+    REQUIRE(result.size()==2); 
+    REQUIRE(result[0] == 0);     
+    REQUIRE(result[1] == 2);
+}
+
+TEST_CASE("no such week")
+{
+    std::vector<int> result = solve(readFile("t2.txt"));
+    REQUIRE(result.size()==0); 
+}
+
+TEST_CASE("lots of data")
+{
+    std::vector<int> result = solve(readFile("t3.txt"));
+    REQUIRE(result.size()==20); 
+    REQUIRE(result[0] == 92);     
+    REQUIRE(result[1] == 101);
+    REQUIRE(result[19] == 919);
+}
 #endif
 
