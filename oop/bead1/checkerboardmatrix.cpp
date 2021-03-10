@@ -41,15 +41,15 @@
 //          CheckerboardMatrix a    - matrix
 //Output:   ostream s - target of writing
 //Activity: writes the elements of the matrix
-std::ostream &operator <<(std::ostream& s, const CheckerboardMatrix& a)
-{
-    for(unsigned int i=0; i<a._v.size(); ++i)
-    {
-
-        s << std::endl;
-    }
-    return s;
-}
+//std::ostream &operator <<(std::ostream& s, const CheckerboardMatrix& a)
+//{
+//    for(unsigned int i=0; i<a._v.size(); ++i)
+//    {
+//
+//        s << std::endl;
+//    }
+//    return s;
+//}
 
 ////Task: 	reading
 ////Input:    istream s - source of writing
@@ -79,20 +79,20 @@ std::ostream &operator <<(std::ostream& s, const CheckerboardMatrix& a)
 //Input:    int i,j - indexes of element
 //Output:   int     - the element of the matrix in ith row and jth column
 //Activity: gets the given elements of the diagonal matrix
-int CheckerboardMatrix::operator()(int i, int j) const
-{
-    if ((i >= _n) || (j >= _m))
-    {
-        throw OVERINDEXED;
-    }
-
-//    if (isNullElement(i, j))
+//int CheckerboardMatrix::operator()(int i, int j) const
+//{
+//    if ((i >= _n) || (j >= _m))
 //    {
-//        return 0;
+//        throw OVERINDEXED;
 //    }
-
-    return _v[i];
-}
+//
+////    if (isNullElement(i, j))
+////    {
+////        return 0;
+////    }
+//
+//    return _v[i];
+//}
 
 ////Task: 	setting
 ////Input:    int i,j - indexes of element
