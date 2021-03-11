@@ -118,12 +118,12 @@ void CheckerboardMatrix::setElement(int i, int j, int value)
 {
     if ((i >= _n) || (j >= _m) || (i < 0) || (j < 0))
     {
-        throw OVERINDEXED;
+        throw OverIndexedException();
     }
 
     if (IndexTransformer::isNullElement(i, j))
     {
-        throw NULLPART;
+        throw NullElementException();
     }
 
     _v[IndexTransformer::matrixToVector(_m, _n, i,j)] = value;
@@ -134,7 +134,7 @@ int CheckerboardMatrix::getElement(int i, int j) const
 {
     if ((i >= _n) || (j >= _m) || (i < 0) || (j < 0))
     {
-        throw OVERINDEXED;
+        throw OverIndexedException();
     }
 
     if (IndexTransformer::isNullElement(i, j))

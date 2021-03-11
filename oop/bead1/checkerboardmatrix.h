@@ -11,7 +11,8 @@
 //Representation: only the non-zero elements
 class CheckerboardMatrix {
 public:
-    enum Exceptions{OVERINDEXED, NULLPART, DIFFERENT};
+    static std::string OverIndexedException() {return "OverIndexed";}
+    static std::string NullElementException() {return "NullElementException";}
 
     CheckerboardMatrix(const int m, const int n): _v(m*n/2, 0), _m(m), _n(n) { }
 
