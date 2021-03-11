@@ -3,6 +3,7 @@
 //Title:     Checkerboard matrix
 
 #include "checkerboardmatrix.h"
+#include "indextransformer.h"
 #include <iostream>
 #include <iomanip>
 
@@ -78,29 +79,68 @@
 //Task: 	getting
 //Input:    int i,j - indexes of element
 //Output:   int     - the element of the matrix in ith row and jth column
-//Activity: gets the given elements of the diagonal matrix
+//Activity: gets the given elements of the matrix
 //int CheckerboardMatrix::operator()(int i, int j) const
 //{
-//    if ((i >= _n) || (j >= _m))
+//    if ((i >= _n) || (j >= _m) || (i < 0) || (j < 0))
 //    {
 //        throw OVERINDEXED;
 //    }
 //
-////    if (isNullElement(i, j))
-////    {
-////        return 0;
-////    }
+//    if (IndexTransformer::isNullElement(i, j))
+//    {
+//        return 0;
+//    }
 //
-//    return _v[i];
+//    return _v[IndexTransformer::matrixToVector(_m, _n, i,j)];
 //}
 
-////Task: 	setting
-////Input:    int i,j - indexes of element
-////Output:   int     - the element of the matrix in ith row and jth column
-////Activity: gives a reference to the given elements of the diagonal matrix
-//int& Diag::operator()(int i, int j)
+//Task: 	setting
+//Input:    int i,j - indexes of element
+//Output:   int     - the element of the matrix in ith row and jth column
+//Activity: gives a reference to the given elements of the diagonal matrix
+//int& CheckerboardMatrix::operator()(int i, int j)
 //{
-//    if ((i>=int(_v.size()) || i<0 ) || (j>=int(_v.size()) || j<0 )) throw OVERINDEXED;
-//    if (i!=j) throw NULLPART;
-//    return _v[i];
+//    if ((i >= _n) || (j >= _m) || (i < 0) || (j < 0))
+//    {
+//        throw OVERINDEXED;
+//    }
+//
+//    if (IndexTransformer::isNullElement(i, j))
+//    {
+//        throw NULLPART;
+//    }
+//
+//    return _v[IndexTransformer::matrixToVector(_m, _n, i,j)];
 //}
+
+void CheckerboardMatrix::setElement(int i, int j, int value)
+{
+    if ((i >= _n) || (j >= _m) || (i < 0) || (j < 0))
+    {
+        throw OVERINDEXED;
+    }
+
+    if (IndexTransformer::isNullElement(i, j))
+    {
+        throw NULLPART;
+    }
+
+    _v[IndexTransformer::matrixToVector(_m, _n, i,j)] = value;
+}
+
+
+int CheckerboardMatrix::getElement(int i, int j) const
+{
+    if ((i >= _n) || (j >= _m) || (i < 0) || (j < 0))
+    {
+        throw OVERINDEXED;
+    }
+
+    if (IndexTransformer::isNullElement(i, j))
+    {
+        return 0;
+    }
+
+    return _v[IndexTransformer::matrixToVector(_m, _n, i,j)];
+}

@@ -43,6 +43,9 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="catch.hpp" />
+		<Unit filename="checkerboardmatrix.cpp" />
+		<Unit filename="checkerboardmatrix.h" />
+		<Unit filename="checkerboardmatrix_test.cpp" />
 		<Unit filename="diagonal.cbp" />
 		<Unit filename="indextransformer.h" />
 		<Unit filename="indextransformer_test.cpp" />

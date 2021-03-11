@@ -13,14 +13,14 @@ class CheckerboardMatrix {
 public:
     enum Exceptions{OVERINDEXED, NULLPART, DIFFERENT};
 
-    CheckerboardMatrix(){ }
-    CheckerboardMatrix(const int m, const int n): _v(m*n, 0), _m(m), _n(n) { }
-    //CheckerboardMatrix(const int m, const int n, const std::vector<int> &v): _v(v), _m(m), _n(n) { }
+    CheckerboardMatrix(const int m, const int n): _v(m*n/2, 0), _m(m), _n(n) { }
 
-//    void reSize(int k) { _v.resize(k, 0); }
 //
-//      int operator()(int i, int j) const;
-//      int& operator()(int i, int j);
+//    int operator()(int i, int j) const;
+//    int& operator()(int i, int j);
+
+    int getElement (int i, int j) const;
+    void setElement (int i, int j, int value);
 
 //    friend CheckerboardMatrix operator+ (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
 //    friend CheckerboardMatrix operator* (const CheckerboardMatrix& a, const CheckerboardMatrix& b);

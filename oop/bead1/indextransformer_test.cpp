@@ -9,14 +9,14 @@
 
 TEST_CASE("IsNullElement")
 {
-    CHECK(!(IndexTransformer::isNullElement(2,2)));
-    CHECK(!(IndexTransformer::isNullElement(1,1)));
-    CHECK(!(IndexTransformer::isNullElement(0,4)));
-    CHECK(!(IndexTransformer::isNullElement(4,2)));
-    CHECK(IndexTransformer::isNullElement(0,1));
-    CHECK(IndexTransformer::isNullElement(3,2));
-    CHECK(IndexTransformer::isNullElement(4,3));
-    CHECK(IndexTransformer::isNullElement(3,4));
+    CHECK(IndexTransformer::isNullElement(0, 1));
+    CHECK(IndexTransformer::isNullElement(6, 7));
+    CHECK(IndexTransformer::isNullElement(2, 7));
+    CHECK(IndexTransformer::isNullElement(4, 5));
+    CHECK(!(IndexTransformer::isNullElement(4, 4)));
+    CHECK(!(IndexTransformer::isNullElement(5, 11)));
+    CHECK(!(IndexTransformer::isNullElement(2, 10)));
+    CHECK(!(IndexTransformer::isNullElement(6, 2)));;
 }
 
 TEST_CASE("MatrixToVector 2x2")
