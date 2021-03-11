@@ -7,7 +7,7 @@
 #include "catch.hpp"
 
 
-TEST_CASE("CheckerboardMatrix Setter and Getter")
+TEST_CASE("CheckerboardMatrix Setter, Getter")
 {
     int n = 10;
     int m = 11;
@@ -24,6 +24,13 @@ TEST_CASE("CheckerboardMatrix Setter and Getter")
     CHECK_THROWS_WITH(matrix.getElement(13,1), CheckerboardMatrix::OverIndexedException() );
     CHECK_THROWS_WITH(matrix.getElement(5,42), CheckerboardMatrix::OverIndexedException() );
     CHECK_THROWS_WITH(matrix.setElement(0,1, 12), CheckerboardMatrix::NullElementException() );
+}
+
+
+TEST_CASE("CheckerboardMatrix toString")
+{
+    CheckerboardMatrix matrix = CheckerboardMatrix(2, 2);
+    CHECK(matrix.toString() == "0 0\n0 0");
 }
 
 

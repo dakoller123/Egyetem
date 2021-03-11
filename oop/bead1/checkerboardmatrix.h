@@ -10,26 +10,32 @@
 //Methods: add, multiply, write, read, refer to an element
 //Representation: only the non-zero elements
 class CheckerboardMatrix {
-public:
-    static std::string OverIndexedException() {return "OverIndexed";}
-    static std::string NullElementException() {return "NullElementException";}
 
-    CheckerboardMatrix(const int m, const int n): _v(m*n/2, 0), _m(m), _n(n) { }
+    public:
+        static std::string OverIndexedException() {return "OverIndexed";}
+        static std::string NullElementException() {return "NullElementException";}
 
-//
-//    int operator()(int i, int j) const;
-//    int& operator()(int i, int j);
+        CheckerboardMatrix(const int m, const int n):  _m(m), _n(n), _v(m*n/2, 0) { }
 
-    int getElement (int i, int j) const;
-    void setElement (int i, int j, int value);
+    //
+    //    int operator()(int i, int j) const;
+    //    int& operator()(int i, int j);
 
-//    friend CheckerboardMatrix operator+ (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
-//    friend CheckerboardMatrix operator* (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
-//    friend std::istream& operator>> (std::istream& s, CheckerboardMatrix& a);
-//      friend std::ostream& operator<< (std::ostream& s, const CheckerboardMatrix& a);
-private:
-    int _m;
-    int _n;
-    std::vector<int> _v;
-//    int matrixIndicesToVectorIndex(MatrixIndices mi);
+        int getElement (int i, int j) const;
+        void setElement (int i, int j, int value);
+
+    //    friend CheckerboardMatrix operator+ (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
+    //    friend CheckerboardMatrix operator* (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
+         //friend std::istream& operator>> (std::istream& s, CheckerboardMatrix& a);
+
+         std::string toString() const;
+
+        friend std::ostream& operator<< (std::ostream& s, const CheckerboardMatrix& a);
+
+    private:
+
+        int _m;
+        int _n;
+        std::vector<int> _v;
+
 };

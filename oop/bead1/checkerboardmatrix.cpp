@@ -37,20 +37,8 @@
 //    return c;
 //}
 //
-//Task: 	writing
-//Input:    ostream s - target of writing
-//          CheckerboardMatrix a    - matrix
-//Output:   ostream s - target of writing
-//Activity: writes the elements of the matrix
-//std::ostream &operator <<(std::ostream& s, const CheckerboardMatrix& a)
-//{
-//    for(unsigned int i=0; i<a._v.size(); ++i)
-//    {
-//
-//        s << std::endl;
-//    }
-//    return s;
-//}
+
+
 
 ////Task: 	reading
 ////Input:    istream s - source of writing
@@ -72,47 +60,40 @@
 
 
 
+std::string CheckerboardMatrix::toString() const
+{
+    std::string result = "";
+    for(int i=0; i<_n; i++)
+    {
+        for(int j=0; j<_m; j++)
+        {
+            if (j>0)
+            {
+                result = result + " ";
+            }
 
+            result += std::to_string(getElement(i, j));
+        }
 
+        if (i < _n-1)
+        {
+           result += "\n";
+        }
 
+    }
+    return result;
+}
 
-//Task: 	getting
-//Input:    int i,j - indexes of element
-//Output:   int     - the element of the matrix in ith row and jth column
-//Activity: gets the given elements of the matrix
-//int CheckerboardMatrix::operator()(int i, int j) const
-//{
-//    if ((i >= _n) || (j >= _m) || (i < 0) || (j < 0))
-//    {
-//        throw OVERINDEXED;
-//    }
-//
-//    if (IndexTransformer::isNullElement(i, j))
-//    {
-//        return 0;
-//    }
-//
-//    return _v[IndexTransformer::matrixToVector(_m, _n, i,j)];
-//}
-
-//Task: 	setting
-//Input:    int i,j - indexes of element
-//Output:   int     - the element of the matrix in ith row and jth column
-//Activity: gives a reference to the given elements of the diagonal matrix
-//int& CheckerboardMatrix::operator()(int i, int j)
-//{
-//    if ((i >= _n) || (j >= _m) || (i < 0) || (j < 0))
-//    {
-//        throw OVERINDEXED;
-//    }
-//
-//    if (IndexTransformer::isNullElement(i, j))
-//    {
-//        throw NULLPART;
-//    }
-//
-//    return _v[IndexTransformer::matrixToVector(_m, _n, i,j)];
-//}
+//Task: 	writing
+//Input:    ostream s - target of writing
+//          CheckerboardMatrix a    - matrix
+//Output:   ostream s - target of writing
+//Activity: writes the elements of the matrix
+std::ostream &operator <<(std::ostream& s, const CheckerboardMatrix& a)
+{
+    s << a.toString();
+    return s;
+}
 
 void CheckerboardMatrix::setElement(int i, int j, int value)
 {
