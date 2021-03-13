@@ -21,7 +21,7 @@ TEST_CASE("IsNullElement")
 
 TEST_CASE("MatrixToVector 2x2")
 {
-    //                                     m n  i  j     vi
+    //                                     width height i j vi
     CHECK(IndexTransformer::matrixToVector(2,2, 0, 0) == 0);
     CHECK(IndexTransformer::matrixToVector(2,2, 1, 1) == 1);
 

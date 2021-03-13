@@ -9,12 +9,12 @@
 #include  <algorithm>
 CheckerboardMatrix operator+(const CheckerboardMatrix& a, const CheckerboardMatrix& b)
 {
-    if (a._n != b._n || a._m != b._m)
+    if (a._width != b._width || a._height != b._height)
     {
         throw CheckerboardMatrix::IncompatibleMatrixException();
     }
 
-    CheckerboardMatrix c = CheckerboardMatrix(a._m, a._n);
+    CheckerboardMatrix c = CheckerboardMatrix(a._height, a._width);
     std::transform (a._v.begin(), a._v.end(), b._v.begin(), c._v.begin(), std::plus<int>());
     return c;
 }
@@ -39,11 +39,11 @@ CheckerboardMatrix operator+(const CheckerboardMatrix& a, const CheckerboardMatr
 std::string CheckerboardMatrix::toString() const
 {
     std::string result = "";
-    for(int i=0; i<_m; i++)
+    for(int j=0; j<_height; j++)
     {
-        for(int j=0; j<_n; j++)
+        for(int i=0; i<_width; i++)
         {
-            if (j>0)
+            if (i>0)
             {
                 result = result + " ";
             }
@@ -51,7 +51,7 @@ std::string CheckerboardMatrix::toString() const
             result += std::to_string(getElement(i, j));
         }
 
-        if (i < _m-1)
+        if (j < _height-1)
         {
            result += "\n";
         }
@@ -69,7 +69,7 @@ std::ostream &operator <<(std::ostream& s, const CheckerboardMatrix& a)
 
 void CheckerboardMatrix::setElement(int i, int j, int value)
 {
-    if ((i >= _n) || (j >= _m) || (i < 0) || (j < 0))
+    if ((i >= _height) || (j >= _width) || (i < 0) || (j < 0))
     {
         throw OverIndexedException();
     }
@@ -79,13 +79,13 @@ void CheckerboardMatrix::setElement(int i, int j, int value)
         throw NullElementException();
     }
 
-    _v[IndexTransformer::matrixToVector(_m, _n, i,j)] = value;
+    _v[IndexTransformer::matrixToVector(_width, _height, i,j)] = value;
 }
 
 
 int CheckerboardMatrix::getElement(int i, int j) const
 {
-    if ((i >= _m) || (j >= _n) || (i < 0) || (j < 0))
+    if ((i >= _height) || (j >= _width) || (i < 0) || (j < 0))
     {
         throw OverIndexedException();
     }
@@ -95,5 +95,5 @@ int CheckerboardMatrix::getElement(int i, int j) const
         return 0;
     }
 
-    return _v[IndexTransformer::matrixToVector(_m, _n, i,j)];
+    return _v[IndexTransformer::matrixToVector(_width, _height, i,j)];
 }
