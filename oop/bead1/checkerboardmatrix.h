@@ -14,6 +14,7 @@ class CheckerboardMatrix {
     public:
         static std::string OverIndexedException() {return "OverIndexed";}
         static std::string NullElementException() {return "NullElementException";}
+        static std::string IncompatibleMatrixException() {return "IncompatibleMatrixException";}
 
         CheckerboardMatrix(const int m, const int n):  _m(m), _n(n), _v(m*n/2, 0) { }
 
@@ -24,7 +25,7 @@ class CheckerboardMatrix {
         int getElement (int i, int j) const;
         void setElement (int i, int j, int value);
 
-    //    friend CheckerboardMatrix operator+ (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
+        friend CheckerboardMatrix operator+ (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
     //    friend CheckerboardMatrix operator* (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
          //friend std::istream& operator>> (std::istream& s, CheckerboardMatrix& a);
 

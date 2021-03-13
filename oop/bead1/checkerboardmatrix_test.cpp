@@ -33,6 +33,26 @@ TEST_CASE("CheckerboardMatrix toString")
     CHECK(matrix.toString() == "0 0\n0 0");
 }
 
+TEST_CASE("CheckerboardMatrix addition operator")
+{
+    CheckerboardMatrix matrixA = CheckerboardMatrix(5, 5);
+    CheckerboardMatrix matrixB = CheckerboardMatrix(5, 5);
+
+    matrixA.setElement(0,0,5);
+    matrixA.setElement(3,1,10);
+    matrixA.setElement(4,4,8);
+
+    matrixB.setElement(0,2,6);
+    matrixB.setElement(3,1,20);
+    matrixB.setElement(4,4,(-2));
+
+    CheckerboardMatrix matrixC = matrixA + matrixB;
+
+    CHECK(matrixC.getElement(0,0) == 5);
+    CHECK(matrixC.getElement(3,1) == 30);
+    CHECK(matrixC.getElement(4,4) == 6);
+    CHECK(matrixC.getElement(0,2) == 6);
+}
 
 
 

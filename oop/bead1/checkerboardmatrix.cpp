@@ -7,57 +7,31 @@
 #include <iostream>
 #include <iomanip>
 
-//Task: 	adding
-//Input:    Diag a    - matrix
-//          Diag b    - matrix
-//Output:   Diag      - result matrix
-//Activity: adds the elements of the diagonals of the matrices
-//CheckerboardMatrix operator+(const Diag& a ,const Diag& b)
-//{
-//    if(a._v.size()!=b._v.size()) throw Diag::DIFFERENT;
-//
-//    Diag c(a._v.size());
-//
-//    for(unsigned int i=0; i<c._v.size(); ++i)  c._v[i] = a._v[i] + b._v[i];
-//    return c;
-//}
-//
+CheckerboardMatrix operator+(const CheckerboardMatrix& a, const CheckerboardMatrix& b)
+{
+    if(a._n!=b._n || a._m != b._m) throw CheckerboardMatrix::IncompatibleMatrixException();
+
+    CheckerboardMatrix c(a._n, a._m);
+
+    for(unsigned int i=0; i<c._v.size(); ++i)  c._v[i] = a._v[i] + b._v[i];
+    return c;
+}
+
 ////Task: 	multiplying
-////Input:    Diag a    - matrix
-////          Diag b    - matrix
-////Output:   Diag      - result matrix
+////Input:    CheckerboardMatrix a    - matrix
+////          CheckerboardMatrix b    - matrix
+////Output:   CheckerboardMatrix      - result matrix
 ////Activity: multiplies the elements of the diagonals of the matrices
-//Diag operator*(const Diag& a ,const Diag& b)
+//CheckerboardMatrix operator*(const CheckerboardMatrix& a ,const CheckerboardMatrix& b)
 //{
-//    if(a._v.size()!=b._v.size()) throw Diag::DIFFERENT;
+//    if(a._v.size()!=b._v.size()) throw CheckerboardMatrix::DIFFERENT;
 //
-//    Diag c(a._v.size());
+//    CheckerboardMatrix c(a._v.size());
 //
 //    for(unsigned int i=0; i<c._v.size(); ++i) c._v[i] = a._v[i] * b._v[i];
 //    return c;
 //}
 //
-
-
-
-////Task: 	reading
-////Input:    istream s - source of writing
-////          Diag a    - matrix
-////Output:   istream s - source of writing
-////Activity: reads the elements of the diagonal of the matrix
-//istream& operator>>(istream& s, Diag& a)
-//{
-//    //cout << "Size of the matrix: ";
-//    unsigned int matrixSize;
-//    s >> matrixSize;
-//    a.reSize(matrixSize);
-//    for(unsigned int i=0; i < matrixSize; ++i) {
-// //       cout << "[" << i << "," << i << "]=";
-//        s >> a(i,i);
-//    }
-//    return s;
-//}
-
 
 
 std::string CheckerboardMatrix::toString() const
@@ -84,11 +58,7 @@ std::string CheckerboardMatrix::toString() const
     return result;
 }
 
-//Task: 	writing
-//Input:    ostream s - target of writing
-//          CheckerboardMatrix a    - matrix
-//Output:   ostream s - target of writing
-//Activity: writes the elements of the matrix
+
 std::ostream &operator <<(std::ostream& s, const CheckerboardMatrix& a)
 {
     s << a.toString();
