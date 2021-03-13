@@ -47,6 +47,12 @@ TEST_CASE("MatrixToVector 3x4")
     CHECK(IndexTransformer::matrixToVector(3,4, 2, 2) == 5);
 }
 
+TEST_CASE("MatrixToVector 5x5")
+{
+    CHECK(IndexTransformer::matrixToVector(5,5, 4, 4) == 12);
+
+}
+
 TEST_CASE("VectorToMatrix 3x4")
 {
     int m = 3;
@@ -118,6 +124,7 @@ TEST_CASE("VectorToMatrix 5x5")
     c = IndexTransformer::vectorToMatrix(m, n, 3);
     CHECK(c.i == 1);
     CHECK(c.j == 1);
+
 }
 
 

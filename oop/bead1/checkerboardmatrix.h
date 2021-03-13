@@ -16,7 +16,7 @@ class CheckerboardMatrix {
         static std::string NullElementException() {return "NullElementException";}
         static std::string IncompatibleMatrixException() {return "IncompatibleMatrixException";}
 
-        CheckerboardMatrix(const int m, const int n):  _m(m), _n(n), _v(m*n/2, 0) { }
+        CheckerboardMatrix(const int m, const int n):  _m(m), _n(n), _v((m*n/2)+1, 0) { }
 
     //
     //    int operator()(int i, int j) const;

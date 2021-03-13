@@ -6,14 +6,16 @@
 #include "indextransformer.h"
 #include <iostream>
 #include <iomanip>
-
+#include  <algorithm>
 CheckerboardMatrix operator+(const CheckerboardMatrix& a, const CheckerboardMatrix& b)
 {
-    if(a._n!=b._n || a._m != b._m) throw CheckerboardMatrix::IncompatibleMatrixException();
+    if (a._n != b._n || a._m != b._m)
+    {
+        throw CheckerboardMatrix::IncompatibleMatrixException();
+    }
 
-    CheckerboardMatrix c(a._n, a._m);
-
-    for(unsigned int i=0; i<c._v.size(); ++i)  c._v[i] = a._v[i] + b._v[i];
+    CheckerboardMatrix c = CheckerboardMatrix(a._m, a._n);
+    std::transform (a._v.begin(), a._v.end(), b._v.begin(), c._v.begin(), std::plus<int>());
     return c;
 }
 
@@ -37,9 +39,9 @@ CheckerboardMatrix operator+(const CheckerboardMatrix& a, const CheckerboardMatr
 std::string CheckerboardMatrix::toString() const
 {
     std::string result = "";
-    for(int i=0; i<_n; i++)
+    for(int i=0; i<_m; i++)
     {
-        for(int j=0; j<_m; j++)
+        for(int j=0; j<_n; j++)
         {
             if (j>0)
             {
@@ -49,7 +51,7 @@ std::string CheckerboardMatrix::toString() const
             result += std::to_string(getElement(i, j));
         }
 
-        if (i < _n-1)
+        if (i < _m-1)
         {
            result += "\n";
         }
@@ -83,7 +85,7 @@ void CheckerboardMatrix::setElement(int i, int j, int value)
 
 int CheckerboardMatrix::getElement(int i, int j) const
 {
-    if ((i >= _n) || (j >= _m) || (i < 0) || (j < 0))
+    if ((i >= _m) || (j >= _n) || (i < 0) || (j < 0))
     {
         throw OverIndexedException();
     }
