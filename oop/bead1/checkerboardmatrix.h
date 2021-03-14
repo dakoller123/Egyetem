@@ -22,7 +22,7 @@ class CheckerboardMatrix {
         void setElement (int i, int j, int value);
 
         friend CheckerboardMatrix operator+ (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
-    //    friend CheckerboardMatrix operator* (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
+        friend CheckerboardMatrix operator* (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
          //friend std::istream& operator>> (std::istream& s, CheckerboardMatrix& a);
 
         std::string toString() const;

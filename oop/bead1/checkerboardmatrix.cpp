@@ -7,6 +7,7 @@
 #include <iostream>
 #include <iomanip>
 #include  <algorithm>
+
 CheckerboardMatrix operator+(const CheckerboardMatrix& a, const CheckerboardMatrix& b)
 {
     if (a._width != b._width || a._height != b._height)
@@ -19,22 +20,30 @@ CheckerboardMatrix operator+(const CheckerboardMatrix& a, const CheckerboardMatr
     return c;
 }
 
-////Task: 	multiplying
-////Input:    CheckerboardMatrix a    - matrix
-////          CheckerboardMatrix b    - matrix
-////Output:   CheckerboardMatrix      - result matrix
-////Activity: multiplies the elements of the diagonals of the matrices
-//CheckerboardMatrix operator*(const CheckerboardMatrix& a ,const CheckerboardMatrix& b)
-//{
-//    if(a._v.size()!=b._v.size()) throw CheckerboardMatrix::DIFFERENT;
-//
-//    CheckerboardMatrix c(a._v.size());
-//
-//    for(unsigned int i=0; i<c._v.size(); ++i) c._v[i] = a._v[i] * b._v[i];
-//    return c;
-//}
-//
+CheckerboardMatrix operator*(const CheckerboardMatrix& a ,const CheckerboardMatrix& b)
+{
+    if(a._width!=b._height)
+    {
+        throw CheckerboardMatrix::IncompatibleMatrixException();
+    }
 
+    CheckerboardMatrix c(a._height, b._width);
+
+    for (int i=0; i<c._height; i++)
+    {
+        for (int j = 0; j<c._width; j++)
+        {
+            int value = 0;
+            for (int k = 0; k<a._width; k++)
+            {
+                value += a.getElement(i, k) * b.getElement(k,j);
+            }
+            c.setElement(i, j, value);
+        }
+
+    }
+    return c;
+}
 
 std::string CheckerboardMatrix::toString() const
 {
@@ -81,7 +90,6 @@ void CheckerboardMatrix::setElement(int i, int j, int value)
 
     _v[IndexTransformer::matrixToVector(_width, _height, i,j)] = value;
 }
-
 
 int CheckerboardMatrix::getElement(int i, int j) const
 {

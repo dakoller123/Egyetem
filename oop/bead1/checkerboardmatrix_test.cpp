@@ -97,5 +97,30 @@ TEST_CASE("CheckerboardMatrix addition operator")
     CHECK(matrixB.getElement(0,0) == 0);
 }
 
+TEST_CASE("CheckerboardMatrix addition operator, exception handling")
+{
+    CheckerboardMatrix matrixA = CheckerboardMatrix(10,4);
+    CheckerboardMatrix matrixB = CheckerboardMatrix(10,4);
+    CHECK_NOTHROW((matrixA+matrixB));
+
+    matrixA = CheckerboardMatrix(10,4);
+    matrixB = CheckerboardMatrix(11,4);
+    CHECK_THROWS_WITH(matrixA+matrixB, CheckerboardMatrix::IncompatibleMatrixException() );
+
+    matrixA = CheckerboardMatrix(10,4);
+    matrixB = CheckerboardMatrix(10,5);
+    CHECK_THROWS_WITH(matrixA+matrixB, CheckerboardMatrix::IncompatibleMatrixException() );
+}
+//
+//
+//TEST_CASE("CheckerboardMatrix multiplication operator, incompatible matrices")
+//{
+//    CheckerboardMatrix matrixA = CheckerboardMatrix(10,4);
+//    CheckerboardMatrix matrixB = CheckerboardMatrix(10,4);
+//    CHECK_THROWS_WITH(matrixA*matrixB, CheckerboardMatrix::IncompatibleMatrixException() );
+//}
+
+
+
 
 
