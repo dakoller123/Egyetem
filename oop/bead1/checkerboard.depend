@@ -526,7 +526,7 @@
 	<iostream>
 	<vector>
 
-1615652462 source:d:\egyetem\oop\bead1\checkerboardmatrix.cpp
+1615709619 source:d:\egyetem\oop\bead1\checkerboardmatrix.cpp
 	"checkerboardmatrix.h"
 	"indextransformer.h"
 	<iostream>
@@ -776,7 +776,7 @@
 
 1615145724 source:d:\egyetem\oop\bead1\menu.cpp
 
-1615641083 source:d:\egyetem\oop\bead1\checkerboardmatrix_test.cpp
+1615709876 source:d:\egyetem\oop\bead1\checkerboardmatrix_test.cpp
 	"checkerboardmatrix.h"
 	"catch.hpp"
 

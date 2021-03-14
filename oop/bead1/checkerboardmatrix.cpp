@@ -39,11 +39,11 @@ CheckerboardMatrix operator+(const CheckerboardMatrix& a, const CheckerboardMatr
 std::string CheckerboardMatrix::toString() const
 {
     std::string result = "";
-    for(int j=0; j<_height; j++)
+    for(int i=0; i<_height; i++)
     {
-        for(int i=0; i<_width; i++)
+        for(int j=0; j<_width; j++)
         {
-            if (i>0)
+            if (j>0)
             {
                 result = result + " ";
             }
@@ -51,7 +51,7 @@ std::string CheckerboardMatrix::toString() const
             result += std::to_string(getElement(i, j));
         }
 
-        if (j < _height-1)
+        if (i < _height-1)
         {
            result += "\n";
         }

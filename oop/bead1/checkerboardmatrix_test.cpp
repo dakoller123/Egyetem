@@ -9,21 +9,17 @@
 
 TEST_CASE("CheckerboardMatrix Setter, Getter")
 {
-    int n = 10;
-    int m = 11;
-    int on = 30;
-    int om = 40;
-    CheckerboardMatrix matrix = CheckerboardMatrix(m, n);
-    CheckerboardMatrix other = CheckerboardMatrix(om, on);
+    int width = 10;
+    int height = 11;
+    int otherWidth = 30;
+    int otherHeight = 40;
+    CheckerboardMatrix matrix = CheckerboardMatrix(height, width);
+    CheckerboardMatrix other = CheckerboardMatrix(otherWidth, otherHeight);
 
     matrix.setElement(4,4,5);
     other.setElement(4,4,10);
     other.setElement(8,12,7);
     matrix.setElement(3,9,7);
-
-    //last element
-    other.setElement(om-1,on-1, 54);
-    matrix.setElement(m-1,n-2, 26);
 
     CHECK(matrix.getElement(4,4) == 5);
     CHECK(matrix.getElement(3,9) == 7);
@@ -33,19 +29,41 @@ TEST_CASE("CheckerboardMatrix Setter, Getter")
     CHECK(matrix.getElement(3,7) == 0);
     CHECK(matrix.getElement(4,5) == 0);
 
-    CHECK(other.getElement(om-1,on-1 == 54));
-    CHECK(matrix.getElement(m-1,n-2 == 26));
-
     CHECK_THROWS_WITH(matrix.getElement(13,1), CheckerboardMatrix::OverIndexedException() );
     CHECK_THROWS_WITH(matrix.getElement(5,42), CheckerboardMatrix::OverIndexedException() );
     CHECK_THROWS_WITH(matrix.setElement(0,1, 12), CheckerboardMatrix::NullElementException() );
 }
 
+TEST_CASE("CheckerboardMatrix Setter, Getter, last element")
+{
+    int width = 3;
+    int height = 5;
+
+    CheckerboardMatrix matrix = CheckerboardMatrix(height, width);
+    matrix.setElement(4,2,31);
+    CHECK(matrix.getElement(4,1) == 0);
+    CHECK(matrix.getElement(4,2) == 31);
+
+    width = 3;
+    height = 6;
+
+    matrix = CheckerboardMatrix(height, width);
+    matrix.setElement(5,1,26);
+    CHECK(matrix.getElement(5,1) == 26);
+    CHECK(matrix.getElement(5,2) == 0);
+}
+
 
 TEST_CASE("CheckerboardMatrix toString")
 {
-    CheckerboardMatrix matrix = CheckerboardMatrix(2, 2);
-    CHECK(matrix.toString() == "0 0\n0 0");
+    int width = 2;
+    int height = 3;
+    CheckerboardMatrix matrix = CheckerboardMatrix(height, width);
+    CHECK(matrix.toString() == "0 0\n0 0\n0 0");
+    matrix.setElement(0,0,9);
+    matrix.setElement(1,1,5);
+    matrix.setElement(2,0,3);
+    CHECK(matrix.toString() == "9 0\n0 5\n3 0");
 }
 
 TEST_CASE("CheckerboardMatrix addition operator")
