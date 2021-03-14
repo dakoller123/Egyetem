@@ -27,18 +27,23 @@ CheckerboardMatrix operator*(const CheckerboardMatrix& a ,const CheckerboardMatr
         throw CheckerboardMatrix::IncompatibleMatrixException();
     }
 
-    CheckerboardMatrix c(a._height, b._width);
+    CheckerboardMatrix c = CheckerboardMatrix(a._height, b._width);
 
     for (int i=0; i<c._height; i++)
     {
         for (int j = 0; j<c._width; j++)
         {
-            int value = 0;
-            for (int k = 0; k<a._width; k++)
-            {
-                value += a.getElement(i, k) * b.getElement(k,j);
-            }
-            c.setElement(i, j, value);
+            //if (!IndexTransformer::isNullElement(i, j))
+            //{
+                int value = 0;
+
+                for (int k = 0; k<a._width; k++)
+                {
+                    value = value + (a.getElement(i, k) * b.getElement(k,j));
+                }
+
+                c.setElement(i, j, value);
+            //}
         }
 
     }
@@ -83,12 +88,12 @@ void CheckerboardMatrix::setElement(int i, int j, int value)
         throw OverIndexedException();
     }
 
-    if (IndexTransformer::isNullElement(i, j))
+    if (IndexTransformer::isNullElement(i, j) && value != 0)
     {
         throw NullElementException();
     }
 
-    _v[IndexTransformer::matrixToVector(_width, _height, i,j)] = value;
+    _v[IndexTransformer::matrixToVector(_height, _width, i,j)] = value;
 }
 
 int CheckerboardMatrix::getElement(int i, int j) const
@@ -103,5 +108,5 @@ int CheckerboardMatrix::getElement(int i, int j) const
         return 0;
     }
 
-    return _v[IndexTransformer::matrixToVector(_width, _height, i,j)];
+    return _v[IndexTransformer::matrixToVector(_height, _width, i,j)];
 }

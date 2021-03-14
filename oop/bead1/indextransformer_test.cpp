@@ -37,8 +37,10 @@ TEST_CASE("MatrixToVector 3x3")
     CHECK(IndexTransformer::matrixToVector(3,3, 2, 2) == 4);
 }
 
-TEST_CASE("MatrixToVector 3x4")
+TEST_CASE("MatrixToVector 4x3")
 {
+    //static int matrixToVector(int w   , int height, int i, int j)
+    // static int matrixToVector(int width, int height, int i, int j)
     CHECK(IndexTransformer::matrixToVector(3,4, 0, 0) == 0);
     CHECK(IndexTransformer::matrixToVector(3,4, 0, 2) == 1);
     CHECK(IndexTransformer::matrixToVector(3,4, 1, 1) == 2);
@@ -46,6 +48,7 @@ TEST_CASE("MatrixToVector 3x4")
     CHECK(IndexTransformer::matrixToVector(3,4, 2, 0) == 4);
     CHECK(IndexTransformer::matrixToVector(3,4, 2, 2) == 5);
 }
+
 
 TEST_CASE("MatrixToVector 5x5")
 {
@@ -55,29 +58,27 @@ TEST_CASE("MatrixToVector 5x5")
 
 TEST_CASE("VectorToMatrix 3x4")
 {
-    int m = 3;
-    int n = 4;
     Coord c;
 
-    c = IndexTransformer::vectorToMatrix(m, n, 0);
+    c = IndexTransformer::vectorToMatrix(3, 4, 0);
     CHECK(c.i == 0);
     CHECK(c.j == 0);
 
-    c = IndexTransformer::vectorToMatrix(m, n, 1);
+    c = IndexTransformer::vectorToMatrix(3, 4, 1);
     CHECK(c.i == 0);
     CHECK(c.j == 2);
 
-    c = IndexTransformer::vectorToMatrix(m, n, 4);
+    c = IndexTransformer::vectorToMatrix(3, 4, 4);
     CHECK(c.i == 2);
     CHECK(c.j == 0);
 
-    c = IndexTransformer::vectorToMatrix(m, n, 5);
+    c = IndexTransformer::vectorToMatrix(3, 4, 5);
     CHECK(c.i == 2);
     CHECK(c.j == 2);
 
-    c = IndexTransformer::vectorToMatrix(m, n, 3);
+    c = IndexTransformer::vectorToMatrix(3, 4, 3);
     CHECK(c.i == 1);
-    CHECK(c.j == 2);
+    CHECK(c.j == 3);
 }
 
 TEST_CASE("VectorToMatrix 3x3")
@@ -125,6 +126,25 @@ TEST_CASE("VectorToMatrix 5x5")
     CHECK(c.i == 1);
     CHECK(c.j == 1);
 
+}
+
+TEST_CASE("getNextCoord")
+{
+    Coord current, next;
+    current.i = 4;
+    current.j = 3;
+    next = IndexTransformer::getNextCoord(5, current);
+    CHECK(next.i == 4);
+    CHECK(next.j == 4);
+    next = IndexTransformer::getNextCoord(5, next);
+    CHECK(next.i == 5);
+    CHECK(next.j == 0);
+    next = IndexTransformer::getNextCoord(5, next);
+    CHECK(next.i == 5);
+    CHECK(next.j == 1);
+    next = IndexTransformer::getNextCoord(5, next);
+    CHECK(next.i == 5);
+    CHECK(next.j == 2);
 }
 
 

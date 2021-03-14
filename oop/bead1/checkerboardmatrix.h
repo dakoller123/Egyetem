@@ -12,9 +12,9 @@
 class CheckerboardMatrix {
 
     public:
-        static std::string OverIndexedException() {return "OverIndexed";}
-        static std::string NullElementException() {return "NullElementException";}
-        static std::string IncompatibleMatrixException() {return "IncompatibleMatrixException";}
+        static std::string OverIndexedException() { return "OverIndexed"; }
+        static std::string NullElementException() { return "NullElementException"; }
+        static std::string IncompatibleMatrixException() { return "IncompatibleMatrixException"; }
 
         CheckerboardMatrix(const int height, const int width):  _height(height), _width(width), _v((height*width/2)+1, 0) { }
 
@@ -28,6 +28,9 @@ class CheckerboardMatrix {
         std::string toString() const;
 
         friend std::ostream& operator<< (std::ostream& s, const CheckerboardMatrix& a);
+
+        int getWidth() const { return _width; }
+        int getHeight() const { return _height; }
 
     private:
 
