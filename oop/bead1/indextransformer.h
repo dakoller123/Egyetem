@@ -5,6 +5,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+
 struct Coord
 {
     int i;
@@ -14,7 +15,7 @@ struct Coord
 class IndexTransformer
 {
     public:
-
+        static std::string InvalidArgumentException(){return "InvalidArgumentException";}
         static Coord getNextCoord(int width, Coord source)
         {
             Coord next;
@@ -31,6 +32,7 @@ class IndexTransformer
 
             return next;
         }
+
         static bool isNullElement(int i, int j)
         {
             if ((i+j) % 2 == 0)
@@ -40,23 +42,16 @@ class IndexTransformer
 
             return true;
         }
-
         static int matrixToVector(int height, int width, int i, int j)
         {
             if (j >= width)
             {
-                std::cout <<  std::endl;
-            std::cout << "START" << std::endl;
-            std::cout << "width: " << width <<" height: " << height << " i: " << i << "j: " << j << std::endl;
-                throw 123131;
+                throw InvalidArgumentException();
             }
 
             if (i >= height)
             {
-                std::cout <<  std::endl;
-            std::cout << "START" << std::endl;
-            std::cout << "width: " << width <<" height: " << height << " i: " << i << "j: " << j << std::endl;
-                throw 99999;
+                throw InvalidArgumentException();
             }
 
 
@@ -71,49 +66,15 @@ class IndexTransformer
             current.j=0;
             do
             {
-                //std::cout << "currenti: " << current.i << " currentj: " << current.j << std::endl;
                 current = getNextCoord(width, current);
                 if (!isNullElement(current.i, current.j))
                 {
                     result++;
-                    //std::cout << "result : " << result;
                 }
 
             } while (!(current.i == i && current.j == j));
 
-            //std::cout << "resultat end : " << result;
-            return result;
-            //std::cout << std::endl;
-        }
-
-        static Coord vectorToMatrix(int height, int width, int vi)
-        {
-            Coord result;
-            result.i = 0;
-            result.j = 0;
-
-            if (vi == 0)
-            {
-                return result;
-            }
-
-            int currentvi = 0;
-            do
-            {
-                result = getNextCoord(width, result);
-                if (!(isNullElement(result.i, result.j)))
-                {
-                    currentvi++;
-                }
-
-            } while (currentvi != vi);
-
             return result;
         }
-
-
-
-
-
 };
 

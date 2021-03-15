@@ -6,9 +6,6 @@
 #include <iostream>
 #include <vector>
 
-//Class of checkerboard matrixes
-//Methods: add, multiply, write, read, refer to an element
-//Representation: only the non-zero elements
 class CheckerboardMatrix {
 
     public:
@@ -23,7 +20,6 @@ class CheckerboardMatrix {
 
         friend CheckerboardMatrix operator+ (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
         friend CheckerboardMatrix operator* (const CheckerboardMatrix& a, const CheckerboardMatrix& b);
-         //friend std::istream& operator>> (std::istream& s, CheckerboardMatrix& a);
 
         std::string toString() const;
 

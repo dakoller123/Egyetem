@@ -63,29 +63,29 @@ TEST_CASE("CheckerboardMatrix Setter, Getter, last element")
     CHECK(matrixB.getElement(5,2) == 0);
 }
 
-//
-//TEST_CASE("CheckerboardMatrix toString")
-//{
-//    int width = 2;
-//    int height = 3;
-//    CheckerboardMatrix matrix = CheckerboardMatrix(height, width);
-//    CHECK(matrix.toString() == "0 0\n0 0\n0 0");
-//    matrix.setElement(0,0,9);
-//    matrix.setElement(1,1,5);
-//    matrix.setElement(2,0,3);
-//    CHECK(matrix.toString() == "9 0\n0 5\n3 0");
-//
-//    CheckerboardMatrix matrixB = CheckerboardMatrix(3, 4);
-//    matrixB.setElement(0,0,8);
-//    matrixB.setElement(0,2,7);
-//    matrixB.setElement(1,1,9);
-//    matrixB.setElement(1,3,2);
-//    matrixB.setElement(2,0,5);
-//    matrixB.setElement(2,2,1);
-//    CHECK(matrixB.getElement(1,3) == 2);
-//    CHECK(matrixB.toString() == "8 0 7 0\n0 9 0 2\n5 0 1 0");
-//
-//}
+
+TEST_CASE("CheckerboardMatrix toString")
+{
+    int height = 3;
+    int width = 2;
+    CheckerboardMatrix matrix = CheckerboardMatrix(height, width);
+    CHECK(matrix.toString() == "0 0\n0 0\n0 0");
+    matrix.setElement(0,0,9);
+    matrix.setElement(1,1,5);
+    matrix.setElement(2,0,3);
+    CHECK(matrix.toString() == "9 0\n0 5\n3 0");
+
+    CheckerboardMatrix matrixB = CheckerboardMatrix(3, 4);
+    matrixB.setElement(0,0,8);
+    matrixB.setElement(0,2,7);
+    matrixB.setElement(1,1,9);
+    matrixB.setElement(1,3,2);
+    matrixB.setElement(2,0,5);
+    matrixB.setElement(2,2,1);
+    CHECK(matrixB.getElement(1,3) == 2);
+    CHECK(matrixB.toString() == "8 0 7 0\n0 9 0 2\n5 0 1 0");
+
+}
 
 TEST_CASE("CheckerboardMatrix addition operator")
 {
@@ -120,63 +120,58 @@ TEST_CASE("CheckerboardMatrix addition operator")
     CHECK(matrixB.getElement(4,4) == -2);
     CHECK(matrixB.getElement(0,0) == 0);
 }
-//
-//TEST_CASE("CheckerboardMatrix addition operator, exception handling")
-//{
-//    CHECK_NOTHROW((CheckerboardMatrix(10,4)+CheckerboardMatrix(10,4)));
-//
-//    CHECK_THROWS_WITH(CheckerboardMatrix(10,4)+CheckerboardMatrix(11,4), CheckerboardMatrix::IncompatibleMatrixException() );
-//
-//    CHECK_THROWS_WITH(CheckerboardMatrix(10,4)+CheckerboardMatrix(10,5), CheckerboardMatrix::IncompatibleMatrixException() );
-//}
-//
-//
-//TEST_CASE("CheckerboardMatrix multiplication operator, exception handling")
-//{
-//    CHECK_NOTHROW((CheckerboardMatrix(10,4)*CheckerboardMatrix(4,8)));
-//
-//    CHECK_THROWS_WITH(CheckerboardMatrix(10,4)*CheckerboardMatrix(5,10), CheckerboardMatrix::IncompatibleMatrixException() );
-//
-//    CHECK_THROWS_WITH(CheckerboardMatrix(10,4)*CheckerboardMatrix(3,10), CheckerboardMatrix::IncompatibleMatrixException() );
-//}
-//
-//TEST_CASE("CheckerboardMatrix multiplication operator")
-//{
-//    CheckerboardMatrix matrixA = CheckerboardMatrix(2, 3);
-//    CheckerboardMatrix matrixB = CheckerboardMatrix(3, 4);
-//
-//    matrixA.setElement(0,0,3);
-//    matrixA.setElement(0,2,1);
-//    matrixA.setElement(1,1,2);
-//
-//    matrixB.setElement(0,0,8);
-//    matrixB.setElement(0,2,7);
-//    matrixB.setElement(1,1,9);
-//    matrixB.setElement(1,3,2);
-//    matrixB.setElement(2,0,5);
-//    matrixB.setElement(2,2,1);
-//
-//
-//    CheckerboardMatrix matrixC = matrixA * matrixB;
-////    std::cout <<std::endl<< matrixA.toString() << std::endl;
-////    std::cout <<std::endl<< matrixB.toString() << std::endl;
-////    std::cout <<std::endl<< matrixC.toString() << std::endl;
-////    //34 0 18 0
-////    //0 18 0 10
-//
-//    CHECK(matrixC.getHeight() == 2);
-//    CHECK(matrixC.getWidth() == 4);
-//
-//    CHECK(matrixC.getElement(0,0) == 29);
-//    CHECK(matrixC.getElement(0,1) == 0);
-//    CHECK(matrixC.getElement(0,2) == 22);
-//    CHECK(matrixC.getElement(0,3) == 0);
-//
-//    CHECK(matrixC.getElement(1,0) == 0);
-//    CHECK(matrixC.getElement(1,1) == 18);
-//    CHECK(matrixC.getElement(1,2) == 0);
-//    CHECK(matrixC.getElement(1,3) == 4);
-//}
+
+TEST_CASE("CheckerboardMatrix addition operator, exception handling")
+{
+    CHECK_NOTHROW((CheckerboardMatrix(10,4)+CheckerboardMatrix(10,4)));
+
+    CHECK_THROWS_WITH(CheckerboardMatrix(10,4)+CheckerboardMatrix(11,4), CheckerboardMatrix::IncompatibleMatrixException() );
+
+    CHECK_THROWS_WITH(CheckerboardMatrix(10,4)+CheckerboardMatrix(10,5), CheckerboardMatrix::IncompatibleMatrixException() );
+}
+
+
+TEST_CASE("CheckerboardMatrix multiplication operator, exception handling")
+{
+    CHECK_NOTHROW((CheckerboardMatrix(10,4)*CheckerboardMatrix(4,8)));
+
+    CHECK_THROWS_WITH(CheckerboardMatrix(10,4)*CheckerboardMatrix(5,10), CheckerboardMatrix::IncompatibleMatrixException() );
+
+    CHECK_THROWS_WITH(CheckerboardMatrix(10,4)*CheckerboardMatrix(3,10), CheckerboardMatrix::IncompatibleMatrixException() );
+}
+
+TEST_CASE("CheckerboardMatrix multiplication operator")
+{
+    CheckerboardMatrix matrixA = CheckerboardMatrix(2, 3);
+    CheckerboardMatrix matrixB = CheckerboardMatrix(3, 4);
+
+    matrixA.setElement(0,0,3);
+    matrixA.setElement(0,2,1);
+    matrixA.setElement(1,1,2);
+
+    matrixB.setElement(0,0,8);
+    matrixB.setElement(0,2,7);
+    matrixB.setElement(1,1,9);
+    matrixB.setElement(1,3,2);
+    matrixB.setElement(2,0,5);
+    matrixB.setElement(2,2,1);
+
+
+    CheckerboardMatrix matrixC = matrixA * matrixB;
+
+    CHECK(matrixC.getHeight() == 2);
+    CHECK(matrixC.getWidth() == 4);
+
+    CHECK(matrixC.getElement(0,0) == 29);
+    CHECK(matrixC.getElement(0,1) == 0);
+    CHECK(matrixC.getElement(0,2) == 22);
+    CHECK(matrixC.getElement(0,3) == 0);
+
+    CHECK(matrixC.getElement(1,0) == 0);
+    CHECK(matrixC.getElement(1,1) == 18);
+    CHECK(matrixC.getElement(1,2) == 0);
+    CHECK(matrixC.getElement(1,3) == 4);
+}
 
 
 

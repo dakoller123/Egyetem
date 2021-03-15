@@ -526,14 +526,13 @@
 	<iostream>
 	<vector>
 
-1615724442 source:d:\egyetem\oop\bead1\checkerboardmatrix.cpp
+1615798889 source:d:\egyetem\oop\bead1\checkerboardmatrix.cpp
 	"checkerboardmatrix.h"
 	"indextransformer.h"
 	<iostream>
-	<iomanip>
 	<algorithm>
 
-1615724069 d:\egyetem\oop\bead1\checkerboardmatrix.h
+1615747488 d:\egyetem\oop\bead1\checkerboardmatrix.h
 	<iostream>
 	<vector>
 
@@ -766,17 +765,24 @@
 	<algorithm>
 	<cassert>
 
-1615745331 source:d:\egyetem\oop\bead1\indextransformer_test.cpp
+1615798920 source:d:\egyetem\oop\bead1\indextransformer_test.cpp
 	"indextransformer.h"
+	"indextransformer.cpp"
 	"catch.hpp"
 
-1615745913 d:\egyetem\oop\bead1\indextransformer.h
+1615805899 d:\egyetem\oop\bead1\indextransformer.h
 	<iostream>
 	<vector>
 
 1615145724 source:d:\egyetem\oop\bead1\menu.cpp
 
-1615745867 source:d:\egyetem\oop\bead1\checkerboardmatrix_test.cpp
+1615747508 source:d:\egyetem\oop\bead1\checkerboardmatrix_test.cpp
 	"checkerboardmatrix.h"
 	"catch.hpp"
+
+1615805835 d:\egyetem\oop\bead1\indextransformer.cpp
+	"indextransformer.h"
+
+1615798895 source:d:\egyetem\oop\bead1\indextransformer.cpp
+	"indextransformer.h"
 

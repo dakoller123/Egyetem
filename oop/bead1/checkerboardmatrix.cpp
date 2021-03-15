@@ -5,7 +5,6 @@
 #include "checkerboardmatrix.h"
 #include "indextransformer.h"
 #include <iostream>
-#include <iomanip>
 #include  <algorithm>
 
 CheckerboardMatrix operator+(const CheckerboardMatrix& a, const CheckerboardMatrix& b)
@@ -33,8 +32,8 @@ CheckerboardMatrix operator*(const CheckerboardMatrix& a ,const CheckerboardMatr
     {
         for (int j = 0; j<c._width; j++)
         {
-            //if (!IndexTransformer::isNullElement(i, j))
-            //{
+            if (!IndexTransformer::isNullElement(i, j))
+            {
                 int value = 0;
 
                 for (int k = 0; k<a._width; k++)
@@ -43,7 +42,7 @@ CheckerboardMatrix operator*(const CheckerboardMatrix& a ,const CheckerboardMatr
                 }
 
                 c.setElement(i, j, value);
-            //}
+            }
         }
 
     }
@@ -88,7 +87,7 @@ void CheckerboardMatrix::setElement(int i, int j, int value)
         throw OverIndexedException();
     }
 
-    if (IndexTransformer::isNullElement(i, j) && value != 0)
+    if (IndexTransformer::isNullElement(i, j))
     {
         throw NullElementException();
     }

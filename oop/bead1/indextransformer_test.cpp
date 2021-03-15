@@ -3,7 +3,6 @@
 //Title:     Checkerboard matrix
 
 #include "indextransformer.h"
-
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
@@ -56,78 +55,6 @@ TEST_CASE("MatrixToVector 5x5")
 
 }
 
-TEST_CASE("VectorToMatrix 3x4")
-{
-    Coord c;
-
-    c = IndexTransformer::vectorToMatrix(3, 4, 0);
-    CHECK(c.i == 0);
-    CHECK(c.j == 0);
-
-    c = IndexTransformer::vectorToMatrix(3, 4, 1);
-    CHECK(c.i == 0);
-    CHECK(c.j == 2);
-
-    c = IndexTransformer::vectorToMatrix(3, 4, 4);
-    CHECK(c.i == 2);
-    CHECK(c.j == 0);
-
-    c = IndexTransformer::vectorToMatrix(3, 4, 5);
-    CHECK(c.i == 2);
-    CHECK(c.j == 2);
-
-    c = IndexTransformer::vectorToMatrix(3, 4, 3);
-    CHECK(c.i == 1);
-    CHECK(c.j == 3);
-}
-
-TEST_CASE("VectorToMatrix 3x3")
-{
-    int m = 3;
-    int n = 3;
-    Coord c;
-
-    c = IndexTransformer::vectorToMatrix(m, n, 0);
-    CHECK(c.i == 0);
-    CHECK(c.j == 0);
-
-    c = IndexTransformer::vectorToMatrix(m, n, 4);
-    CHECK(c.i == 2);
-    CHECK(c.j == 2);
-
-    c = IndexTransformer::vectorToMatrix(m, n, 2);
-    CHECK(c.i == 1);
-    CHECK(c.j == 1);
-
-    c = IndexTransformer::vectorToMatrix(m, n, 3);
-    CHECK(c.i == 2);
-    CHECK(c.j == 0);
-}
-
-TEST_CASE("VectorToMatrix 5x5")
-{
-    int m = 5;
-    int n = 5;
-    Coord c;
-
-    c = IndexTransformer::vectorToMatrix(m, n, 9);
-    CHECK(c.i == 3);
-    CHECK(c.j == 3);
-
-    c = IndexTransformer::vectorToMatrix(m, n, 12);
-    CHECK(c.i == 4);
-    CHECK(c.j == 4);
-
-    c = IndexTransformer::vectorToMatrix(m, n, 8);
-    CHECK(c.i == 3);
-    CHECK(c.j == 1);
-
-    c = IndexTransformer::vectorToMatrix(m, n, 3);
-    CHECK(c.i == 1);
-    CHECK(c.j == 1);
-
-}
-
 TEST_CASE("getNextCoord")
 {
     Coord current, next;
@@ -146,6 +73,3 @@ TEST_CASE("getNextCoord")
     CHECK(next.i == 5);
     CHECK(next.j == 2);
 }
-
-
-

@@ -47,7 +47,6 @@
 		<Unit filename="checkerboardmatrix.h" />
 		<Unit filename="checkerboardmatrix_test.cpp" />
 		<Unit filename="diagonal.cbp" />
-		<Unit filename="indextransformer.h" />
 		<Unit filename="indextransformer_test.cpp" />
 		<Unit filename="inp.txt">
 			<Option target="Debug test mode" />
