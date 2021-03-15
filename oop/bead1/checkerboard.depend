@@ -784,3 +784,6 @@
 1615798895 source:d:\egyetem\oop\bead1\indextransformer.cpp
 	"indextransformer.h"
 
+1615816076 source:d:\egyetem\oop\bead1\main_tests.cpp
+	"catch.hpp"
+
