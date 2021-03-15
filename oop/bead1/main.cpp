@@ -1,6 +1,12 @@
-//Author:    Koller Dávid Dániel
-//Date:      2021.03.07.
-//Title:     Checkerboard matrix
+//#define DEFAULT_MODE
 
-#include <iostream>
-#include "indextransformer.h"
+#ifdef DEFAULT_MODE
+
+int main()
+{
+    return 0;
+}
+
+#else
+#define CATCH_CONFIG_MAIN
+#endif

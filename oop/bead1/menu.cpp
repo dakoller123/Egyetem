@@ -29,12 +29,7 @@
 //        void mul();
 //};
 //
-//int main()
-//{
-//    Menu m;
-//    m.run();
-//}
-//
+
 //bool check(int n) { return 0<=n && n<=6; }
 //
 //void Menu::run()

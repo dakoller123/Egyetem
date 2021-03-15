@@ -536,9 +536,8 @@
 	<iostream>
 	<vector>
 
-1615145084 source:d:\egyetem\oop\bead1\main.cpp
-	<iostream>
-	"indextransformer.h"
+1615815304 source:d:\egyetem\oop\bead1\main.cpp
+	"catch.hpp"
 
 1615110602 d:\egyetem\oop\bead1\read.hpp
 	<iostream>
@@ -765,16 +764,15 @@
 	<algorithm>
 	<cassert>
 
-1615798920 source:d:\egyetem\oop\bead1\indextransformer_test.cpp
+1615815148 source:d:\egyetem\oop\bead1\indextransformer_test.cpp
 	"indextransformer.h"
-	"indextransformer.cpp"
 	"catch.hpp"
 
 1615805899 d:\egyetem\oop\bead1\indextransformer.h
 	<iostream>
 	<vector>
 
-1615145724 source:d:\egyetem\oop\bead1\menu.cpp
+1615815223 source:d:\egyetem\oop\bead1\menu.cpp
 
 1615747508 source:d:\egyetem\oop\bead1\checkerboardmatrix_test.cpp
 	"checkerboardmatrix.h"
