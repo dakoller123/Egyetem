@@ -6,9 +6,9 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug">
-				<Option output="bin/Debug/diagonal" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+			<Target title="MenuMode">
+				<Option output="bin/MenuMode/diagonal" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/MenuMode/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -16,25 +16,14 @@
 					<Add option="-DNORMAL_MODE" />
 				</Compiler>
 			</Target>
-			<Target title="Release">
-				<Option output="bin/Release/diagonal" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
-				<Option type="1" />
-				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-O2" />
-				</Compiler>
-				<Linker>
-					<Add option="-s" />
-				</Linker>
-			</Target>
-			<Target title="Debug test mode">
-				<Option output="bin/DebugTest/diagonal" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/DebugTest/" />
+			<Target title="UnitTestMode">
+				<Option output="bin/UnitTestMode/diagonal" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/UnitTestMode/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-DNORMAL_MODE" />
 				</Compiler>
 			</Target>
 		</Build>
@@ -42,19 +31,30 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="catch.hpp" />
+		<Unit filename="catch.hpp">
+			<Option target="UnitTestMode" />
+		</Unit>
+		<Unit filename="checkerboard.cbp" />
 		<Unit filename="checkerboardmatrix.cpp" />
 		<Unit filename="checkerboardmatrix.h" />
-		<Unit filename="checkerboardmatrix_test.cpp" />
-		<Unit filename="diagonal.cbp" />
-		<Unit filename="indextransformer_test.cpp" />
-		<Unit filename="inp.txt">
-			<Option target="Debug test mode" />
+		<Unit filename="checkerboardmatrix_test.cpp">
+			<Option target="UnitTestMode" />
 		</Unit>
-		<Unit filename="inp2.txt">
-			<Option target="Debug test mode" />
+		<Unit filename="indextransformer_test.cpp">
+			<Option target="UnitTestMode" />
 		</Unit>
-		<Unit filename="read.hpp" />
+		<Unit filename="main.cpp">
+			<Option target="MenuMode" />
+		</Unit>
+		<Unit filename="main_tests.cpp">
+			<Option target="UnitTestMode" />
+		</Unit>
+		<Unit filename="menu.cpp">
+			<Option target="MenuMode" />
+		</Unit>
+		<Unit filename="read.hpp">
+			<Option target="MenuMode" />
+		</Unit>
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
