@@ -12,8 +12,15 @@ class CheckerboardMatrix {
         static std::string OverIndexedException() { return "OverIndexed"; }
         static std::string NullElementException() { return "NullElementException"; }
         static std::string IncompatibleMatrixException() { return "IncompatibleMatrixException"; }
+        static std::string InvalidMatrixDimensionException() { return "InvalidMatrixDimensionException"; }
 
-        CheckerboardMatrix(const int height, const int width):  _height(height), _width(width), _v((height*width/2)+1, 0) { }
+        CheckerboardMatrix(const int height, const int width):  _height(height), _width(width), _v((height*width/2)+1, 0)
+        {
+            if (_height  < 1 || _width < 1 )
+            {
+                throw InvalidMatrixDimensionException();
+            }
+        }
 
         int getElement (int i, int j) const;
         void setElement (int i, int j, int value);

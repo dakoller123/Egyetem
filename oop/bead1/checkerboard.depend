@@ -532,14 +532,14 @@
 	<iostream>
 	<algorithm>
 
-1615747488 d:\egyetem\oop\bead1\checkerboardmatrix.h
+1615820397 d:\egyetem\oop\bead1\checkerboardmatrix.h
 	<iostream>
 	<vector>
 
-1615815304 source:d:\egyetem\oop\bead1\main.cpp
-	"catch.hpp"
+1615820480 source:d:\egyetem\oop\bead1\main.cpp
+	"menu.h"
 
-1615110602 d:\egyetem\oop\bead1\read.hpp
+1615821325 d:\egyetem\oop\bead1\read.hpp
 	<iostream>
 	<string>
 
@@ -772,7 +772,11 @@
 	<iostream>
 	<vector>
 
-1615815223 source:d:\egyetem\oop\bead1\menu.cpp
+1615821216 source:d:\egyetem\oop\bead1\menu.cpp
+	<iostream>
+	"checkerboardmatrix.h"
+	"read.hpp"
+	"menu.h"
 
 1615747508 source:d:\egyetem\oop\bead1\checkerboardmatrix_test.cpp
 	"checkerboardmatrix.h"
@@ -786,4 +790,9 @@
 
 1615816076 source:d:\egyetem\oop\bead1\main_tests.cpp
 	"catch.hpp"
+
+1615820540 d:\egyetem\oop\bead1\menu.h
+	<iostream>
+	"checkerboardmatrix.h"
+	"read.hpp"
 

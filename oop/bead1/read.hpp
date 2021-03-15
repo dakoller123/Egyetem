@@ -14,6 +14,7 @@
 //Output:   Item  n    - the value the data that is read
 //Activity:	Reading a data from the keyboard, checking it according to the function valid
 //          if the data is incorrect trying to read it once more
+
 template <typename Item>
 Item read( const std::string &msg, const std::string &err, bool valid(Item))
 {
