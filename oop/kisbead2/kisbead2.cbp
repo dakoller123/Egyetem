@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="kisbead1" />
+		<Option title="kisbead2" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/kisbead1" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/kisbead2" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -15,9 +15,9 @@
 					<Add option="-g" />
 					<Add option="-DNORMAL_MODE" />
 				</Compiler>
-			</Target>		
+			</Target>
 			<Target title="Debug and test mode">
-				<Option output="bin/DebugTest/kisbead1" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/DebugTest/kisbead2" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/DebugTest/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -30,11 +30,11 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="kisbead1.cbp" />
 		<Unit filename="input.txt" />
+		<Unit filename="kisbead1.cbp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="temperatureEnor.cpp" />
-		<Unit filename="temperatureEnor.h" />
+		<Unit filename="numberEnor.cpp" />
+		<Unit filename="numberEnor.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
