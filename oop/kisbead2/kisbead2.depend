@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1617289569 source:d:\egyetem\oop\kisbead2\numberenor.cpp
+	"numberEnor.h"
+	<fstream>
+	<sstream>
+
+1617289423 d:\egyetem\oop\kisbead2\numberenor.h
+	<fstream>
+	<string>
+
