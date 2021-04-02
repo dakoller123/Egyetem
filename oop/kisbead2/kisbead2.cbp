@@ -30,6 +30,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="countEnor.cpp" />
+		<Unit filename="countEnor.h" />
 		<Unit filename="input.txt" />
 		<Unit filename="kisbead1.cbp" />
 		<Unit filename="main.cpp" />

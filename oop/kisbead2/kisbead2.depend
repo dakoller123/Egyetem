@@ -12,3 +12,12 @@
 	<iostream>
 	"numberEnor.h"
 
+1617357849 source:d:\egyetem\oop\kisbead2\countenor.cpp
+	"countEnor.h"
+	"numberEnor.h"
+
+1617298632 d:\egyetem\oop\kisbead2\countenor.h
+	<fstream>
+	<string>
+	"numberEnor.h"
+

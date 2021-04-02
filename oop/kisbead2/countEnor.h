@@ -4,18 +4,23 @@
 #include <string>
 #include "numberEnor.h"
 
+struct ValueCountPair
+{
+    int Value;
+    int Count;
+};
+
 class CountEnor
 {
     private:
         NumberEnor _numberEnor;
-        int _currentCount;
-        int _currentValue;
+        ValueCountPair _current;
 
     public:
         CountEnor(const std::string &str): _numberEnor(str){};
 
         void first();
         void next();
-        int current() const;
+        ValueCountPair current() const;
         bool end() const;
 };

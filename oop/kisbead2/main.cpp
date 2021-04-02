@@ -1,35 +1,5 @@
 #include <iostream>
-#include "numberEnor.h"
-//
-//float getAverageBeforeNegative(TemperatureEnor& e)
-//{
-//    float sumBeforeNegative = 0;
-//    int countBeforeNegative = 0;
-//
-//    e.first();
-//    while (!e.end() && e.current() >= 0)
-//    {
-//        sumBeforeNegative += e.current();
-//        countBeforeNegative++;
-//        e.next();
-//    }
-//
-//    return (sumBeforeNegative/countBeforeNegative);
-//}
-//
-//float getAverageAfterNegative(TemperatureEnor& e)
-//{
-//    float sumAfterNegative = 0.0;
-//    int countAfterNegative = 0;
-//    while (!e.end())
-//    {
-//        sumAfterNegative += e.current();
-//        countAfterNegative++;
-//        e.next();
-//    }
-//
-//    return (sumAfterNegative/countAfterNegative);
-//}
+#include "countEnor.h"
 
 int main()
 {
@@ -38,9 +8,31 @@ int main()
     std::cin>>filename;
 
     try{
-        NumberEnor e = NumberEnor(filename);
-//        std::cout<< "Average of temps before first negative value: " << getAverageBeforeNegative(e) << std::endl;
-//        std::cout<< "Average of temps after first negative value: " << getAverageAfterNegative(e) << std::endl;
+        CountEnor e = CountEnor(filename);
+        e.first();
+
+        if (e.end())
+        {
+            std::cout << "Empty File" << std::endl;
+        }
+        else
+        {
+            int mostCommonValue = 0;
+            int mostCommonCount = 0;
+            int currentValue = 0;
+
+            while (!e.end())
+            {
+                if (e.current().Count > mostCommonCount)
+                {
+                    mostCommonCount = e.current().Count;
+                    mostCommonValue = e.current().Value;
+                }
+                e.next();
+            }
+
+             std::cout<< "Most common number in the list: " << mostCommonValue << " Count: " << mostCommonCount << std::endl;
+        }
     }
     catch(NumberEnor::FileError err)
     {

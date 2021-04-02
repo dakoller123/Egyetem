@@ -1,31 +1,29 @@
 #include "countEnor.h"
 #include "numberEnor.h"
 
-//CountEnor::CountEnor(const std::string& str)
-//{
-//   _numberEnor = NumberEnor(str);
-//}
-
-
 void CountEnor::next()
 {
-   _currentCount = 0;
-   _currentValue = _numberEnor.current();
-   while ((!_numberEnor.end()) && (_currentValue == _numberEnor.current()))
+   _current.Count = 0;
+   _current.Value = _numberEnor.current();
+   while ((!_numberEnor.end()) && (_current.Value == _numberEnor.current()))
    {
+       _current.Count++;
        _numberEnor.next();
-       _currentCount += _currentValue;
    }
 }
 
-int CountEnor::current() const
+ValueCountPair CountEnor::current() const
 {
-    return _currentCount;
+      return _current;
 }
 
 void CountEnor::first()
 {
-    next();
+    _numberEnor.first();
+    if (!_numberEnor.end())
+    {
+       next();
+    }
 }
 
 bool CountEnor::end() const
