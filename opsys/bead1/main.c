@@ -3,6 +3,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+static const char DB_FILENAME[] = "./database";
+static const char DB_ID[] = "./id";
+
 struct record
 {
 
@@ -11,20 +14,20 @@ struct record
     char firstName[20];
     char lastName[20];
     int birthYear;
-    long phoneNumber;
+    char phoneNumber[14];
     bool paid;
 };
 
 
 
-void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthYear, long phoneNumber, bool paid)
+void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
 {
     struct record newRecord;
     newRecord.id = 0;
     strcpy(newRecord.firstName, firstName);
     strcpy(newRecord.lastName, lastName);
     newRecord.birthYear = birthYear;
-    newRecord.phoneNumber = phoneNumber;
+    strcpy(newRecord.phoneNumber, phoneNumber);
     newRecord.paid = paid;
 
     fwrite(&newRecord, sizeof(struct record), 1, fp);
@@ -37,25 +40,10 @@ void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthY
 
 void readRecord(FILE *restrict fp)
 {
-//    printf("%s\n", "reading a specific record...");
-//    printf("%s\n", "ID | NAME | BirthYear | PhoneNumber | Paid/Free version");
-//
-//    char line[LINE_MAX];
-//
-//    struct record input;
-//    while(fread(&input, sizeof(struct record), 1, fp))
-//    {
-//        printf ("id = %d name = %s %s birthYear = %d phoneNumber = \n", input.id,
-//        input.firstName, input.lastName);
-//    }
-//    while (fgets(line, LINE_MAX, fp) != NULL)
-//    {
-//        printf("%s\n", line);
-//    }
-//}
+
 }
 
-void updateRecord()
+void updateRecord(FILE *restrict fp, unsigned long id, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
 {
 
 }
@@ -78,12 +66,6 @@ void listRecords(FILE *restrict fp)
         //printf ("id = %d name = %s %s birthYear = %d phoneNumber = \n", input.id,
         //input.firstName, input.lastName);
     }
-//
-//    char line[LINE_MAX];
-//    while (fgets(line, LINE_MAX, fp) != NULL)
-//    {
-//        printf("%s\n", line);
-//    }
 }
 
 void invalidArguments()
@@ -109,14 +91,30 @@ int main(int argc, char *argv[]) {
         char* fileName = argv[2];
         FILE *fp;
 
-
-
         if ((argc == 8) && (strcmp(argv[1], "C")) == 0)
         {
             //"bin fileName C FirstName LastName BirthYear Phone Paid"
             validArgs = true;
-            fp = fopen(fileName, "w");
-            createRecord(fp, argv[3], argv[4], atoi(argv[5]), atoi(argv[6]), true);
+            fp = fopen(fileName, "a");
+
+            int birthYear = atoi(argv[5]);
+
+            if (birthYear < 1900 && birthYear > 2050)
+            {
+                printf("%s\n", "invalid birthYear given");
+            }
+            else
+            {
+                bool paid = false;
+
+                if (argv[7] == "true" || argv[7] == "True")
+                {
+                    paid = true;
+                }
+
+                createRecord(fp, argv[3], argv[4], birthYear, argv[6], paid);
+            }
+
         }
 
         if ((argc == 4) && (strcmp(argv[1], "R")) == 0)
@@ -130,7 +128,36 @@ int main(int argc, char *argv[]) {
         {
             //"bin fileName U Id C Name BirthYear Phone Paid"
             validArgs = true;
-            updateRecord();
+            fp = fopen(fileName, "w");
+
+            char *ptr;
+            unsigned long id = strtoul(argv[3], &ptr, 10);
+
+            if (id < 1)
+            {
+                printf("%s\n", "invalid Id given");
+            }
+            else
+            {
+
+                int birthYear = atoi(argv[5]);
+
+                if (birthYear < 1900 && birthYear > 2050)
+                {
+                    printf("%s\n", "invalid birthYear given");
+                }
+                else
+                {
+                    bool paid = false;
+
+                    if (argv[7] == "true" || argv[7] == "True")
+                    {
+                        paid = true;
+                    }
+
+                    updateRecord(fp, id, argv[3], argv[4], birthYear, argv[6], paid);
+                }
+            }
         }
 
         if ((argc == 4) && (strcmp(argv[1], "D")) == 0)
