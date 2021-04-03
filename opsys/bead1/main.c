@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
  #include <stdbool.h>
+const int LINE_MAX = 999;
 
 struct Record
 {
@@ -33,9 +34,19 @@ void deleteRecord()
 
 }
 
-void listRecords()
+void listRecords(char* fileName)
 {
 
+    FILE *fp;
+    fp = fopen(fileName, "r");
+    printf("%s\n", "ID | NAME | BirthYear | PhoneNumber | Paid/Free version");
+
+    char line[LINE_MAX];
+    while (fgets(line, LINE_MAX, fp) != NULL)
+    {
+        printf("%s\n", line);
+    }
+    fclose(fp);
 }
 
 void invalidArguments()
@@ -91,9 +102,9 @@ int main(int argc, char *argv[]) {
 
         if ((argc == 3) && (strcmp(argv[1], "L")) == 0)
         {
-            //"bin fileName L"
+            printf("%s\n", "listing...");
             validArgs = true;
-            listRecords();
+            listRecords(fileName);
         }
     }
 
