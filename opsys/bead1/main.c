@@ -2,8 +2,10 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+
 static const char DB_FILENAME[] = "./database";
 static const char DB_BACKUP_FILENAME[] = "./database.bak";
+
 struct record
 {
     unsigned int id;
@@ -13,8 +15,6 @@ struct record
     char phoneNumber[14];
     bool paid;
 };
-
-
 
 void readRecord(FILE *restrict fp, unsigned int id)
 {
@@ -30,8 +30,17 @@ void readRecord(FILE *restrict fp, unsigned int id)
 
     if (found)
     {
-        printf("%i | %s %s | %d | %s | %d \n",
-                   input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber, input.paid);
+        printf("%i | %s %s | %d | %s",
+                   input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber);
+
+        if (input.paid == true)
+        {
+            printf(" | X |\n");
+        }
+        else
+        {
+            printf(" |  | \n");
+        }
     }
     else
     {
@@ -122,7 +131,7 @@ int listRecords(FILE* restrict fp, bool print)
     if (print)
     {
         printf("%s\n", "listing all records...");
-        printf("%s\n", "ID | NAME | BirthYear | PhoneNumber | Paid/Free version");
+        printf("%s\n", "| ID | NAME | BirthYear | PhoneNumber | Private Healthcare |");
     }
 
     struct record input;
@@ -131,8 +140,17 @@ int listRecords(FILE* restrict fp, bool print)
     {
         if (print)
         {
-            printf("%i | %s %s | %d | %s | %d \n",
-                   input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber, input.paid);
+            printf("| %i | %s %s | %d | %s",
+                   input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber);
+
+            if (input.paid == true)
+            {
+                printf(" | X |\n");
+            }
+            else
+            {
+                printf(" |  | \n");
+            }
         }
     }
 
@@ -154,7 +172,6 @@ void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthY
     fwrite(&newRecord, sizeof(struct record), 1, fp);
 }
 
-
 FILE* openFile()
 {
     FILE* fp = fopen(DB_FILENAME, "a+");
@@ -172,7 +189,7 @@ FILE* openFile()
 
 void invalidArguments()
 {
-    printf("%s \n", "Invalid Arguments, try '.\vakcinacio H' to see the help");
+    printf("%s \n", "Invalid Arguments, try './vakcinacio H' to see the manual  ");
 }
 
 int main(int argc, char *argv[]) {
@@ -191,7 +208,7 @@ int main(int argc, char *argv[]) {
     if ((argc == 2) && (operation == 'H'))
     {
         validArgs = true;
-        printf("%s\n", "Usage: specify the type of operation: C,R,U,D,L then additional parameters");
+        printf("%s\n", "Usage: specify the type of operation: (C)create, (R)ead, (U)pdate, (D)elete, (L)ist then additional parameters");
         printf("%s\n", "Additional parameters: First Name, Last Name, Year of Birth, PhoneNumber, True/False for the Premium option");
         printf("%s\n", "Example #1: ./vakcinacio  C Gipsz Jakab 1945 0036202536099 True");
         printf("%s\n", "Example #2: ./vakcinacio  U Gipsz Jakab 1945 0036202536099 False");
@@ -228,7 +245,7 @@ int main(int argc, char *argv[]) {
         {
             bool paid = false;
 
-            if ((strcmp(arg_paid, "true")) || (strcmp(arg_paid, "True")))
+            if ((strcmp(arg_paid, "true") == 0) || (strcmp(arg_paid, "True") == 0))
             {
                 paid = true;
             }
@@ -291,7 +308,7 @@ int main(int argc, char *argv[]) {
             {
                 bool paid = false;
 
-                if ((strcmp(arg_paid, "true")) || (strcmp(arg_paid, "True")))
+                if ((strcmp(arg_paid, "true") == 0) || (strcmp(arg_paid, "True") == 0))
                 {
                     paid = true;
                 }
