@@ -43,7 +43,7 @@ int listRecords(FILE* restrict fp, bool print)
 
     struct record input;
     printf("A");
-    //input.id = 0;
+    input.id = 0;
     while(fread(&input, sizeof(struct record), 1, fp))
     {
         printf("B\n");
@@ -55,8 +55,7 @@ int listRecords(FILE* restrict fp, bool print)
         }
     }
 
-    //return input.id;
-    return 0;
+    return input.id;
 }
 
 void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
