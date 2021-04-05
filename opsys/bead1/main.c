@@ -39,10 +39,47 @@ void readRecord(FILE *restrict fp, unsigned int id)
     }
 }
 
-//void updateRecord(FILE *restrict fp, unsigned long id, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
-//{
-//
-//}
+void updateRecord(unsigned int id, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
+{
+    FILE* oldDB = fopen(DB_FILENAME, "r");
+    FILE* tmpDB = fopen(DB_BACKUP_FILENAME, "w");
+    bool found = false;
+    struct record tmp;
+    while((fread(&tmp, sizeof(struct record), 1, oldDB)))
+    {
+        if (tmp.id == id)
+        {
+            found = true;
+        }
+
+        fwrite(&tmp, sizeof(struct record), 1, tmpDB);
+    }
+    fclose(tmpDB);
+    fclose(oldDB);
+
+    if (found)
+    {
+        printf("Entry found, editing...\n");
+        tmpDB = fopen(DB_BACKUP_FILENAME, "r");
+        FILE* newDB = fopen(DB_FILENAME, "w");
+        struct record tmp2;
+        while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
+        {
+            if (tmp2.id == id)
+            {
+                tmp2.birthYear = birthYear;
+                strcpy(tmp2.firstName, firstName);
+                strcpy(tmp2.lastName, lastName);
+                strcpy(tmp2.phoneNumber, phoneNumber);
+                tmp2.paid = paid;
+            }
+            fwrite(&tmp2, sizeof(struct record), 1, newDB);
+        }
+
+        fclose(newDB);
+        fclose(tmpDB);
+    }
+}
 
 void deleteRecord(unsigned int id)
 {
@@ -56,24 +93,24 @@ void deleteRecord(unsigned int id)
         {
             found = true;
         }
-        else
-        {
-            fwrite(&tmp, sizeof(struct record), 1, tmpDB);
-        }
+
+        fwrite(&tmp, sizeof(struct record), 1, tmpDB);
     }
     fclose(tmpDB);
     fclose(oldDB);
 
     if (found)
     {
-        printf("Entry found, deleting");
+        printf("Entry found, deleting...\n");
         tmpDB = fopen(DB_BACKUP_FILENAME, "r");
         FILE* newDB = fopen(DB_FILENAME, "w");
         struct record tmp2;
         while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
         {
-            fwrite(&tmp2, sizeof(struct record), 1, newDB);
-
+            if (tmp.id != id)
+            {
+                fwrite(&tmp2, sizeof(struct record), 1, newDB);
+            }
         }
         fclose(newDB);
         fclose(tmpDB);
@@ -230,48 +267,41 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    if ((argc == 8) && operation == 'U')
+    {
+        char* arg_id = argv[2];
+        char* arg_fName = argv[3];
+        char* arg_lName = argv[4];
+        char* arg_birthYear = argv[5];
+        char* arg_phone = argv[6];
+        char* arg_paid = argv[7];
 
+        int birthYear = atoi(arg_birthYear);
 
-//
-//    if ((argc == 9) && (strcmp(argv[1], "U")) == 0)
-//    {
-//        //"bin U Id C Name BirthYear Phone Paid"
-//        validArgs = true;
-////
-////        char *ptr;
-////        unsigned long id = strtoul(argv[3], &ptr, 10);
-////
-////        if (id < 1)
-////        {
-////            printf("%s\n", "invalid Id given");
-////        }
-////        else
-////        {
-////
-////            int birthYear = atoi(argv[5]);
-////
-////            if (birthYear < 1900 && birthYear > 2050)
-////            {
-////                printf("%s\n", "invalid birthYear given");
-////            }
-////            else
-////            {
-////                //bool paid = false;
-////
-////                if ((strcmp(argv[7], "true")) || (strcmp(argv[7], "True")))
-////                {
-////                    //paid = true;
-////                }
-////
-////                //updateRecord(fp, id, argv[3], argv[4], birthYear, argv[6], paid);
-////            }
-////        }
-//    }
-//
+        unsigned int id = atoi(arg_id);
+        if (id < 1)
+        {
+            printf("%s\n", "invalid Id given");
+        }
+        else
+        {
+            if (birthYear < 1900 && birthYear > 2050)
+            {
+                printf("%s\n", "invalid birthYear given");
+            }
+            else
+            {
+                bool paid = false;
 
-
-
-
+                if ((strcmp(arg_paid, "true")) || (strcmp(arg_paid, "True")))
+                {
+                    paid = true;
+                }
+                validArgs = true;
+                updateRecord(id, arg_fName, arg_lName, birthYear, arg_phone, paid);
+            }
+        }
+    }
 
     if (!validArgs)
     {
