@@ -107,7 +107,7 @@ void deleteRecord(unsigned int id)
         struct record tmp2;
         while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
         {
-            if (tmp.id != id)
+            if (tmp2.id != id)
             {
                 fwrite(&tmp2, sizeof(struct record), 1, newDB);
             }
