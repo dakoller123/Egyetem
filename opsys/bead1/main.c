@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 static const char DB_FILENAME[] = "./database";
-
+static const char DB_BACKUP_FILENAME[] = "./database.bak";
 struct record
 {
     unsigned int id;
@@ -16,20 +16,69 @@ struct record
 
 
 
-//void readRecord(FILE *restrict fp)
-//{
-//
-//}
+void readRecord(FILE *restrict fp, unsigned int id)
+{
+    bool found = false;
+    struct record input;
+    while((!found) && (fread(&input, sizeof(struct record), 1, fp)))
+    {
+        if (input.id == id)
+        {
+            found = true;
+        }
+    }
+
+    if (found)
+    {
+        printf("%i | %s %s | %d | %s | %d \n",
+                   input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber, input.paid);
+    }
+    else
+    {
+        printf("Couldn't find the entry in the db!\n");
+    }
+}
 
 //void updateRecord(FILE *restrict fp, unsigned long id, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
 //{
 //
 //}
 
-//void deleteRecord()
-//{
-//
-//}
+void deleteRecord(unsigned int id)
+{
+    FILE* oldDB = fopen(DB_FILENAME, "r");
+    FILE* tmpDB = fopen(DB_BACKUP_FILENAME, "w");
+    bool found = false;
+    struct record tmp;
+    while((fread(&tmp, sizeof(struct record), 1, oldDB)))
+    {
+        if (tmp.id == id)
+        {
+            found = true;
+        }
+        else
+        {
+            fwrite(&tmp, sizeof(struct record), 1, tmpDB);
+        }
+    }
+    fclose(tmpDB);
+    fclose(oldDB);
+
+    if (found)
+    {
+        printf("Entry found, deleting");
+        tmpDB = fopen(DB_BACKUP_FILENAME, "r");
+        FILE* newDB = fopen(DB_FILENAME, "w");
+        struct record tmp2;
+        while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
+        {
+            fwrite(&tmp2, sizeof(struct record), 1, newDB);
+
+        }
+        fclose(newDB);
+        fclose(tmpDB);
+    }
+}
 
 int listRecords(FILE* restrict fp, bool print)
 {
@@ -55,7 +104,6 @@ int listRecords(FILE* restrict fp, bool print)
 
 void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
 {
-    printf("%s %d", phoneNumber, paid);
     int lastId = listRecords(fp, false);
     printf("%s %d\n", "last id used was: ", lastId);
     struct record newRecord;
@@ -91,35 +139,49 @@ void invalidArguments()
 }
 
 int main(int argc, char *argv[]) {
-    FILE* fp;
-    fp = openFile();
+    if (argc < 2 || strlen(argv[1]) != 1)
+    {
+        invalidArguments();
+        return -1;
+    }
+
+    char operation;
+
+    operation = argv[1][0];
 
     bool validArgs = false;
 
-    if ((argc == 2) && ((strcmp(argv[1], "H")) == 0))
+    if ((argc == 2) && (operation == 'H'))
     {
         validArgs = true;
-        printf("%s\n", "Usage: specify the db filename as the first parameter, then either C,R,U,D,L for the options.");
-        printf("%s\n", "Example: ./vakcinacio ./db.txt C GipszJakab 1945 0036202536099 True");
-        printf("%s\n", "Example2: ./vakcinacio ./db.txt R 15");
+        printf("%s\n", "Usage: specify the type of operation: C,R,U,D,L then additional parameters");
+        printf("%s\n", "Example: ./vakcinacio  C GipszJakab 1945 0036202536099 True");
+        printf("%s\n", "Example2: ./vakcinacio . R 15");
         printf("%s\n", "For additional help: Type H and either C,R,U,D,L to get the help for those commands.");
         printf("%s\n", "Example: ./vakcinacio H C");
     }
 
-    if ((argc == 2) && (strcmp(argv[1], "L")) == 0)
+    if ((argc == 2) && (operation == 'L'))
     {
         validArgs = true;
+        FILE* fp = openFile();
         listRecords(fp, true);
+        fclose(fp);
     }
 
 
 
-    if ((argc == 7) && (strcmp(argv[1], "C")) == 0)
+    if ((argc == 7  ) && (operation == 'C'))
     {
-        //"bin C FirstName LastName BirthYear Phone Paid"
         validArgs = true;
 
-        int birthYear = atoi(argv[5]);
+        char* arg_fName = argv[2];
+        char* arg_lName = argv[3];
+        char* arg_birthYear = argv[4];
+        char* arg_phone = argv[5];
+        char* arg_paid = argv[6];
+
+        int birthYear = atoi(arg_birthYear);
 
         if (birthYear < 1900 && birthYear > 2050)
         {
@@ -129,22 +191,47 @@ int main(int argc, char *argv[]) {
         {
             bool paid = false;
 
-            if ((strcmp(argv[6], "true")) || (strcmp(argv[6], "True")))
+            if ((strcmp(arg_paid, "true")) || (strcmp(arg_paid, "True")))
             {
                 paid = true;
             }
+            validArgs = true;
 
-            createRecord(fp, argv[2], argv[3], birthYear, argv[5], paid);
+            FILE* fp = openFile();
+            createRecord(fp, arg_fName, arg_lName, birthYear, arg_phone, paid);
+            fclose(fp);
         }
 
     }
-//
-//    if ((argc == 3) && (strcmp(argv[1], "R")) == 0)
-//    {
-//        //"bin R Id"
-//        validArgs = true;
-//        //readRecord(fp);
-//    }
+
+
+    if ((argc == 3) && ((operation == 'R') || (operation == 'D')))
+    {
+        char* arg_id = argv[2];
+        unsigned int id = atoi(arg_id);
+        if (id < 1)
+        {
+            printf("%s\n", "invalid Id given");
+        }
+        else
+        {
+            validArgs = true;
+
+            if (operation == 'R')
+            {
+                FILE* fp = fopen(DB_FILENAME, "r");
+                readRecord(fp, id);
+                fclose(fp);
+            }
+            else
+            {
+                deleteRecord(id);
+            }
+        }
+    }
+
+
+
 //
 //    if ((argc == 9) && (strcmp(argv[1], "U")) == 0)
 //    {
@@ -181,13 +268,6 @@ int main(int argc, char *argv[]) {
 ////        }
 //    }
 //
-//    if ((argc == 4) && (strcmp(argv[1], "D")) == 0)
-//    {
-//        //"bin D Id"
-//        validArgs = true;
-//        //deleteRecord();
-//    }
-//
 
 
 
@@ -196,9 +276,8 @@ int main(int argc, char *argv[]) {
     if (!validArgs)
     {
         invalidArguments();
+        return -1;
     }
-
-    fclose(fp);
 
 }
 
