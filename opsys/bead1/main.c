@@ -4,39 +4,18 @@
 #include <stdlib.h>
 
 static const char DB_FILENAME[] = "./database";
-static const char DB_ID[] = "./id";
 
 struct record
 {
-
-//(Például: Vakci Áci, 1953, 36301234567, igen )
     unsigned long id;
-    char firstName[20];
-    char lastName[20];
+    //char firstName[20];
+    //char lastName[20];
     int birthYear;
-    char phoneNumber[14];
-    bool paid;
+    //char phoneNumber[14];
+    //bool paid;
 };
 
 
-
-void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
-{
-    struct record newRecord;
-    newRecord.id = 0;
-    strcpy(newRecord.firstName, firstName);
-    strcpy(newRecord.lastName, lastName);
-    newRecord.birthYear = birthYear;
-    strcpy(newRecord.phoneNumber, phoneNumber);
-    newRecord.paid = paid;
-
-    fwrite(&newRecord, sizeof(struct record), 1, fp);
-
-    if(fwrite != 0)
-        printf("contents to file written successfully !\n");
-    else
-        printf("error writing file !\n");
-}
 
 void readRecord(FILE *restrict fp)
 {
@@ -53,19 +32,63 @@ void deleteRecord()
 
 }
 
-void listRecords(FILE *restrict fp)
+int listRecords(FILE* restrict fp, bool print)
 {
-    printf("%s\n", "listing all records...");
-    printf("%s\n", "ID | NAME | BirthYear | PhoneNumber | Paid/Free version");
+    if (print)
+    {
+        printf("%s\n", "listing all records...");
+        printf("%s\n", "ID | NAME | BirthYear | PhoneNumber | Paid/Free version");
+    }
+
 
     struct record input;
+    printf("A");
+    //input.id = 0;
     while(fread(&input, sizeof(struct record), 1, fp))
     {
-        printf ("id = %d name = %s %s birthYear = %d phoneNumber = %d paid = %d \n", input.id,
-        input.firstName, input.lastName, input.birthYear, input.phoneNumber, input.paid);
-        //printf ("id = %d name = %s %s birthYear = %d phoneNumber = \n", input.id,
-        //input.firstName, input.lastName);
+        printf("B");
+        if (print)
+        {
+            //printf("id = %lu name = %s %s birthYear = %d phoneNumber = %s paid = %d \n",
+             //       input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber, input.paid);
+            printf("id = %lu \n", input.id);
+        }
     }
+
+    //return input.id;
+    return 0;
+}
+
+void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
+{
+
+    int lastId = listRecords(fp, false);
+    printf("%s %d\n", "last id used was: ", lastId);
+    struct record newRecord;
+    newRecord.id = lastId + 1;
+    //strcpy(newRecord.firstName, firstName);
+    //strcpy(newRecord.lastName, lastName);
+    newRecord.birthYear = birthYear;
+    //strcpy(newRecord.phoneNumber, phoneNumber);
+    //newRecord.paid = paid;
+
+    fwrite(&newRecord, sizeof(struct record), 1, fp);
+}
+
+
+FILE* openFile()
+{
+    FILE* fp = fopen(DB_FILENAME, "a+");
+    if (fp == 0)
+    {
+        printf("%s\n", "DB file was not found, creating one...");
+        fp = fopen(DB_FILENAME, "w+");
+    }
+    else
+    {
+        printf("%s\n", "DB file was opened successfully");
+    }
+    return fp;
 }
 
 void invalidArguments()
@@ -74,6 +97,11 @@ void invalidArguments()
 }
 
 int main(int argc, char *argv[]) {
+
+
+    FILE* fp;
+    fp = openFile();
+
     bool validArgs = false;
 
     if ((argc == 2) && ((strcmp(argv[1], "H")) == 0))
@@ -86,16 +114,60 @@ int main(int argc, char *argv[]) {
         printf("%s\n", "Example: ./vakcinacio H C");
     }
 
-    if (argc > 2)
+    if ((argc == 2) && (strcmp(argv[1], "L")) == 0)
     {
-        char* fileName = argv[2];
-        FILE *fp;
+        validArgs = true;
+        listRecords(fp, true);
+    }
 
-        if ((argc == 8) && (strcmp(argv[1], "C")) == 0)
+
+
+    if ((argc == 7) && (strcmp(argv[1], "C")) == 0)
+    {
+        //"bin C FirstName LastName BirthYear Phone Paid"
+        validArgs = true;
+
+        int birthYear = atoi(argv[5]);
+
+        if (birthYear < 1900 && birthYear > 2050)
         {
-            //"bin fileName C FirstName LastName BirthYear Phone Paid"
-            validArgs = true;
-            fp = fopen(fileName, "a");
+            printf("%s\n", "invalid birthYear given");
+        }
+        else
+        {
+            bool paid = false;
+
+            if ((strcmp(argv[6], "true")) || (strcmp(argv[6], "True")))
+            {
+                paid = true;
+            }
+
+            createRecord(fp, argv[2], argv[3], birthYear, argv[5], paid);
+        }
+
+    }
+
+    if ((argc == 3) && (strcmp(argv[1], "R")) == 0)
+    {
+        //"bin R Id"
+        validArgs = true;
+        readRecord(fp);
+    }
+
+    if ((argc == 9) && (strcmp(argv[1], "U")) == 0)
+    {
+        //"bin U Id C Name BirthYear Phone Paid"
+        validArgs = true;
+
+        char *ptr;
+        unsigned long id = strtoul(argv[3], &ptr, 10);
+
+        if (id < 1)
+        {
+            printf("%s\n", "invalid Id given");
+        }
+        else
+        {
 
             int birthYear = atoi(argv[5]);
 
@@ -107,82 +179,34 @@ int main(int argc, char *argv[]) {
             {
                 bool paid = false;
 
-                if (argv[7] == "true" || argv[7] == "True")
+                if ((strcmp(argv[7], "true")) || (strcmp(argv[7], "True")))
                 {
                     paid = true;
                 }
 
-                createRecord(fp, argv[3], argv[4], birthYear, argv[6], paid);
-            }
-
-        }
-
-        if ((argc == 4) && (strcmp(argv[1], "R")) == 0)
-        {
-            //"bin fileName R Id"
-            validArgs = true;
-            readRecord(fp);
-        }
-
-        if ((argc == 9) && (strcmp(argv[1], "U")) == 0)
-        {
-            //"bin fileName U Id C Name BirthYear Phone Paid"
-            validArgs = true;
-            fp = fopen(fileName, "w");
-
-            char *ptr;
-            unsigned long id = strtoul(argv[3], &ptr, 10);
-
-            if (id < 1)
-            {
-                printf("%s\n", "invalid Id given");
-            }
-            else
-            {
-
-                int birthYear = atoi(argv[5]);
-
-                if (birthYear < 1900 && birthYear > 2050)
-                {
-                    printf("%s\n", "invalid birthYear given");
-                }
-                else
-                {
-                    bool paid = false;
-
-                    if (argv[7] == "true" || argv[7] == "True")
-                    {
-                        paid = true;
-                    }
-
-                    updateRecord(fp, id, argv[3], argv[4], birthYear, argv[6], paid);
-                }
+                updateRecord(fp, id, argv[3], argv[4], birthYear, argv[6], paid);
             }
         }
-
-        if ((argc == 4) && (strcmp(argv[1], "D")) == 0)
-        {
-            //"bin fileName D Id"
-            validArgs = true;
-            deleteRecord();
-        }
-
-        if ((argc == 3) && (strcmp(argv[1], "L")) == 0)
-        {
-            validArgs = true;
-            fp = fopen(fileName, "r");
-            listRecords(fp);
-        }
-
-        fclose(fp);
     }
+
+    if ((argc == 4) && (strcmp(argv[1], "D")) == 0)
+    {
+        //"bin D Id"
+        validArgs = true;
+        deleteRecord();
+    }
+
+
+
+
+
 
     if (!validArgs)
     {
         invalidArguments();
     }
 
-
+    fclose(fp);
 
 }
 
