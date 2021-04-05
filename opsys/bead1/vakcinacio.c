@@ -12,8 +12,8 @@ static const char DB_BACKUP_FILENAME[] = "./database.bak";
 struct record
 {
     unsigned int id;
-    char firstName[18];
-    char lastName[18];
+    char firstName[14];
+    char lastName[14];
     int birthYear;
     char phoneNumber[14];
     bool paid;
@@ -36,7 +36,7 @@ void readRecord(FILE *restrict fp, unsigned int id)
         printf("%i | %s %s | %d | %s",
                    input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber);
 
-        if (input.paid == true)
+        if (input.paid)
         {
             printf(" | X |\n");
         }
@@ -146,7 +146,7 @@ int listRecords(FILE* restrict fp, bool print)
             printf("| %i | %s %s | %d | %s",
                    input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber);
 
-            if (input.paid == true)
+            if (input.paid)
             {
                 printf(" | X |\n");
             }
@@ -230,7 +230,7 @@ int main(int argc, char *argv[]) {
 
     if ((argc == 7  ) && (operation == 'C'))
     {
-        validArgs = true;
+
 
         char* arg_fName = argv[2];
         char* arg_lName = argv[3];
@@ -246,17 +246,25 @@ int main(int argc, char *argv[]) {
         }
         else
         {
-            bool paid = false;
-
-            if ((strcmp(arg_paid, "true") == 0) || (strcmp(arg_paid, "True") == 0))
+            if ((strlen(arg_phone) > 13) || (strlen(arg_fName) > 13) || (strlen(arg_lName) > 13))
             {
-                paid = true;
+                printf("Strings can't be longer than 12 characters!\n");
             }
-            validArgs = true;
+            else
+            {
+                bool paid = false;
 
-            FILE* fp = openFile();
-            createRecord(fp, arg_fName, arg_lName, birthYear, arg_phone, paid);
-            fclose(fp);
+                if ((strcmp(arg_paid, "true") == 0) || (strcmp(arg_paid, "True") == 0))
+                {
+                    paid = true;
+                }
+
+                validArgs = true;
+
+                FILE* fp = openFile();
+                createRecord(fp, arg_fName, arg_lName, birthYear, arg_phone, paid);
+                fclose(fp);
+            }
         }
     }
 
@@ -309,14 +317,21 @@ int main(int argc, char *argv[]) {
             }
             else
             {
-                bool paid = false;
-
-                if ((strcmp(arg_paid, "true") == 0) || (strcmp(arg_paid, "True") == 0))
+                if ((strlen(arg_phone) > 13) || (strlen(arg_fName) > 13) || (strlen(arg_lName) > 13))
                 {
-                    paid = true;
+                    printf("Strings can't be longer than 12 characters!\n");
                 }
-                validArgs = true;
-                updateRecord(id, arg_fName, arg_lName, birthYear, arg_phone, paid);
+                else
+                {
+                    bool paid = false;
+
+                    if ((strcmp(arg_paid, "true") == 0) || (strcmp(arg_paid, "True") == 0))
+                    {
+                        paid = true;
+                    }
+                    validArgs = true;
+                    updateRecord(id, arg_fName, arg_lName, birthYear, arg_phone, paid);
+                }
             }
         }
     }
