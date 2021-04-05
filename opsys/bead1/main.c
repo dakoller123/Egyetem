@@ -192,10 +192,12 @@ int main(int argc, char *argv[]) {
     {
         validArgs = true;
         printf("%s\n", "Usage: specify the type of operation: C,R,U,D,L then additional parameters");
-        printf("%s\n", "Example: ./vakcinacio  C GipszJakab 1945 0036202536099 True");
-        printf("%s\n", "Example2: ./vakcinacio . R 15");
-        printf("%s\n", "For additional help: Type H and either C,R,U,D,L to get the help for those commands.");
-        printf("%s\n", "Example: ./vakcinacio H C");
+        printf("%s\n", "Additional parameters: First Name, Last Name, Year of Birth, PhoneNumber, True/False for the Premium option");
+        printf("%s\n", "Example #1: ./vakcinacio  C Gipsz Jakab 1945 0036202536099 True");
+        printf("%s\n", "Example #2: ./vakcinacio  U Gipsz Jakab 1945 0036202536099 False");
+        printf("%s\n", "Example #3: ./vakcinacio R 15");
+        printf("%s\n", "Example #4: ./vakcinacio D 4");
+        printf("%s\n", "Example #5: ./vakcinacio L");
     }
 
     if ((argc == 2) && (operation == 'L'))
@@ -205,8 +207,6 @@ int main(int argc, char *argv[]) {
         listRecords(fp, true);
         fclose(fp);
     }
-
-
 
     if ((argc == 7  ) && (operation == 'C'))
     {
@@ -238,9 +238,7 @@ int main(int argc, char *argv[]) {
             createRecord(fp, arg_fName, arg_lName, birthYear, arg_phone, paid);
             fclose(fp);
         }
-
     }
-
 
     if ((argc == 3) && ((operation == 'R') || (operation == 'D')))
     {
