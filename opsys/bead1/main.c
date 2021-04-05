@@ -11,7 +11,7 @@ struct record
     char lastName[18];
     int birthYear;
     char phoneNumber[14];
-    //bool paid;
+    bool paid;
 };
 
 
@@ -39,18 +39,14 @@ int listRecords(FILE* restrict fp, bool print)
         printf("%s\n", "ID | NAME | BirthYear | PhoneNumber | Paid/Free version");
     }
 
-
     struct record input;
-    printf("A");
     input.id = 0;
     while(fread(&input, sizeof(struct record), 1, fp))
     {
-        printf("B\n");
         if (print)
         {
-            //printf("id = %lu name = %s %s birthYear = %d phoneNumber = %s paid = %d \n",
-             //       input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber, input.paid);
-            printf("id = %iu name = %s %s birthYear = %d phoneNumber = %s \n", input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber);
+            printf("%i | %s %s | %d | %s | %d \n",
+                   input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber, input.paid);
         }
     }
 
@@ -68,7 +64,7 @@ void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthY
     strcpy(newRecord.lastName, lastName);
     newRecord.birthYear = birthYear;
     strcpy(newRecord.phoneNumber, phoneNumber);
-    //newRecord.paid = paid;
+    newRecord.paid = paid;
 
     fwrite(&newRecord, sizeof(struct record), 1, fp);
 }
