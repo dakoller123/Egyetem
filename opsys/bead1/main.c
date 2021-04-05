@@ -8,8 +8,8 @@ static const char DB_FILENAME[] = "./database";
 struct record
 {
     unsigned long id;
-    //char firstName[20];
-    //char lastName[20];
+    char firstName[20];
+    char lastName[20];
     int birthYear;
     //char phoneNumber[14];
     //bool paid;
@@ -17,20 +17,20 @@ struct record
 
 
 
-void readRecord(FILE *restrict fp)
-{
+//void readRecord(FILE *restrict fp)
+//{
+//
+//}
 
-}
+//void updateRecord(FILE *restrict fp, unsigned long id, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
+//{
+//
+//}
 
-void updateRecord(FILE *restrict fp, unsigned long id, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
-{
-
-}
-
-void deleteRecord()
-{
-
-}
+//void deleteRecord()
+//{
+//
+//}
 
 int listRecords(FILE* restrict fp, bool print)
 {
@@ -46,12 +46,12 @@ int listRecords(FILE* restrict fp, bool print)
     //input.id = 0;
     while(fread(&input, sizeof(struct record), 1, fp))
     {
-        printf("B");
+        printf("B\n");
         if (print)
         {
             //printf("id = %lu name = %s %s birthYear = %d phoneNumber = %s paid = %d \n",
              //       input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber, input.paid);
-            printf("id = %lu \n", input.id);
+            printf("id = %lu name = %s %s birthYear = %d \n", input.id, input.firstName, input.lastName, input.birthYear);
         }
     }
 
@@ -61,13 +61,13 @@ int listRecords(FILE* restrict fp, bool print)
 
 void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
 {
-
+    printf("%s %d", phoneNumber, paid);
     int lastId = listRecords(fp, false);
     printf("%s %d\n", "last id used was: ", lastId);
     struct record newRecord;
     newRecord.id = lastId + 1;
-    //strcpy(newRecord.firstName, firstName);
-    //strcpy(newRecord.lastName, lastName);
+    strcpy(newRecord.firstName, firstName);
+    strcpy(newRecord.lastName, lastName);
     newRecord.birthYear = birthYear;
     //strcpy(newRecord.phoneNumber, phoneNumber);
     //newRecord.paid = paid;
@@ -151,7 +151,7 @@ int main(int argc, char *argv[]) {
     {
         //"bin R Id"
         validArgs = true;
-        readRecord(fp);
+        //readRecord(fp);
     }
 
     if ((argc == 9) && (strcmp(argv[1], "U")) == 0)
@@ -177,14 +177,14 @@ int main(int argc, char *argv[]) {
             }
             else
             {
-                bool paid = false;
+                //bool paid = false;
 
                 if ((strcmp(argv[7], "true")) || (strcmp(argv[7], "True")))
                 {
-                    paid = true;
+                    //paid = true;
                 }
 
-                updateRecord(fp, id, argv[3], argv[4], birthYear, argv[6], paid);
+                //updateRecord(fp, id, argv[3], argv[4], birthYear, argv[6], paid);
             }
         }
     }
@@ -193,7 +193,7 @@ int main(int argc, char *argv[]) {
     {
         //"bin D Id"
         validArgs = true;
-        deleteRecord();
+        //deleteRecord();
     }
 
 
