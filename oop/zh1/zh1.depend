@@ -8,7 +8,7 @@
 	<fstream>
 	<string>
 
-1617989829 source:d:\egyetem\oop\zh1\main.cpp
+1617990777 source:d:\egyetem\oop\zh1\main.cpp
 	<iostream>
 	"adoptionEnor.h"
 	"adoptionDayEnor.h"
@@ -18,21 +18,23 @@
 	<fstream>
 	<string>
 
-1617989261 d:\egyetem\oop\zh1\adoptionenor.h
+1617990227 d:\egyetem\oop\zh1\adoptionenor.h
 	<fstream>
 	<string>
-
-1617989761 source:d:\egyetem\oop\zh1\adoptionenor.cpp
-	"adoptionEnor.h"
 	<sstream>
 
-1617989455 source:d:\egyetem\oop\zh1\adoptiondayenor.cpp
+1617990834 source:d:\egyetem\oop\zh1\adoptionenor.cpp
+	"adoptionEnor.h"
+	<sstream>
+	<iostream>
+
+1617990743 source:d:\egyetem\oop\zh1\adoptiondayenor.cpp
 	"adoptionDayEnor.h"
 	<fstream>
 	<sstream>
 	<iostream>
 
-1617986612 d:\egyetem\oop\zh1\adoptiondayenor.h
+1617990625 d:\egyetem\oop\zh1\adoptiondayenor.h
 	<fstream>
 	<string>
 	"adoptionEnor.h"

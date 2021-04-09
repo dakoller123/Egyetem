@@ -8,7 +8,6 @@ struct adoptionDay
 {
     std::string date;
     AdoptionEnor* adoptions;
-    //adoptionDay(std::string& _date, AdoptionEnor& _adoptions) : date(_date), adoptions(_adoptions) {}
 };
 
 

@@ -21,6 +21,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="adoptionDayEnor.cpp" />
+		<Unit filename="adoptionDayEnor.h" />
 		<Unit filename="adoptionEnor.cpp" />
 		<Unit filename="adoptionEnor.h" />
 		<Unit filename="input.txt" />

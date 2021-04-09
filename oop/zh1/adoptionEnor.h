@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <string>
+#include <sstream>
 
 enum Status
 {
@@ -20,13 +21,17 @@ struct adoption
 class AdoptionEnor
 {
     private:
-        std::stringstream* _stream;
+        std::stringstream _stream;
         struct adoption _current;
         Status _status;
 
     public:
         //AdoptionEnor(std::stringstream& stream) : _stream(stream) {};
-        AdoptionEnor(std::stringstream* stream) {_stream = stream;};
+        //AdoptionEnor(const std::string &str) : _stream(std::stringstream(str)) {};
+        AdoptionEnor(const std::string &str)
+        {
+            _stream = std::stringstream(str);
+        };
         void first();
         void next();
         struct adoption current() const;
