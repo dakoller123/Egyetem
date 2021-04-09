@@ -22,6 +22,7 @@ bool read(std::ifstream& f, struct adoptionDay& currentValue, Status& st)
             lineStream >> date;
             currentValue.date = date;
             AdoptionEnor adE = AdoptionEnor(lineStream);
+            //possible memory leak here?
             currentValue.adoptions = & adE;
             st=Normal;
         }
@@ -32,7 +33,8 @@ bool read(std::ifstream& f, struct adoptionDay& currentValue, Status& st)
 
 void AdoptionDayEnor::next()
 {
-   read(_f, _current, _status);
+    //if possible memory leak above, then deconstruct _current.adoptions
+    read(_f, _current, _status);
 }
 
 struct adoptionDay AdoptionDayEnor::current() const
