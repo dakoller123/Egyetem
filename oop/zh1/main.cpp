@@ -1,54 +1,62 @@
 #include <iostream>
 #include "adoptionEnor.h"
-
-//int firstTask(BaseEnor& e)
-//{
-//    return 0;
-//}
-//
-//int secondTask(SecondEnor& e)
-//{
-//    return 0;
-//}
-
+#include "adoptionDayEnor.h"
 
 int main()
 {
-//    std::string filename;
-//    std::cout<<"Enter the name of the input file, please:";
-//    std::cin>>filename;
-//
-//    try{
-//        BaseEnor e = BaseEnor(filename);
-//        std::cout<< "Result for the first task is:" << firstTask(e) << std::endl;
-//
-//        SecondEnor se = SecondEnor(filename);
-//        std::cout<< "Result for the second task is:" << secondTask(se) << std::endl;
+    std::string filename;
+    std::cout<<"Enter the name of the input file, please:";
+    std::cin>>filename;
 
-//
-//        if (e.end())
-//        {
-//            std::cout << "Empty File" << std::endl;
-//        }
-//        else
-//        {
-//            struct student bestStudent = e.current();
-//            while (!e.end())
-//            {
-//                if (e.current().sumWeight > bestStudent.sumWeight)
-//                {
-//                    bestStudent = e.current();
-//                }
-//                e.next();
-//            }
-//
-//             std::cout<< "Best Student is: " << bestStudent.name << "sumWeight: " << bestStudent.sumWeight << std::endl;
-//        }
-//    }
-//    catch(BaseEnor::FileError err)
-//    {
-//        std::cerr<<"Can't find the input file:"<< filename << std::endl;
-//    }
+    try{
+        AdoptionDayEnor adoptionDayEnor = AdoptionDayEnor(filename);
+
+        adoptionDayEnor.first();
+
+        if (adoptionDayEnor.end())
+        {
+            std::cout << "Empty File" << std::endl;
+        }
+        else
+        {
+            bool foundSolution = false;
+            while (!adoptionDayEnor.end() && !foundSolution)
+            {
+                bool everyLabradorIsOld = true;
+                AdoptionEnor adoptions = *(adoptionDayEnor.current().adoptions);
+                while (everyLabradorIsOld && (!adoptions.end()))
+                {
+                    if (adoptions.current().dogType == "labrador")
+                    {
+                        everyLabradorIsOld = (adoptions.current().dogAge >= 2);
+                    }
+                }
+
+                if (everyLabradorIsOld)
+                {
+                    foundSolution = true;
+                }
+                else
+                {
+                    adoptionDayEnor.next();
+                }
+
+            }
+
+            if (foundSolution)
+            {
+                std::cout<< "A day when every labrador adopted was at least 2 years old: " << adoptionDayEnor.current().date << std::endl;
+            }
+            else
+            {
+                std::cout<< "There wasn't any day when every labrador adopted that day were at least 2 years old" << std::endl;
+            }
+        }
+    }
+    catch(AdoptionDayEnor::FileError err)
+    {
+        std::cerr<<"Can't find the input file:"<< filename << std::endl;
+    }
 
     return 0;
 }
