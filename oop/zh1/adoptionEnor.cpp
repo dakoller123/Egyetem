@@ -2,33 +2,17 @@
 #include <fstream>
 #include <sstream>
 
-//AdoptionEnor::AdoptionEnor(std::stringstream &stream)
-//{
-//    _f.open(str);
-//    if(_f.fail())throw MissingInputFile;
-//}
-//
-//bool read(std::ifstream& f, struct record& currentValue, Status& st)
-//{
-//    std::string line;
-//    getline(f,line);
-//    st = Abnormal;
-//    if (!f.fail() && line!="")
-//    {
-//        std::stringstream lineStream(line);
-//        try
-//        {
-//            lineStream >> currentValue.randomAttribute;
-//            st=Normal;
-//        }
-//        catch(std::exception ex){}
-//    }
-//    return st == Normal;
-//}
-
 void AdoptionEnor::next()
 {
-   //read(_f, _current, _status);
+    _status = Abnormal;
+    if (_stream >> _current.firstName &&
+        _stream >> _current.lastName &&
+        _stream >> _current.dogType &&
+        _stream >> _current.dogName &&
+        _stream >> _current.dogAge)
+    {
+        _status=Normal;
+    }
 }
 
 struct adoption AdoptionEnor::current() const
