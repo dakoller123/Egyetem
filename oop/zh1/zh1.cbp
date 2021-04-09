@@ -21,11 +21,11 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="zh1.cbp" />
+		<Unit filename="adoptionEnor.cpp" />
+		<Unit filename="adoptionEnor.h" />
 		<Unit filename="input.txt" />
 		<Unit filename="main.cpp" />
-		<Unit filename="studentEnor.cpp" />
-		<Unit filename="studentEnor.h" />
+		<Unit filename="zh1.cbp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

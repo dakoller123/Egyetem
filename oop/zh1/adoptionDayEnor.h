@@ -3,17 +3,20 @@
 #include <fstream>
 #include <string>
 
-struct record
+
+struct AdoptionDay
 {
-    int randomAttribute;
+    std::string date;
+    AdoptionEnor* adoptionEnor
 };
+
 
 enum Status
 {
     Abnormal, Normal
 };
 
-class BaseEnor
+class AdoptionEnor
 {
     private:
         std::ifstream _f;
@@ -22,7 +25,7 @@ class BaseEnor
 
     public:
         enum FileError { MissingInputFile };
-        BaseEnor(const std::string &str) throw (FileError);
+        AdoptionEnor(const std::string &str) throw (FileError);
         void first();
         void next();
         struct record current() const;

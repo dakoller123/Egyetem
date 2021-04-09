@@ -8,13 +8,16 @@
 	<fstream>
 	<string>
 
-1617981409 source:d:\egyetem\oop\zh1\main.cpp
+1617985444 source:d:\egyetem\oop\zh1\main.cpp
 	<iostream>
-	"baseEnor.h"
-	"secondEnor.h"
+	"adoptionEnor.h"
 
 1617981501 d:\egyetem\oop\zh1\secondenor.h
 	"baseEnor.h"
+	<fstream>
+	<string>
+
+1617985510 d:\egyetem\oop\zh1\adoptionenor.h
 	<fstream>
 	<string>
 

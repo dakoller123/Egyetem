@@ -1,30 +1,29 @@
 #include <iostream>
-#include "baseEnor.h"
-#include "secondEnor.h"
+#include "adoptionEnor.h"
 
-int firstTask(BaseEnor& e)
-{
-    return 0;
-}
-
-int secondTask(SecondEnor& e)
-{
-    return 0;
-}
+//int firstTask(BaseEnor& e)
+//{
+//    return 0;
+//}
+//
+//int secondTask(SecondEnor& e)
+//{
+//    return 0;
+//}
 
 
 int main()
 {
-    std::string filename;
-    std::cout<<"Enter the name of the input file, please:";
-    std::cin>>filename;
-
-    try{
-        BaseEnor e = BaseEnor(filename);
-        std::cout<< "Result for the first task is:" << firstTask(e) << std::endl;
-
-        SecondEnor se = SecondEnor(filename);
-        std::cout<< "Result for the second task is:" << secondTask(se) << std::endl;
+//    std::string filename;
+//    std::cout<<"Enter the name of the input file, please:";
+//    std::cin>>filename;
+//
+//    try{
+//        BaseEnor e = BaseEnor(filename);
+//        std::cout<< "Result for the first task is:" << firstTask(e) << std::endl;
+//
+//        SecondEnor se = SecondEnor(filename);
+//        std::cout<< "Result for the second task is:" << secondTask(se) << std::endl;
 
 //
 //        if (e.end())
@@ -45,11 +44,11 @@ int main()
 //
 //             std::cout<< "Best Student is: " << bestStudent.name << "sumWeight: " << bestStudent.sumWeight << std::endl;
 //        }
-    }
-    catch(BaseEnor::FileError err)
-    {
-        std::cerr<<"Can't find the input file:"<< filename << std::endl;
-    }
+//    }
+//    catch(BaseEnor::FileError err)
+//    {
+//        std::cerr<<"Can't find the input file:"<< filename << std::endl;
+//    }
 
     return 0;
 }
