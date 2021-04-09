@@ -1,6 +1,7 @@
 #include "adoptionDayEnor.h"
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 AdoptionDayEnor::AdoptionDayEnor(const std::string &str) throw (FileError)
 {
@@ -18,11 +19,11 @@ bool read(std::ifstream& f, struct adoptionDay& currentValue, Status& st)
         std::stringstream lineStream(line);
         try
         {
-            std::string date;
-            lineStream >> date;
-            currentValue.date = date;
-            AdoptionEnor adE = AdoptionEnor(lineStream);
-            //possible memory leak here?
+            lineStream >> currentValue.date;
+            std::cout << "currentValue.date: " << currentValue.date << std::endl;
+            std::cout << "Linestream: " << lineStream.str() << std::endl;
+
+            AdoptionEnor adE = AdoptionEnor(&lineStream);
             currentValue.adoptions = & adE;
             st=Normal;
         }
@@ -33,7 +34,6 @@ bool read(std::ifstream& f, struct adoptionDay& currentValue, Status& st)
 
 void AdoptionDayEnor::next()
 {
-    //if possible memory leak above, then deconstruct _current.adoptions
     read(_f, _current, _status);
 }
 
