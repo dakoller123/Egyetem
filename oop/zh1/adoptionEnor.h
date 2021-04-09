@@ -25,7 +25,7 @@ class AdoptionEnor
         Status _status;
 
     public:
-        AdoptionEnor(std::stringstream &stream) : _stream(stream) {}
+        AdoptionEnor(std::stringstream& stream) : _stream(stream) {}
         void first();
         void next();
         struct adoption current() const;

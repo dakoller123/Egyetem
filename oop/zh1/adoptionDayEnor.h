@@ -1,33 +1,29 @@
 #pragma once
-
 #include <fstream>
 #include <string>
 
+#include "adoptionEnor.h"
 
-struct AdoptionDay
+struct adoptionDay
 {
     std::string date;
-    AdoptionEnor* adoptionEnor
+    AdoptionEnor* adoptions;
+    //adoptionDay(std::string& _date, AdoptionEnor& _adoptions) : date(_date), adoptions(_adoptions) {}
 };
 
 
-enum Status
-{
-    Abnormal, Normal
-};
-
-class AdoptionEnor
+class AdoptionDayEnor
 {
     private:
         std::ifstream _f;
-        struct record _current;
+        struct adoptionDay _current;
         Status _status;
 
     public:
         enum FileError { MissingInputFile };
-        AdoptionEnor(const std::string &str) throw (FileError);
+        AdoptionDayEnor(const std::string &str) throw (FileError);
         void first();
         void next();
-        struct record current() const;
+        struct adoptionDay current() const;
         bool end() const;
 };

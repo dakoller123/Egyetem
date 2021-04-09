@@ -1,14 +1,14 @@
-#include "baseEnor.h"
+#include "adoptionDayEnor.h"
 #include <fstream>
 #include <sstream>
 
-BaseEnor::BaseEnor(const std::string &str) throw (FileError)
+AdoptionDayEnor::AdoptionDayEnor(const std::string &str) throw (FileError)
 {
     _f.open(str);
     if(_f.fail())throw MissingInputFile;
 }
 
-bool read(std::ifstream& f, struct record& currentValue, Status& st)
+bool read(std::ifstream& f, struct adoptionDay& currentValue, Status& st)
 {
     std::string line;
     getline(f,line);
@@ -18,7 +18,11 @@ bool read(std::ifstream& f, struct record& currentValue, Status& st)
         std::stringstream lineStream(line);
         try
         {
-            lineStream >> currentValue.randomAttribute;
+            std::string date;
+            lineStream >> date;
+            currentValue.date = date;
+            AdoptionEnor adE = AdoptionEnor(lineStream);
+            currentValue.adoptions = & adE;
             st=Normal;
         }
         catch(std::exception ex){}
@@ -26,22 +30,22 @@ bool read(std::ifstream& f, struct record& currentValue, Status& st)
     return st == Normal;
 }
 
-void BaseEnor::next()
+void AdoptionDayEnor::next()
 {
    read(_f, _current, _status);
 }
 
-struct record BaseEnor::current() const
+struct adoptionDay AdoptionDayEnor::current() const
 {
     return _current;
 }
 
-void BaseEnor::first()
+void AdoptionDayEnor::first()
 {
     next();
 }
 
-bool BaseEnor::end() const
+bool AdoptionDayEnor::end() const
 {
     return _status != Normal;
 }

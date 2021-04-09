@@ -17,7 +17,12 @@
 	<fstream>
 	<string>
 
-1617985510 d:\egyetem\oop\zh1\adoptionenor.h
+1617986049 d:\egyetem\oop\zh1\adoptionenor.h
 	<fstream>
 	<string>
+
+1617985791 source:d:\egyetem\oop\zh1\adoptionenor.cpp
+	"adoptionEnor.h"
+	<fstream>
+	<sstream>
 
