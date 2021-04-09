@@ -1,0 +1,14 @@
+Egy általános iskola alsó tagozatán papírgyűjtő versenyt rendeztek. A verseny 2018.
+szeptember 1-től, december 31-ig tartott. Feljegyezték a verseny adatait, és egy szöveges
+állományban tárolták el. A fájl egy sorának felépítése: elsőként a tanuló neve szerepel (két
+vagy több szóközök nélküli sztring), majd az osztálynak az azonosítója (1-4 számjeggyel
+kezdődő, szóközt nem tartalmazó sztring, például 1a, 2b, 4c), majd a papírgyűjtés adatai:
+dátum-súly (a dátum EEEE/HH/NN alakú sztring, a súly egy pozitív valós szám: a
+gyűjtött papír súlya kilogrammban megadva) formájában. A sor dátum szerint rendezett.
+Az adatok szóközökkel vagy tabulátorjelekkel vannak egy soron belül elválasztva. A
+szöveges állomány sorait osztály-azonosító szerint rendezték. Feltehetjük, hogy a
+szöveges állomány helyesen van kitöltve. Példa az állomány egy sorára:
+Nagyon Szorgalmas Eszter 4c 2018/09/10 4.5 2018/09/22 3.5 2018/11/05 5.2
+(1) Adjunk meg egy tanulót, aki legalább 20 kg papírt gyűjtött, és hogy mennyit gyűjtött?
+(2) Melyik osztály nyerte a versenyt (gyűjtötte a legtöbb papírt)? Mennyi papírt gyűjtöttek
+összesen a tanulói?

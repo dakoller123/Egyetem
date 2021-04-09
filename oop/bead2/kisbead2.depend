@@ -8,11 +8,11 @@
 	<fstream>
 	<string>
 
-1617357868 source:d:\egyetem\oop\kisbead2\main.cpp
+1617289582 source:d:\egyetem\oop\kisbead2\main.cpp
 	<iostream>
-	"countEnor.h"
+	"numberEnor.h"
 
-1617968636 source:d:\egyetem\oop\kisbead2\countenor.cpp
+1617357849 source:d:\egyetem\oop\kisbead2\countenor.cpp
 	"countEnor.h"
 	"numberEnor.h"
 
