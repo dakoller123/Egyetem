@@ -1,0 +1,4 @@
+KARCSI 2021.04.07. medve 500
+KARCSI 2021.04.08. medve 350    medve 280
+KARCSI 2021.04.09. fox 2.5      rabbit 1
+ZSOLTI 2021.04.01. medve 300    reindeer 300

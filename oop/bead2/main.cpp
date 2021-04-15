@@ -1,12 +1,12 @@
 #include <iostream>
 #include "studentEnor.h"
-
+#include <iomanip>
 int main()
 {
-    std::string filename;
-    std::cout<<"Enter the name of the input file, please:";
-    std::cin>>filename;
-
+//    std::string filename;
+//    std::cout<<"Enter the name of the input file, please:";
+//    std::cin>>filename;
+    std::string filename = "input.txt";
     try{
         StudentEnor e = StudentEnor(filename);
         e.first();
@@ -27,7 +27,7 @@ int main()
                 e.next();
             }
 
-             std::cout<< "Best Student is: " << bestStudent.name << "sumWeight: " << bestStudent.sumWeight << std::endl;
+             std::cout<< "Best Student is: " << bestStudent.name << " sumWeight: " << std::fixed << std::setprecision(3) << bestStudent.sumWeight << std::endl;
         }
     }
     catch(StudentEnor::FileError err)

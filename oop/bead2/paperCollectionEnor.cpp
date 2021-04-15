@@ -1,7 +1,7 @@
 #include "studentEnor.h"
 #include <fstream>
 #include <sstream>
-#include <iostream>
+
 StudentEnor::StudentEnor(const std::string &str) throw (FileError)
 {
     _f.open(str);
@@ -16,29 +16,15 @@ bool read(std::ifstream& f, struct student& currentValue, Status& st)
     if (!f.fail() && line!="")
     {
         std::stringstream lineStream(line);
-
-        std::cout << "Line: " << line << std::endl;
         try
         {
             lineStream >> currentValue.name;
-            std::cout << "Name: " << currentValue.name << std::endl;
-            std::string nextWord;
-            lineStream >> nextWord;
-            while (nextWord.length() > 2)
-            {
-                lineStream >> nextWord;
-            }
-
-            currentValue.classId = nextWord;
-
-            std::cout << "classId: " << currentValue.classId << std::endl;
-
+            lineStream >> currentValue.classId;
             currentValue.sumWeight = 0;
-            float tmpWeight = 0;
+            float tmpWeight;
             std::string tmpDate;
-            while (lineStream >> tmpDate >> tmpWeight)
+            while (lineStream >> tmpDate && lineStream >> tmpWeight)
             {
-                std::cout << tmpDate << " " << tmpWeight << std::endl;
                 currentValue.sumWeight += tmpWeight;
             }
             st=Normal;
