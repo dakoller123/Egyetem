@@ -13,6 +13,7 @@ void ClassEnor::next()
     while (!_studentEnor.end() && _current.classId == _studentEnor.current().classId)
     {
        _current.sumWeight += _studentEnor.current().sumWeight;
+       _studentEnor.next();
     }
 }
 
@@ -24,7 +25,11 @@ struct classResult ClassEnor::current() const
 void ClassEnor::first()
 {
     _studentEnor.first();
-    next();
+
+    if (!_studentEnor.end())
+    {
+       next();
+    }
 }
 
 bool ClassEnor::end() const
