@@ -1,15 +1,28 @@
 # depslib dependency file v1.0
-1618499924 source:d:\egyetem\oop\bead2\studentenor.cpp
+1618588711 source:d:\egyetem\oop\bead2\studentenor.cpp
 	"studentEnor.h"
 	<fstream>
 	<sstream>
+	<iostream>
 
 1618499925 d:\egyetem\oop\bead2\studentenor.h
 	<fstream>
 	<string>
 
-1618500320 source:d:\egyetem\oop\bead2\main.cpp
+1618588676 source:d:\egyetem\oop\bead2\main.cpp
 	<iostream>
-	"studentEnor.h"
 	<iomanip>
+	"studentEnor.h"
+	"classEnor.h"
+
+1618588174 source:d:\egyetem\oop\bead2\classenor.cpp
+	"studentEnor.h"
+	"classEnor.h"
+	<fstream>
+	<sstream>
+
+1618588207 d:\egyetem\oop\bead2\classenor.h
+	<fstream>
+	<string>
+	"studentEnor.h"
 

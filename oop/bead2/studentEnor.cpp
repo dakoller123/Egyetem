@@ -17,11 +17,10 @@ bool read(std::ifstream& f, struct student& currentValue, Status& st)
     {
         std::stringstream lineStream(line);
 
-        std::cout << "Line: " << line << std::endl;
         try
         {
             lineStream >> currentValue.name;
-            std::cout << "Name: " << currentValue.name << std::endl;
+
             std::string nextWord;
             lineStream >> nextWord;
             while (nextWord.length() > 2)
@@ -31,14 +30,11 @@ bool read(std::ifstream& f, struct student& currentValue, Status& st)
 
             currentValue.classId = nextWord;
 
-            std::cout << "classId: " << currentValue.classId << std::endl;
-
             currentValue.sumWeight = 0;
             float tmpWeight = 0;
             std::string tmpDate;
             while (lineStream >> tmpDate >> tmpWeight)
             {
-                std::cout << tmpDate << " " << tmpWeight << std::endl;
                 currentValue.sumWeight += tmpWeight;
             }
             st=Normal;
