@@ -9,13 +9,14 @@
 	<fstream>
 	<string>
 
-1618588676 source:d:\egyetem\oop\bead2\main.cpp
+1618749590 source:d:\egyetem\oop\bead2\main.cpp
 	<iostream>
 	<iomanip>
 	"studentEnor.h"
 	"classEnor.h"
+	"solutions.h"
 
-1618588174 source:d:\egyetem\oop\bead2\classenor.cpp
+1618742274 source:d:\egyetem\oop\bead2\classenor.cpp
 	"studentEnor.h"
 	"classEnor.h"
 	<fstream>
@@ -25,4 +26,10 @@
 	<fstream>
 	<string>
 	"studentEnor.h"
+
+1618749716 d:\egyetem\oop\bead2\solutions.h
+	<iostream>
+	<iomanip>
+	"studentEnor.h"
+	"classEnor.h"
 

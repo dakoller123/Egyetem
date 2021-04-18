@@ -3,8 +3,6 @@
 #include <fstream>
 #include <sstream>
 
-
-
 void ClassEnor::next()
 {
     _current.sumWeight = _studentEnor.current().sumWeight;
