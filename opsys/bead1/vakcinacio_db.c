@@ -5,19 +5,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include "vakcinacio_lib.h"
 
-static const char DB_FILENAME[] = "./database";
-static const char DB_BACKUP_FILENAME[] = "./database.bak";
-
-struct record
-{
-    unsigned int id;
-    char firstName[14];
-    char lastName[14];
-    int birthYear;
-    char phoneNumber[14];
-    bool paid;
-};
 
 void readRecord(FILE *restrict fp, unsigned int id)
 {
@@ -51,52 +40,12 @@ void readRecord(FILE *restrict fp, unsigned int id)
     }
 }
 
-void updateRecord(unsigned int id, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
-{
-    FILE* oldDB = fopen(DB_FILENAME, "r");
-    FILE* tmpDB = fopen(DB_BACKUP_FILENAME, "w");
-    bool found = false;
-    struct record tmp;
-    while((fread(&tmp, sizeof(struct record), 1, oldDB)))
-    {
-        if (tmp.id == id)
-        {
-            found = true;
-        }
 
-        fwrite(&tmp, sizeof(struct record), 1, tmpDB);
-    }
-    fclose(tmpDB);
-    fclose(oldDB);
-
-    if (found)
-    {
-        printf("Entry found, editing...\n");
-        tmpDB = fopen(DB_BACKUP_FILENAME, "r");
-        FILE* newDB = fopen(DB_FILENAME, "w");
-        struct record tmp2;
-        while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
-        {
-            if (tmp2.id == id)
-            {
-                tmp2.birthYear = birthYear;
-                strcpy(tmp2.firstName, firstName);
-                strcpy(tmp2.lastName, lastName);
-                strcpy(tmp2.phoneNumber, phoneNumber);
-                tmp2.paid = paid;
-            }
-            fwrite(&tmp2, sizeof(struct record), 1, newDB);
-        }
-
-        fclose(newDB);
-        fclose(tmpDB);
-    }
-}
 
 void deleteRecord(unsigned int id)
 {
-    FILE* oldDB = fopen(DB_FILENAME, "r");
-    FILE* tmpDB = fopen(DB_BACKUP_FILENAME, "w");
+    FILE* oldDB = fopen(DB_FILENAME, "rb");
+    FILE* tmpDB = fopen(DB_BACKUP_FILENAME, "wb");
     bool found = false;
     struct record tmp;
     while((fread(&tmp, sizeof(struct record), 1, oldDB)))
@@ -114,8 +63,8 @@ void deleteRecord(unsigned int id)
     if (found)
     {
         printf("Entry found, deleting...\n");
-        tmpDB = fopen(DB_BACKUP_FILENAME, "r");
-        FILE* newDB = fopen(DB_FILENAME, "w");
+        tmpDB = fopen(DB_BACKUP_FILENAME, "rb");
+        FILE* newDB = fopen(DB_FILENAME, "wb");
         struct record tmp2;
         while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
         {
@@ -129,7 +78,7 @@ void deleteRecord(unsigned int id)
     }
 }
 
-int listRecords(FILE* restrict fp, bool print)
+unsigned int listRecords(FILE* restrict fp, bool print)
 {
     if (print)
     {
@@ -138,9 +87,15 @@ int listRecords(FILE* restrict fp, bool print)
     }
 
     struct record input;
-    input.id = 0;
+    unsigned int firstFreeId = 1;
+
     while(fread(&input, sizeof(struct record), 1, fp))
     {
+        if (firstFreeId == input.id)
+        {
+            firstFreeId = firstFreeId + 1;
+        }
+
         if (print)
         {
             printf("| %i | %s %s | %d | %s",
@@ -157,37 +112,65 @@ int listRecords(FILE* restrict fp, bool print)
         }
     }
 
-    return input.id;
+    return firstFreeId;
 }
 
 void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
 {
-    int lastId = listRecords(fp, false);
-    printf("%s %d\n", "last id used was: ", lastId);
+    unsigned int freeId = listRecords(fp, false);
+    printf("%s %d\n", "free id: ", freeId);
     struct record newRecord;
-    newRecord.id = lastId + 1;
+    newRecord.id = freeId;
     strcpy(newRecord.firstName, firstName);
     strcpy(newRecord.lastName, lastName);
     newRecord.birthYear = birthYear;
     strcpy(newRecord.phoneNumber, phoneNumber);
     newRecord.paid = paid;
-
+    newRecord.vaccinated = false;
     fwrite(&newRecord, sizeof(struct record), 1, fp);
 }
 
-FILE* openFile()
+void updateRecord(unsigned int id, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid, bool vaccinated)
 {
-    FILE* fp = fopen(DB_FILENAME, "a+");
-    if (fp == 0)
+    FILE* oldDB = fopen(DB_FILENAME, "rb");
+    FILE* tmpDB = fopen(DB_BACKUP_FILENAME, "wb");
+    bool found = false;
+    struct record tmp;
+    while((fread(&tmp, sizeof(struct record), 1, oldDB)))
     {
-        printf("%s\n", "DB file was not found, creating one...");
-        fp = fopen(DB_FILENAME, "w+");
+        if (tmp.id == id)
+        {
+            found = true;
+        }
+
+        fwrite(&tmp, sizeof(struct record), 1, tmpDB);
     }
-    else
+    fclose(tmpDB);
+    fclose(oldDB);
+
+    if (found)
     {
-        printf("%s\n", "DB file was opened successfully");
+        printf("Entry found, editing...\n");
+        tmpDB = fopen(DB_BACKUP_FILENAME, "rb");
+        FILE* newDB = fopen(DB_FILENAME, "wb");
+        struct record tmp2;
+        while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
+        {
+            if (tmp2.id == id)
+            {
+                tmp2.birthYear = birthYear;
+                strcpy(tmp2.firstName, firstName);
+                strcpy(tmp2.lastName, lastName);
+                strcpy(tmp2.phoneNumber, phoneNumber);
+                tmp2.paid = paid;
+                tmp2.vaccinated = vaccinated;
+            }
+            fwrite(&tmp2, sizeof(struct record), 1, newDB);
+        }
+
+        fclose(newDB);
+        fclose(tmpDB);
     }
-    return fp;
 }
 
 void invalidArguments()
@@ -282,7 +265,7 @@ int main(int argc, char *argv[]) {
 
             if (operation == 'R')
             {
-                FILE* fp = fopen(DB_FILENAME, "r");
+                FILE* fp = fopen(DB_FILENAME, "rb");
                 readRecord(fp, id);
                 fclose(fp);
             }
@@ -330,7 +313,7 @@ int main(int argc, char *argv[]) {
                         paid = true;
                     }
                     validArgs = true;
-                    updateRecord(id, arg_fName, arg_lName, birthYear, arg_phone, paid);
+                    updateRecord(id, arg_fName, arg_lName, birthYear, arg_phone, paid, false);
                 }
             }
         }
