@@ -4,9 +4,9 @@
 
 int main()
 {
-    std::string filename;
-    std::cout<<"Enter the name of the input file, please:";
-    std::cin>>filename;
+     std::string filename;
+     std::cout<<"Enter the name of the input file, please:";
+     std::cin>>filename;
 
     //std::string filename = "input.txt";
 

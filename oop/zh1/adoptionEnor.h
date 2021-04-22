@@ -28,7 +28,7 @@ class AdoptionEnor
     public:
         //AdoptionEnor(std::stringstream& stream) : _stream(stream) {};
         //AdoptionEnor(const std::string &str) : _stream(std::stringstream(str)) {};
-        AdoptionEnor(const std::string &str)
+        AdoptionEnor(const std::string str)
         {
             _stream = std::stringstream(str);
         };

@@ -24,13 +24,13 @@ bool read(std::ifstream& f, struct adoptionDay& currentValue, Status& st)
             std::cout << "Linestream: " << lineStream.str() << std::endl;
 
             //Itt a bug:
-            //Valahogy nem tudom Ã¡tadni az adoptionEnornak vagy a lineStream(re mutatÃ³ pointert) vagy magÃ¡t a line stringet Ãºgy
-            //Hogy utÃ¡na az AdoptionEnor lÃ¡ssa a dÃ¡tum nÃ©lkÃ¼li maradÃ©k rÃ©szÃ©t a sornak
-            //Vagy akÃ¡r az egÃ©sz sort Ã©s akkor a first() mÅ±veletnÃ©l kiszednÃ©m a dÃ¡tumot megint
-            //PrÃ³bÃ¡lkoztam stringstream referenciÃ¡val, pointerrel, most itt Ã©pp magÃ¡val stringgel is
+                //Valahogy nem tudom átadni az adoptionEnornak vagy a lineStream(re mutató pointert) vagy magát a line stringet úgy
+                //Hogy utána az AdoptionEnor lássa a dátum nélküli maradék részét a sornak
+                //Vagy akár az egész sort és akkor a first() m?veletnél kiszedném a dátumot megint
+                //Próbálkoztam stringstream referenciával, pointerrel, most itt épp magával stringgel is
 
-            AdoptionEnor adE = AdoptionEnor(line);
-            currentValue.adoptions = & adE;
+            AdoptionEnor* adE = new AdoptionEnor(line);
+            currentValue.adoptions = adE;
             st=Normal;
         }
         catch(std::exception ex){}
