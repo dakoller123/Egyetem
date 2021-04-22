@@ -83,7 +83,7 @@ unsigned int listRecords(FILE* restrict fp, bool print)
     if (print)
     {
         printf("%s\n", "listing all records...");
-        printf("%s\n", "| ID | NAME | BirthYear | PhoneNumber | Private Healthcare |");
+        printf("%s\n", "| ID | NAME | BirthYear | PhoneNumber | Private Healthcare | Vaccinated | ");
     }
 
     struct record input;
@@ -98,17 +98,9 @@ unsigned int listRecords(FILE* restrict fp, bool print)
 
         if (print)
         {
-            printf("| %i | %s %s | %d | %s",
-                   input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber);
+            printf("| %i | %s %s | %d | %s | %d | %d |\n",
+                   input.id, input.firstName, input.lastName, input.birthYear, input.phoneNumber, input.paid, input.vaccinated);
 
-            if (input.paid)
-            {
-                printf(" | X |\n");
-            }
-            else
-            {
-                printf(" |  | \n");
-            }
         }
     }
 
