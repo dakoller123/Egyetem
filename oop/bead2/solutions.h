@@ -65,20 +65,13 @@ bool secondSolution(ClassEnor& classEnor, struct classResult& bestClass)
     bestClass = classEnor.current();
     while (!classEnor.end())
     {
-        std::cout << "Current: " << classEnor.current().sumWeight << " Best: " << bestClass.sumWeight <<std::endl;
+        classEnor.next();
         if (classEnor.current().sumWeight > bestClass.sumWeight)
         {
-            std::cout << "New best found! " <<std::endl;
             bestClass = classEnor.current();
         }
-        classEnor.next();
     }
 
-    if (classEnor.current().sumWeight > bestClass.sumWeight)
-    {
-        std::cout << "New best found! " <<std::endl;
-        bestClass = classEnor.current();
-    }
     return true;
 };
 

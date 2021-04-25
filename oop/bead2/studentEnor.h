@@ -10,17 +10,13 @@ struct student
     float sumWeight;
 };
 
-enum Status
-{
-    Abnormal, Normal
-};
 
 class StudentEnor
 {
     private:
         std::ifstream _f;
         struct student _current;
-        Status _status;
+        bool _end;
 
     public:
         enum FileError { MissingInputFile };

@@ -7,10 +7,9 @@
 
 int main()
 {
-//    std::string fileName;
-//    std::cout<<"Enter the name of the input file, please:";
-//    std::cin>>fileName;
-    std::string fileName = "input.txt";
+    std::string fileName;
+    std::cout<<"Enter the name of the input file, please:";
+    std::cin>>fileName;
     solveFirstProblem(fileName);
     solveSecondProblem(fileName);
 

@@ -1,11 +1,11 @@
 # depslib dependency file v1.0
-1619353770 source:d:\egyetem\oop\bead2\studentenor.cpp
+1619364982 source:d:\egyetem\oop\bead2\studentenor.cpp
 	"studentEnor.h"
 	<fstream>
 	<sstream>
 	<iostream>
 
-1618499925 d:\egyetem\oop\bead2\studentenor.h
+1619364945 d:\egyetem\oop\bead2\studentenor.h
 	<fstream>
 	<string>
 
@@ -16,25 +16,24 @@
 	"classEnor.h"
 	"solutions.h"
 
-1619362587 source:d:\egyetem\oop\bead2\classenor.cpp
+1619364134 source:d:\egyetem\oop\bead2\classenor.cpp
 	"studentEnor.h"
 	"classEnor.h"
 	<fstream>
 	<sstream>
-	<iostream>
 
-1619337189 d:\egyetem\oop\bead2\classenor.h
+1619364960 d:\egyetem\oop\bead2\classenor.h
 	<fstream>
 	<string>
 	"studentEnor.h"
 
-1619363061 d:\egyetem\oop\bead2\solutions.h
+1619364124 d:\egyetem\oop\bead2\solutions.h
 	<iostream>
 	<iomanip>
 	"studentEnor.h"
 	"classEnor.h"
 
-1619362542 source:d:\egyetem\oop\bead2\main_tests.cpp
+1619363471 source:d:\egyetem\oop\bead2\main_tests.cpp
 	"catch.hpp"
 	"solutions.h"
 	"studentEnor.h"

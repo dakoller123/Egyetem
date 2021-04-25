@@ -14,7 +14,6 @@ class ClassEnor
     private:
         StudentEnor& _studentEnor;
         struct classResult _current;
-        Status _status;
         bool _isEmpty;
 
     public:

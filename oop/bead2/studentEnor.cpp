@@ -8,15 +8,15 @@ StudentEnor::StudentEnor(const std::string &str) throw (FileError)
     if(_f.fail())throw MissingInputFile;
 }
 
-bool read(std::ifstream& f, struct student& currentValue, Status& st)
+void StudentEnor::next()
 {
     std::string line;
-    getline(f,line);
-    st = Abnormal;
-    if (!f.fail() && line!="")
+    getline(_f,line);
+    _end = true;
+    if (!_f.fail() && line!="")
     {
         std::stringstream lineStream(line);
-        lineStream >> currentValue.name;
+        lineStream >> _current.name;
         std::string nextWord;
         lineStream >> nextWord;
 
@@ -25,24 +25,18 @@ bool read(std::ifstream& f, struct student& currentValue, Status& st)
             lineStream >> nextWord;
         }
 
-        currentValue.classId = nextWord;
-        currentValue.sumWeight = 0;
+        _current.classId = nextWord;
+        _current.sumWeight = 0;
         float tmpWeight = 0;
         std::string tmpDate;
 
         while (lineStream >> tmpDate >> tmpWeight)
         {
-            currentValue.sumWeight += tmpWeight;
+            _current.sumWeight += tmpWeight;
         }
 
-        st=Normal;
+        _end = false;
     }
-    return st == Normal;
-}
-
-void StudentEnor::next()
-{
-   read(_f, _current, _status);
 }
 
 struct student StudentEnor::current() const
@@ -57,5 +51,5 @@ void StudentEnor::first()
 
 bool StudentEnor::end() const
 {
-    return _status != Normal;
+    return _end;
 }
