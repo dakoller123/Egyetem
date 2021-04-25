@@ -9,6 +9,7 @@
 #include <unistd.h> //fork
 #include <sys/types.h> //fork-hoz
 #include <fcntl.h> //lock
+#include <sys/wait.h> //waitpid
 
 void setVaccinationStatus(unsigned int id, bool vaccinated)
 {
@@ -74,7 +75,8 @@ int main()
         if (firstBus<0)
         {
             //Error
-            perror("Error on firstBus"); exit(1);
+            perror("Error on firstBus");
+            exit(1);
         }
 
         if (firstBus>0)
@@ -87,17 +89,19 @@ int main()
                 pid_t secondBus = fork();
                 if (secondBus<0)
                 {
-                    //Error
-                    perror("Error on secondBus"); exit(1);
+                    perror("Error on secondBus\n");
+                    exit(1);
                 }
 
                 if (secondBus>0)
                 {
                     //Parent process
+                    waitpid(child,&status,0);
+                    printf("The end of parent process\n");
                 }
                 else
                 {
-                    printf("Second bus is leaving \n");
+                    printf("Second bus is leaving\n");
                     //Second Bus process
                 }
             }

@@ -26,6 +26,7 @@ void ClassEnor::first()
 
     if (!_studentEnor.end())
     {
+       _isEmpty = false;
        next();
     }
 }
@@ -33,4 +34,9 @@ void ClassEnor::first()
 bool ClassEnor::end() const
 {
     return _studentEnor.end();
+}
+
+bool ClassEnor::isEmpty() const
+{
+    return _isEmpty;
 }

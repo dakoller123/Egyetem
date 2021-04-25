@@ -15,11 +15,13 @@ class ClassEnor
         StudentEnor& _studentEnor;
         struct classResult _current;
         Status _status;
+        bool _isEmpty;
 
     public:
-        ClassEnor(StudentEnor& studentEnor) : _studentEnor(studentEnor) {}
+        ClassEnor(StudentEnor& studentEnor) : _studentEnor(studentEnor), _isEmpty(true) {}
         void first();
         void next();
         struct classResult current() const;
         bool end() const;
+        bool isEmpty() const;
 };

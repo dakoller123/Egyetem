@@ -80,7 +80,7 @@ bool solveSecondProblem(std::string fileName)
         ClassEnor classEnor = ClassEnor(studentEnor);
         classEnor.first();
 
-        if (classEnor.end())
+        if (classEnor.isEmpty())
         {
             std::cerr << "Empty File" << std::endl;
             return false;
