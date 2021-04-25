@@ -2,17 +2,20 @@
 #include "classEnor.h"
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 void ClassEnor::next()
 {
-    _current.sumWeight = _studentEnor.current().sumWeight;
+    _current.sumWeight = 0;
     _current.classId = _studentEnor.current().classId;
-
+    std::cout << "Current classId: " << _current.classId << "Current sum: ";
     while (!_studentEnor.end() && _current.classId == _studentEnor.current().classId)
     {
        _current.sumWeight += _studentEnor.current().sumWeight;
+        std::cout << _current.sumWeight << " ";
        _studentEnor.next();
     }
+    std::cout << std::endl;
 }
 
 struct classResult ClassEnor::current() const

@@ -80,3 +80,35 @@ TEST_CASE("firstSolution, multiple entry, enough paper, multiple students")
     CHECK(firstSolutionStudent.sumWeight == 33.2f);
 }
 
+TEST_CASE("secondSolution, single entry")
+{
+    StudentEnor e("inputfiles/testfile_1_single.txt");
+    ClassEnor classEnor(e);
+    struct classResult bestClass;
+    bool fileNotEmpty = secondSolution(classEnor, bestClass);
+    CHECK(fileNotEmpty == true);
+    CHECK(bestClass.classId == "4c");
+    CHECK(bestClass.sumWeight == 13.2f);
+}
+
+TEST_CASE("secondSolution, multiple entry, first is best")
+{
+    StudentEnor e("inputfiles/testfile_2_first.txt");
+    ClassEnor classEnor(e);
+    struct classResult bestClass;
+    bool fileNotEmpty = secondSolution(classEnor, bestClass);
+    CHECK(fileNotEmpty == true);
+    CHECK(bestClass.classId == "4c");
+    CHECK(bestClass.sumWeight == 66.4f);
+}
+
+TEST_CASE("secondSolution, multiple entry, last is best")
+{
+    StudentEnor e("inputfiles/testfile_2_last.txt");
+    ClassEnor classEnor(e);
+    struct classResult bestClass;
+    bool fileNotEmpty = secondSolution(classEnor, bestClass);
+    CHECK(fileNotEmpty == true);
+    CHECK(bestClass.classId == "4b");
+    CHECK(bestClass.sumWeight == 67.0f);
+}

@@ -16,7 +16,10 @@ bool firstSolution(StudentEnor& e, struct student& firstHardworkingStudent)
             hardworkingStudentFound = true;
             firstHardworkingStudent = e.current();
         }
-        e.next();
+        else
+        {
+            e.next();
+        }
     }
 
     return hardworkingStudentFound;
@@ -51,6 +54,7 @@ bool solveFirstProblem(std::string fileName)
     }
 };
 
+//false if file is empty, true otherwise
 bool secondSolution(ClassEnor& classEnor, struct classResult& bestClass)
 {
     classEnor.first();
@@ -61,11 +65,19 @@ bool secondSolution(ClassEnor& classEnor, struct classResult& bestClass)
     bestClass = classEnor.current();
     while (!classEnor.end())
     {
+        std::cout << "Current: " << classEnor.current().sumWeight << " Best: " << bestClass.sumWeight <<std::endl;
         if (classEnor.current().sumWeight > bestClass.sumWeight)
         {
+            std::cout << "New best found! " <<std::endl;
             bestClass = classEnor.current();
         }
         classEnor.next();
+    }
+
+    if (classEnor.current().sumWeight > bestClass.sumWeight)
+    {
+        std::cout << "New best found! " <<std::endl;
+        bestClass = classEnor.current();
     }
     return true;
 };
