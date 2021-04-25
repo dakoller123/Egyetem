@@ -6,6 +6,7 @@
 
 bool firstSolution(StudentEnor& e, struct student& firstHardworkingStudent)
 {
+    e.first();
     bool hardworkingStudentFound = false;
     firstHardworkingStudent = e.current();
     while (!hardworkingStudentFound && !e.end())
@@ -21,36 +22,27 @@ bool firstSolution(StudentEnor& e, struct student& firstHardworkingStudent)
     return hardworkingStudentFound;
 };
 
-
+//returns false upon fileerror
 bool solveFirstProblem(std::string fileName)
 {
   try{
         StudentEnor e = StudentEnor(fileName);
-        e.first();
 
-        if (e.end())
+        struct student firstHardworkingStudent;
+
+        bool hardworkingStudentFound = firstSolution(e, firstHardworkingStudent);
+
+        if (hardworkingStudentFound)
         {
-            std::cerr << "Empty File" << std::endl;
-            return false;
+            std::cout<< "First student more than 20kg of paper collected: " << firstHardworkingStudent.name << " sumWeight: " << firstHardworkingStudent.sumWeight << std::endl;
         }
         else
         {
-            struct student firstHardworkingStudent;
-
-            bool hardworkingStudentFound = firstSolution(e, firstHardworkingStudent);
-
-            if (hardworkingStudentFound)
-            {
-                std::cout<< "First student more than 20kg of paper collected: " << firstHardworkingStudent.name << " sumWeight: " << firstHardworkingStudent.sumWeight << std::endl;
-            }
-            else
-            {
-                std::cout << "None of the students collected more than 20 kg of paper!" << std::endl;
-            }
-
-            return true;
-
+            std::cout << "None of the students collected more than 20 kg of paper!" << std::endl;
         }
+
+        return true;
+
     }
     catch(StudentEnor::FileError err)
     {
@@ -59,9 +51,14 @@ bool solveFirstProblem(std::string fileName)
     }
 };
 
-struct classResult secondSolution(ClassEnor& classEnor)
+bool secondSolution(ClassEnor& classEnor, struct classResult& bestClass)
 {
-    struct classResult bestClass = classEnor.current();
+    classEnor.first();
+    if (classEnor.isEmpty())
+    {
+        return false;
+    }
+    bestClass = classEnor.current();
     while (!classEnor.end())
     {
         if (classEnor.current().sumWeight > bestClass.sumWeight)
@@ -70,24 +67,26 @@ struct classResult secondSolution(ClassEnor& classEnor)
         }
         classEnor.next();
     }
-    return bestClass;
+    return true;
 };
 
+//returns false upon fileerror or empty file
 bool solveSecondProblem(std::string fileName)
 {
   try{
         StudentEnor studentEnor = StudentEnor(fileName);
         ClassEnor classEnor = ClassEnor(studentEnor);
-        classEnor.first();
+        struct classResult bestClass;
 
-        if (classEnor.isEmpty())
+        bool validInput = secondSolution(classEnor, bestClass);
+
+        if (!validInput)
         {
             std::cerr << "Empty File" << std::endl;
             return false;
         }
         else
         {
-            struct classResult bestClass = secondSolution(classEnor);
             std::cout<< "Best Class is: " << bestClass.classId << " sumWeight: " <<  bestClass.sumWeight << std::endl;
             return true;
         }

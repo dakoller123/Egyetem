@@ -12,34 +12,33 @@ bool read(std::ifstream& f, struct student& currentValue, Status& st)
 {
     std::string line;
     getline(f,line);
+    std::cout << line << std::endl;
     st = Abnormal;
     if (!f.fail() && line!="")
     {
         std::stringstream lineStream(line);
 
-        try
+        lineStream >> currentValue.name;
+
+        std::string nextWord;
+        lineStream >> nextWord;
+        while (nextWord.length() > 2)
         {
-            lineStream >> currentValue.name;
-
-            std::string nextWord;
             lineStream >> nextWord;
-            while (nextWord.length() > 2)
-            {
-                lineStream >> nextWord;
-            }
-
-            currentValue.classId = nextWord;
-
-            currentValue.sumWeight = 0;
-            float tmpWeight = 0;
-            std::string tmpDate;
-            while (lineStream >> tmpDate >> tmpWeight)
-            {
-                currentValue.sumWeight += tmpWeight;
-            }
-            st=Normal;
         }
-        catch(std::exception ex){}
+
+        currentValue.classId = nextWord;
+
+        currentValue.sumWeight = 0;
+        float tmpWeight = 0;
+        std::string tmpDate;
+        while (lineStream >> tmpDate >> tmpWeight)
+        {
+            std::cout << currentValue.sumWeight << std::endl;
+            currentValue.sumWeight += tmpWeight;
+            std::cout << currentValue.sumWeight << std::endl;
+        }
+        st=Normal;
     }
     return st == Normal;
 }
