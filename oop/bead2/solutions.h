@@ -11,7 +11,7 @@ bool firstSolution(StudentEnor& e, struct student& firstHardworkingStudent)
     firstHardworkingStudent = e.current();
     while (!hardworkingStudentFound && !e.end())
     {
-        if (e.current().sumWeight > 20.0f)
+        if (e.current().sumWeight >= 20.0f)
         {
             hardworkingStudentFound = true;
             firstHardworkingStudent = e.current();

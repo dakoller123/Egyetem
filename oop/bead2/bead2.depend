@@ -27,13 +27,13 @@
 	<string>
 	"studentEnor.h"
 
-1619349444 d:\egyetem\oop\bead2\solutions.h
+1619350568 d:\egyetem\oop\bead2\solutions.h
 	<iostream>
 	<iomanip>
 	"studentEnor.h"
 	"classEnor.h"
 
-1619349163 source:d:\egyetem\oop\bead2\main_tests.cpp
+1619350281 source:d:\egyetem\oop\bead2\main_tests.cpp
 	"catch.hpp"
 	"solutions.h"
 	"studentEnor.h"

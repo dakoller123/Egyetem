@@ -49,3 +49,34 @@ TEST_CASE("firstSolution, single entry, enough paper")
     CHECK(firstSolutionFound == true);
     CHECK(firstSolutionStudent.sumWeight == 33.2f);
 }
+
+TEST_CASE("firstSolution, multiple entry, enough paper, first student")
+{
+    StudentEnor e("inputfiles/testfile_1_multi_lot_first.txt");
+    struct student firstSolutionStudent;
+    bool firstSolutionFound =  firstSolution(e, firstSolutionStudent);
+    CHECK(firstSolutionFound == true);
+    CHECK(firstSolutionStudent.sumWeight == 33.2f);
+}
+
+
+TEST_CASE("firstSolution, multiple entry, enough paper, last student")
+{
+
+    StudentEnor e("inputfiles/testfile_1_multi_lot_last.txt");
+    struct student firstSolutionStudent;
+    bool firstSolutionFound =  firstSolution(e, firstSolutionStudent);
+    CHECK(firstSolutionFound == true);
+    CHECK(firstSolutionStudent.sumWeight == 20.0f);
+}
+
+
+TEST_CASE("firstSolution, multiple entry, enough paper, multiple students")
+{
+    StudentEnor e("inputfiles/testfile_1_multi_lot_multi.txt");
+    struct student firstSolutionStudent;
+    bool firstSolutionFound =  firstSolution(e, firstSolutionStudent);
+    CHECK(firstSolutionFound == true);
+    CHECK(firstSolutionStudent.sumWeight == 33.2f);
+}
+
