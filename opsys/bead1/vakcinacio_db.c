@@ -8,6 +8,7 @@
 #include "vakcinacio_lib.h"
 
 
+
 void readRecord(FILE *restrict fp, unsigned int id)
 {
     bool found = false;
@@ -165,6 +166,7 @@ void updateRecord(unsigned int id, char* firstName, char* lastName, int birthYea
     }
 }
 
+
 void invalidArguments()
 {
     printf("%s \n", "Invalid Arguments, try './vakcinacio H' to see the manual  ");
@@ -201,6 +203,13 @@ int main(int argc, char *argv[]) {
         FILE* fp = openFile();
         listRecords(fp, true);
         fclose(fp);
+    }
+
+    if ((argc == 2) && (operation == 'l'))
+    {
+        validArgs = true;
+        int count = countRecord();
+        printf("%d\n", count  );
     }
 
     if ((argc == 7  ) && (operation == 'C'))
@@ -243,7 +252,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    if ((argc == 3) && ((operation == 'R') || (operation == 'D')))
+    if ((argc == 3) && ((operation == 'R') || (operation == 'D') || (operation == 'V') || (operation == 'W')))
     {
         char* arg_id = argv[2];
         unsigned int id = atoi(arg_id);
@@ -263,7 +272,24 @@ int main(int argc, char *argv[]) {
             }
             else
             {
-                deleteRecord(id);
+                if (operation == 'V')
+                {
+                    setVaccinationStatus(id, true);
+                }
+                else
+                {
+                    if (operation == 'W')
+                    {
+                        setVaccinationStatus(id, false);
+                    }
+                    else
+                    {
+                        if (operation == 'D')
+                        {
+                            deleteRecord(id);
+                        }
+                    }
+                }
             }
         }
     }

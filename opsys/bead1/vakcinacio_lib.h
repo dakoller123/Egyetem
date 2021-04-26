@@ -1,7 +1,5 @@
-
 static const char DB_FILENAME[] = "./database";
 static const char DB_BACKUP_FILENAME[] = "./database.bak";
-struct flock lock_data;
 
 struct record
 {
@@ -16,14 +14,6 @@ struct record
 
 FILE* openFile()
 {
-
-
-  lock_data.l_whence=SEEK_SET;//the absolute starting position of locking: SEEK_SET - start of file, SEEK_END - end of file, SEEK_CUR - actual place of
-  lock_data.l_start=0; // relative position of locking to l_whence
-  lock_data.l_len=0; //how long is the locked part of the file, 0 - if it depends on the whole file
-  int rc=0; //result of lock
-  f=open("data.txt",O_RDWR|O_TRUNC|O_CREAT,S_IRUSR|S_IWUSR);
-
     FILE* fp = fopen(DB_FILENAME, "a+b");
     if (fp == 0)
     {
@@ -38,3 +28,55 @@ FILE* openFile()
 }
 
 
+int countRecord()
+{
+    FILE* fp = openFile();
+    struct record input;
+    int result = 0;
+    while(fread(&input, sizeof(struct record), 1, fp))
+    {
+        result = result +1;
+
+    }
+    fclose(fp);
+    return result;
+}
+
+
+void setVaccinationStatus(unsigned int id, bool vaccinated)
+{
+    FILE* oldDB = fopen(DB_FILENAME, "rb");
+    FILE* tmpDB = fopen(DB_BACKUP_FILENAME, "wb");
+    bool found = false;
+    struct record tmp;
+    while((fread(&tmp, sizeof(struct record), 1, oldDB)))
+    {
+        if (tmp.id == id)
+        {
+            found = true;
+        }
+
+        fwrite(&tmp, sizeof(struct record), 1, tmpDB);
+    }
+    fclose(tmpDB);
+    fclose(oldDB);
+
+    if (found)
+    {
+        printf("Entry found, editing...\n");
+        tmpDB = fopen(DB_BACKUP_FILENAME, "rb");
+        FILE* newDB = fopen(DB_FILENAME, "wb");
+        struct record tmp2;
+        while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
+        {
+            if (tmp2.id == id)
+            {
+                tmp2.vaccinated = vaccinated;
+            }
+            fwrite(&tmp2, sizeof(struct record), 1, newDB);
+        }
+
+        fclose(newDB);
+        fclose(tmpDB);
+    }
+}
