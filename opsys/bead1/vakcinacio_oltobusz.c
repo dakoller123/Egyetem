@@ -10,19 +10,29 @@
 #include <sys/types.h> //fork-hoz
 #include <fcntl.h> //lock
 #include <sys/wait.h> //waitpid
+#include <signal.h>
 
-
+void handler(int signumber){
+  printf("Signal with number %i has arrived\n",signumber);
+  printf("Signal handler ends \n");
+}
 
 
 int main()
 {
+    struct sigaction sigact;
+    sigact.sa_handler=handler;
+    sigemptyset(&sigact.sa_mask); //during execution of handler these signals will be blocked plus the signal
+  //now only the arriving signal, SIGTERM will be blocked
+    sigact.sa_flags=0;
+    sigaction(SIGUSR1,&sigact,NULL);
+
     int recordCount = countRecord();
 
     printf("Currently there are %d people waiting to get vaccinated.\n", recordCount);
     if (recordCount > 4)
     {
         pid_t firstBus = fork();
-
         if (firstBus<0)
         {
             //Error
@@ -32,12 +42,11 @@ int main()
 
         if (firstBus>0)
         {
-
             //Parent process
-
+            pid_t secondBus = 1;
             if (recordCount > 9)
             {
-                pid_t secondBus = fork();
+                secondBus = fork();
                 if (secondBus<0)
                 {
                     perror("Error on secondBus\n");
@@ -49,22 +58,29 @@ int main()
                     //Parent process
                     int status;
                     waitpid(secondBus,&status,0);
-                    printf("The end of parent process\n");
+                    printf("The end of parent process of SecondBus\n");
                 }
                 else
                 {
-                    printf("Second bus is leaving\n");
                     //Second Bus process
+
+                    kill(getppid(),SIGUSR1);
+                    printf("Second bus process start\n");
+
                 }
             }
 
-            int status;
-            waitpid(firstBus,&status,0);
-            printf("The end of parent process\n");
+            if (secondBus > 0)
+            {
+                int status;
+                waitpid(firstBus,&status,0);
+                printf("The end of parent process of FirstBus\n");
+            }
+
         }
         else
         {
-            //First Buss process
+            //First Bus process
             printf("First bus is leaving \n");
         }
 
