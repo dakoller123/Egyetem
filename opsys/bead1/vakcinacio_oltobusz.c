@@ -33,12 +33,14 @@ int secondBusStart = 0;
 
 struct record* records;
 int recordCount;
+int recordIndex = 0;
 const int maxRecordSize = 100;
 
-//
-//int firstBusPipeId=mkfifo(firstBusPipeName, S_IRUSR|S_IWUSR ); // creating named pipe file
-//int secondBusPipeId=mkfifo(secondBusPipeName, S_IRUSR|S_IWUSR ); // creating named pipe file
-//
+
+int firstBusPipeId;
+int secondBusPipeId;
+
+int firstBusInit = 0;
 
 struct record* readRecords(int* size)
 {
@@ -51,7 +53,7 @@ struct record* readRecords(int* size)
         records[index] = input;
         index = index +1;
     }
-    //fclose(fp);
+    fclose(fp);
     *size = index;
     return records;
 };
@@ -66,10 +68,37 @@ void waitForAllProcesses()
 
 void firstBusHandler(int signumber){
     printf("0 Signal with number %i from First Bus has arrived\n",signumber);
-    write(firstBusPipefd[1], "First Bus!",10);
-    close(firstBusPipefd[1]); // Closing write descriptor
-    printf("0 Szulo beirta az adatokat a csobe!\n");
-    printf("0 Signal handler ends \n");
+
+    if (firstBusInit != 0)
+    {
+        printf("0 Following people were vaccinated: ");
+        FILE* pipeFileIn = fopen(firstBusPipeName, "rb");
+
+        int id;
+        while((fread(&id, sizeof(int), 1, pipeFileIn)))
+        {
+            printf("%d, ", id);
+        }
+        printf("\n");
+        fclose(pipeFileIn);
+    }
+    else
+    {
+        firstBusInit = 1;
+    }
+
+
+    FILE* pipeFile = fopen(firstBusPipeName, "wb");
+    int recordStart = recordIndex;
+    printf("0 Following people are queued for vaccination on the FIRST bus: ");
+    for(; (recordIndex < recordCount && recordIndex - recordStart < 5); recordIndex++)
+    {
+        fwrite(&records[recordIndex], sizeof(struct record), 1, pipeFile);
+        printf("%d ", records[recordIndex].id);
+    }
+    printf("\n");
+    fclose(pipeFile);
+
 }
 
 void secondBusHandler(int signumber){
@@ -88,11 +117,45 @@ void firstBusProcess()
     kill(getppid(),SIGUSR1);    //HARCRA FEL!
     sleep(3);
 
-    printf("1 Gyerek elkezdi olvasni a csobol az adatokat!\n");
-    read(firstBusPipefd[0],sz1,sizeof(sz1)); // reading max 100 chars
-    printf("1 Gyerek olvasta uzenet: %s",sz1);
+    struct record inRecords[5];
+    FILE* pipeFile = fopen(firstBusPipeName, "rb");
+    struct record input;
+    for(int i=0; i<5; i++)
+    {
+        fread(&input, sizeof(struct record), 1, pipeFile);
+        inRecords[i] = input;
+
+    }
+    fclose(pipeFile);
+
+    printf("1 Received following people: ");
+    for (int i=0; i<5; i++)
+    {
+        printf("%d ", inRecords[i].id);
+//        , rand() % 90);
+//        printf("%i | %s %s | %d | %s \n",
+//                   inRecords[i].id, inRecords[i].firstName, inRecords[i].lastName, inRecords[i].birthYear, inRecords[i].phoneNumber);
+
+    }
     printf("\n");
-    close(firstBusPipefd[0]); // finally we close the used read end
+
+
+    pipeFile = fopen(firstBusPipeName, "wb");
+    printf("1 following people were successfully vaccinated: ");
+    for(int i=0; i<5; i++)
+    {
+        if ((rand() % 100) > 90)
+        {
+            printf(" %d", inRecords[i].id);
+            fwrite(&(inRecords[i].id), sizeof(int), 1, pipeFile);
+        }
+
+    }
+    printf("\n");
+    fclose(pipeFile);
+
+    kill(getppid(),SIGUSR1);    //HARCRA FEL!
+
     printf("1 First bus END \n");
 }
 
@@ -100,20 +163,21 @@ void secondBusProcess()
 {
     printf("2 Second bus START \n");
     close(secondBusPipefd[1]);  //Usually we close the unused write end
-    sleep(3);
-    kill(getppid(),SIGUSR2);    //HARCRA FEL!
-    sleep(3);
-
-    printf("2 Gyerek elkezdi olvasni a csobol az adatokat!\n");
-    read(secondBusPipefd[0],sz2,sizeof(sz2)); // reading max 100 chars
-    printf("2 Gyerek olvasta uzenet: %s",sz2);
-    printf("\n");
-    close(secondBusPipefd[0]); // finally we close the used read end
+//    sleep(3);
+//    kill(getppid(),SIGUSR2);    //HARCRA FEL!
+//    sleep(3);
+//
+//    printf("2 Gyerek elkezdi olvasni a csobol az adatokat!\n");
+//    read(secondBusPipefd[0],sz2,sizeof(sz2)); // reading max 100 chars
+//    printf("2 Gyerek olvasta uzenet: %s",sz2);
+//    printf("\n");
+//    close(secondBusPipefd[0]); // finally we close the used read end
     printf("2 Second bus END \n");
 }
 
-void calcRecordCount(int recordCount)
+void calcRecordCount()
 {
+    int recordCount = countRecord();
     printf("0 Currently there are %d people waiting to get vaccinated.\n", recordCount);
     if (recordCount > 4)
     {
@@ -127,6 +191,9 @@ void calcRecordCount(int recordCount)
 
 void hqBeforeFork()
 {
+    firstBusPipeId=mkfifo(firstBusPipeName, S_IRUSR|S_IWUSR ); // creating named pipe file
+    secondBusPipeId=mkfifo(secondBusPipeName, S_IRUSR|S_IWUSR ); // creating named pipe file
+
     firstBusSigact.sa_handler=firstBusHandler;
     sigemptyset(&firstBusSigact.sa_mask);
     firstBusSigact.sa_flags=0;
@@ -136,16 +203,14 @@ void hqBeforeFork()
     sigemptyset(&secondBusSigact.sa_mask);
     secondBusSigact.sa_flags=0;
     sigaction(SIGUSR2,&secondBusSigact,NULL);
-
-    records = readRecords(&recordCount);
-    calcRecordCount(recordCount);
-
-    for (int i=0; i<recordCount; i++)
-    {
-        printf("%i | %s %s | %d | %s \n",
-                   records[i].id, records[i].firstName, records[i].lastName, records[i].birthYear, records[i].phoneNumber);
-
-    }
+    calcRecordCount();
+//
+//    for (int i=0; i<recordCount; i++)
+//    {
+//        printf("%i | %s %s | %d | %s \n",
+//                   records[i].id, records[i].firstName, records[i].lastName, records[i].birthYear, records[i].phoneNumber);
+//
+//    }
 
     if (pipe(firstBusPipefd) == -1 || pipe(secondBusPipefd) == -1)
 	{
@@ -156,9 +221,10 @@ void hqBeforeFork()
 
 void hqProcess()
 {
+    printf("0 HQ START\n");
+    records = readRecords(&recordCount);
     close(firstBusPipefd[0]); //Usually we close unused read end
     close(secondBusPipefd[0]); //Usually we close unused read end
-    printf("0 HQ START\n");
     waitForAllProcesses();
     printf("0 HQ END\n");
     free(records);
