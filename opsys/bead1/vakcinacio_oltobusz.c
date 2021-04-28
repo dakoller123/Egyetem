@@ -11,17 +11,51 @@
 #include <fcntl.h> //lock
 #include <sys/wait.h> //waitpid
 #include <signal.h>
+#include <sys/stat.h>
+
+const char* firstBusPipeName = "/tmp/firstBusPipe";
+const char* secondBusPipeName = "/tmp/secondBusPipe";
+
 
 int firstBusPipefd[2]; // unnamed pipe file descriptor array
 int secondBusPipefd[2]; // unnamed pipe file descriptor array
+
 char sz1[100];  // char array for reading from pipe
 char sz2[100];  // char array for reading from pipe
+
 pid_t secondBus = 1;
 pid_t firstBus = 1;
+
 struct sigaction firstBusSigact;
 struct sigaction secondBusSigact;
 int firstBusStart = 0;
 int secondBusStart = 0;
+
+struct record* records;
+int recordCount;
+const int maxRecordSize = 100;
+
+//
+//int firstBusPipeId=mkfifo(firstBusPipeName, S_IRUSR|S_IWUSR ); // creating named pipe file
+//int secondBusPipeId=mkfifo(secondBusPipeName, S_IRUSR|S_IWUSR ); // creating named pipe file
+//
+
+struct record* readRecords(int* size)
+{
+    struct record* records = malloc(maxRecordSize * sizeof(struct record));
+    int index = 0;
+    FILE* fp = openFile();
+    struct record input;
+    while(fread(&input, sizeof(struct record), 1, fp))
+    {
+        records[index] = input;
+        index = index +1;
+    }
+    //fclose(fp);
+    *size = index;
+    return records;
+};
+
 
 void waitForAllProcesses()
 {
@@ -78,18 +112,8 @@ void secondBusProcess()
     printf("2 Second bus END \n");
 }
 
-void hqProcess()
+void calcRecordCount(int recordCount)
 {
-    close(firstBusPipefd[0]); //Usually we close unused read end
-    close(secondBusPipefd[0]); //Usually we close unused read end
-    printf("0 HQ START\n");
-    waitForAllProcesses();
-    printf("0 HQ END\n");
-}
-
-void calcRecordCount()
-{
-    int recordCount = countRecord();
     printf("0 Currently there are %d people waiting to get vaccinated.\n", recordCount);
     if (recordCount > 4)
     {
@@ -101,9 +125,8 @@ void calcRecordCount()
     }
 }
 
-int main()
+void hqBeforeFork()
 {
-
     firstBusSigact.sa_handler=firstBusHandler;
     sigemptyset(&firstBusSigact.sa_mask);
     firstBusSigact.sa_flags=0;
@@ -114,13 +137,38 @@ int main()
     secondBusSigact.sa_flags=0;
     sigaction(SIGUSR2,&secondBusSigact,NULL);
 
-    calcRecordCount();
+    records = readRecords(&recordCount);
+    calcRecordCount(recordCount);
+
+    for (int i=0; i<recordCount; i++)
+    {
+        printf("%i | %s %s | %d | %s \n",
+                   records[i].id, records[i].firstName, records[i].lastName, records[i].birthYear, records[i].phoneNumber);
+
+    }
 
     if (pipe(firstBusPipefd) == -1 || pipe(secondBusPipefd) == -1)
 	{
         perror("0 Hiba a pipe nyitaskor!");
         exit(EXIT_FAILURE);
     }
+}
+
+void hqProcess()
+{
+    close(firstBusPipefd[0]); //Usually we close unused read end
+    close(secondBusPipefd[0]); //Usually we close unused read end
+    printf("0 HQ START\n");
+    waitForAllProcesses();
+    printf("0 HQ END\n");
+    free(records);
+}
+
+
+int main()
+{
+    hqBeforeFork();
+
 
     if (firstBusStart == 1)
     {

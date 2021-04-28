@@ -36,7 +36,6 @@ int countRecord()
     while(fread(&input, sizeof(struct record), 1, fp))
     {
         result = result +1;
-
     }
     fclose(fp);
     return result;
