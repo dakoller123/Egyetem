@@ -35,7 +35,7 @@ struct sigaction secondBusSigact;
 bool firstBusStart = false;
 bool secondBusStart = false;
 
-//0 booting up   1: waiting for input  2: input sent by host process 3: waiting for output to be received 4: output received
+//0 booting up, waiting for input   1: data received, vaccinating 2: vaccinated, result sent, process ending
 int busStatus[2] = {0,0};
 bool firstSignal = false;
 bool secondSignal = false;
