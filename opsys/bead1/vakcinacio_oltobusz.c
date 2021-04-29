@@ -13,6 +13,8 @@
 #include <signal.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <string.h>
+#include <errno.h>
 
 const char* busPipeNameIn[2] = {"/tmp/firstBusPipeIn", "/tmp/secondBusPipeIn"};
 const char* busPipeNameOut[2] = {"/tmp/firstBusPipeOut", "/tmp/secondBusPipeOut"};
@@ -249,7 +251,7 @@ void hqSignalHandlerMethod()
 
         if (!busPipeFileIn)
         {
-            printf("0 ERROR when opening %s in wb mode\n", busPipeNameIn[busProcess-1]);
+            printf("0 ERROR when opening %s in wb mode. %d %s\n", busPipeNameIn[busProcess-1], errno, strerror(errno));
             exit(1);
         }
 
