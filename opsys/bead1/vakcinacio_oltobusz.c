@@ -29,8 +29,14 @@ pid_t firstBus = 1;
 
 struct sigaction firstBusSigact;
 struct sigaction secondBusSigact;
-int firstBusStart = 0;
-int secondBusStart = 0;
+
+bool firstBusStart = false;
+bool secondBusStart = false;
+
+//0 booting up   1: waiting for input  2: input sent by host process 3: waiting for output to be received 4: output received
+int firstBusStatus = 0;
+int secondBusStatus = 0;
+
 
 struct record* records;
 int recordCount;
@@ -39,14 +45,6 @@ const int maxRecordSize = 100;
 
 int firstBusPipeId;
 int secondBusPipeId;
-
-int firstBusInit = 0;
-
-int status = 0;
-
-int firstBusStatus = 0;
-int firstBusRead = -1;
-int firstBusWrite = -1;
 
 struct record* readRecords(int* size)
 {
@@ -72,14 +70,15 @@ struct record* readRecords(int* size)
 
 void waitForAllProcesses()
 {
-    if (firstBusStart == 1)
+    int status;
+    if (firstBusStart)
     {
         printf("0 Waiting for the FirstBus process to end...\n");
-        int status;
+
         waitpid(firstBus,&status,0);
     }
     printf("0 FirstBus process ended!\n");
-    if (secondBusStart == 1) {waitpid(secondBus,&status,0);}
+    if (secondBusStart) {waitpid(secondBus,&status,0);}
 }
 
 void firstBusHandler(int signumber){
@@ -98,16 +97,14 @@ void secondBusHandler(int signumber){
     printf("0 Signal handler ends \n");
 }
 
-void firstBusProcess()
+void firstBusProcess(int busNumber)
 {
 
-    printf("1 First bus START\n");
-    srand ( time(NULL) );
-    pid_t parentId = getppid();
-    sleep(1);
+        printf("%d First bus START\n", busNumber);
+        srand ( time(NULL) );
+        pid_t parentId = getppid();
+        sleep(1);
 
-    while (1)
-    {
         printf("1 Signalling for reading \n");
         kill(parentId,SIGUSR1);    //HARCRA FEL!
         firstBusPipeFileIn = fopen(firstBusPipeNameIn, "rb");
@@ -163,8 +160,6 @@ void firstBusProcess()
 
         sleep(3);
 
-    }
-
 
 
     printf("1 First bus END \n");
@@ -175,16 +170,6 @@ void firstBusProcess()
 void secondBusProcess()
 {
     printf("2 Second bus START \n");
-
-//    sleep(3);
-//    kill(getppid(),SIGUSR2);    //HARCRA FEL!
-//    sleep(3);
-//
-//    printf("2 Gyerek elkezdi olvasni a csobol az adatokat!\n");
-//    read(secondBusPipefd[0],sz2,sizeof(sz2)); // reading max 100 chars
-//    printf("2 Gyerek olvasta uzenet: %s",sz2);
-//    printf("\n");
-//    close(secondBusPipefd[0]); // finally we close the used read end
     printf("2 Second bus END \n");
 }
 
@@ -194,11 +179,10 @@ void calcRecordCount()
     printf("0 Currently there are %d people waiting to get vaccinated.\n", recordCount);
     if (recordCount > 4)
     {
-        firstBusStart = 1;
+        firstBusStart = true;
         if (recordCount > 9)
         {
-            //secondBusStart = 1;
-            secondBusStart = 0;
+            secondBusStart = true;
         }
     }
 }
@@ -216,6 +200,63 @@ void hqBeforeFork()
 //
     calcRecordCount();
 
+}
+
+
+void hqSignalHandlerMethod()
+{
+    if (firstBusStatus == 1 )
+    {
+        firstBusStatus = 2;
+        printf("0 Setting up list for first bus...\n");
+
+        firstBusPipeFileIn = fopen(firstBusPipeNameIn, "wb");
+        printf("0 %s opened in wb mode\n", firstBusPipeNameIn);
+
+        int recordStart = recordIndex;
+        printf("0 Following people are queued for vaccination on the FIRST bus: ");
+        for(; (recordIndex < recordCount && recordIndex - recordStart < 5); recordIndex++)
+        {
+            fwrite(&records[recordIndex], sizeof(struct record), 1, firstBusPipeFileIn);
+            printf("%d ", records[recordIndex].id);
+        }
+        printf("\n");
+
+        fclose(firstBusPipeFileIn);
+        printf("0 %s closed\n", firstBusPipeNameIn);
+
+    }
+
+    if (firstBusStatus == 3)
+    {
+        firstBusStatus = 4;
+        firstBusPipeFileOut = fopen(firstBusPipeNameOut, "rb");
+        printf("0 %s opened in rb mode\n", firstBusPipeNameOut);
+
+        printf("0 Following people were vaccinated: ");
+
+        unsigned int successIds[5];
+
+        int count = 0;
+        int id;
+        while((fread(&id, sizeof(int), 1, firstBusPipeFileOut)))
+        {
+
+            printf("%d, ", id);
+            successIds[count] = id;
+            count = count +1;
+        }
+
+
+
+        printf("\n");
+
+        fclose(firstBusPipeFileOut);
+        printf("0 %s closed\n", firstBusPipeNameOut);
+
+        writeVaccinationSuccess(successIds, count);
+        calcRecordCount();
+    }
 }
 
 void hqProcess()
@@ -243,71 +284,20 @@ void hqProcess()
     }
     printf("\n");
 
-    while (1)
+    if (firstBusStart)
+    {
+
+    }
+
+    while (firstBusStatus != 4 && secondBusStatus != 4)
     {
         pause();
-        if (firstBusStatus == 1 )
-        {
-            firstBusStatus = 2;
-            printf("0 Setting up list for first bus...\n");
-
-            firstBusPipeFileIn = fopen(firstBusPipeNameIn, "wb");
-            printf("0 %s opened in wb mode\n", firstBusPipeNameIn);
-
-            int recordStart = recordIndex;
-            printf("0 Following people are queued for vaccination on the FIRST bus: ");
-            for(; (recordIndex < recordCount && recordIndex - recordStart < 5); recordIndex++)
-            {
-                fwrite(&records[recordIndex], sizeof(struct record), 1, firstBusPipeFileIn);
-                printf("%d ", records[recordIndex].id);
-            }
-            printf("\n");
-
-            fclose(firstBusPipeFileIn);
-            printf("0 %s closed\n", firstBusPipeNameIn);
-
-        }
-
-        if (firstBusStatus == 3)
-        {
-            firstBusStatus = 0;
-            firstBusPipeFileOut = fopen(firstBusPipeNameOut, "rb");
-            printf("0 %s opened in rb mode\n", firstBusPipeNameOut);
-
-            printf("0 Following people were vaccinated: ");
-
-            unsigned int successIds[5];
-
-            int count = 0;
-            int id;
-            while((fread(&id, sizeof(int), 1, firstBusPipeFileOut)))
-            {
-
-                printf("%d, ", id);
-                successIds[count] = id;
-                count = count +1;
-            }
-
-
-
-            printf("\n");
-
-            fclose(firstBusPipeFileOut);
-            printf("0 %s closed\n", firstBusPipeNameOut);
-
-            writeVaccinationSuccess(successIds, count);
-            calcRecordCount();
-        }
+        hqSignalHandlerMethod();
     }
 
     waitForAllProcesses();
 
     free(records);
-
-
-
-
-
     printf("0 HQ END\n");
 }
 
@@ -329,7 +319,7 @@ int main()
 
         if (firstBus==0)
         {
-            firstBusProcess();
+            firstBusProcess(1);
         }
     }
 
