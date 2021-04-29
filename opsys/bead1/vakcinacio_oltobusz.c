@@ -18,6 +18,7 @@
 
 //const char* busPipeNameIn = ["/tmp/firstBusPipeIn", "/tmp/secondBusPipeIn"];
 //const char* busPipeNameOut = ["/tmp/firstBusPipeOut", "/tmp/secondBusPipeOut"];
+
 const char* busPipeNameIn = "/tmp/firstBusPipeIn";
 const char* busPipeNameOut = "/tmp/firstBusPipeOut";
 
@@ -44,9 +45,6 @@ int recordCount;
 int recordIndex = 0;
 const int maxRecordSize = 100;
 
-int firstBusPipeId;
-int secondBusPipeId;
-
 struct record* readRecords(int* size)
 {
     recordIndex = 0;
@@ -72,36 +70,23 @@ struct record* readRecords(int* size)
 void waitForAllProcesses()
 {
     int status;
-    if (firstBusStart)
-    {
-        printf("0 Waiting for the FirstBus process to end...\n");
-
-        waitpid(firstBus,&status,0);
-    }
-    printf("0 FirstBus process ended!\n");
-    if (secondBusStart) {waitpid(secondBus,&status,0);}
+    if (firstBusStart)  waitpid(firstBus,&status,0);
+    if (secondBusStart) waitpid(secondBus,&status,0);
 }
 
-void firstBusHandler(int signumber){
-    printf("0 FirstBusHandler START: signumber: %i firstbusstatus: %d\n",signumber, firstBusStatus);
-    firstBusStatus = firstBusStatus+1;
-
-    printf("0 FirstBusHandler END: signumber: %i firstbusstatus: %d\n",signumber, firstBusStatus);
-
-    //waitForAllProcesses();
-
-
-}
-
-void secondBusHandler(int signumber){
-    printf("0 Signal with number %i from Second Bus has arrived\n",signumber);
-    printf("0 Signal handler ends \n");
-}
-
-void firstBusProcess(int busNumber)
+void signalHandler(int signumber)
 {
+    printf("0 SignalHander START: %d %d %d\n",signumber, firstBusStatus, secondBusStatus);
+    if (signumber == 10)  firstBusStatus = firstBusStatus+1;
+    if (signumber == 12)  secondBusStatus = secondBusStatus+1;
+    printf("0 SignalHander END: %d %d %d\n",signumber, firstBusStatus, secondBusStatus);
+}
 
-        printf("%d First bus START\n", busNumber);
+
+
+void busProcess(int busNumber)
+{
+        printf("%d Process START\n", busNumber);
         srand ( time(NULL) );
         pid_t parentId = getppid();
         sleep(1);
@@ -273,17 +258,15 @@ void hqProcess()
 {
     printf("0 HQ START\n");
 
-
-
-    firstBusSigact.sa_handler=firstBusHandler;
+    firstBusSigact.sa_handler=signalHandler;
     sigemptyset(&firstBusSigact.sa_mask);
     firstBusSigact.sa_flags=0;
     sigaction(SIGUSR1,&firstBusSigact,NULL);
-
-    secondBusSigact.sa_handler=secondBusHandler;
-    sigemptyset(&secondBusSigact.sa_mask);
-    secondBusSigact.sa_flags=0;
-    sigaction(SIGUSR2,&secondBusSigact,NULL);
+//
+//    secondBusSigact.sa_handler=secondBusHandler;
+//    sigemptyset(&secondBusSigact.sa_mask);
+//    secondBusSigact.sa_flags=0;
+    sigaction(SIGUSR2,&firstBusSigact,NULL);
 
     records = readRecords(&recordCount);
 
@@ -294,12 +277,8 @@ void hqProcess()
     }
     printf("\n");
 
-    if (firstBusStart)
-    {
 
-    }
-
-    while (firstBusStatus != 4 && secondBusStatus != 4)
+    while ((firstBusStart && firstBusStatus != 4) && (secondBusStart && secondBusStatus != 4))
     {
         pause();
         hqSignalHandlerMethod();
@@ -329,7 +308,7 @@ int main()
 
         if (firstBus==0)
         {
-            firstBusProcess(1);
+            busProcess(1);
         }
     }
 
