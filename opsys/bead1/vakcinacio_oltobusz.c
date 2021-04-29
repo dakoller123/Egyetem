@@ -14,15 +14,16 @@
 #include <sys/stat.h>
 #include <time.h>
 
-const char* firstBusPipeNameIn = "/tmp/firstBusPipeIn";
-const char* firstBusPipeNameOut = "/tmp/firstBusPipeOut";
-FILE* firstBusPipeFileIn;
-FILE* firstBusPipeFileOut;
 
-FILE* firstBusPipeFileIn_child;
-FILE* firstBusPipeFileOut_child;
 
-const char* secondBusPipeName = "/tmp/secondBusPipe";
+//const char* busPipeNameIn = ["/tmp/firstBusPipeIn", "/tmp/secondBusPipeIn"];
+//const char* busPipeNameOut = ["/tmp/firstBusPipeOut", "/tmp/secondBusPipeOut"];
+const char* busPipeNameIn = "/tmp/firstBusPipeIn";
+const char* busPipeNameOut = "/tmp/firstBusPipeOut";
+
+
+FILE* busPipeFileIn;
+FILE* busPipeFileOut;
 
 pid_t secondBus = 1;
 pid_t firstBus = 1;
@@ -105,24 +106,33 @@ void firstBusProcess(int busNumber)
         pid_t parentId = getppid();
         sleep(1);
 
-        printf("1 Signalling for reading \n");
-        kill(parentId,SIGUSR1);    //HARCRA FEL!
-        firstBusPipeFileIn = fopen(firstBusPipeNameIn, "rb");
-        printf("1 %s opened in rb mode\n", firstBusPipeNameIn);
+        printf("%d Signalling for reading \n", busNumber);
+
+        if (busNumber == 1)
+        {
+            kill(parentId,SIGUSR1);    //HARCRA FEL!
+        }
+        else
+        {
+            kill(parentId,SIGUSR2);    //HARCRA FEL!
+        }
+
+        busPipeFileIn = fopen(busPipeNameIn, "rb");
+        printf("1 %s opened in rb mode\n", busPipeNameIn);
         printf("1 Reading the input\n");
         struct record inRecords[5];
         struct record input;
         printf("1 Received following people: ");
         for(int i=0; i<5; i++)
         {
-            fread(&input, sizeof(struct record), 1, firstBusPipeFileIn);
+            fread(&input, sizeof(struct record), 1, busPipeFileIn);
             inRecords[i] = input;
             printf("%d ", inRecords[i].id);
 
         }
         printf("\n");
-        fclose(firstBusPipeFileIn);
-        printf("0 %s closed\n", firstBusPipeNameIn);
+        fclose(busPipeFileIn);
+        printf("0 %s closed\n", busPipeNameIn);
 
         printf("1 Starting Vaccination...\n");
         sleep(1);
@@ -134,7 +144,7 @@ void firstBusProcess(int busNumber)
             {
                 printf(" (%d:Success)", inRecords[i].id);
                 inRecords[i].vaccinated = true;
-                //fwrite(&(inRecords[i].id), sizeof(int), 1, firstBusPipeFileOut);
+                //fwrite(&(inRecords[i].id), sizeof(int), 1, busPipeFileOut);
             }
             else
             {
@@ -144,19 +154,19 @@ void firstBusProcess(int busNumber)
         printf("\n");
         printf("1 Signalling for writing time \n");
         kill(parentId,SIGUSR1);    //HARCRA FEL!
-        firstBusPipeFileOut = fopen(firstBusPipeNameOut, "wb");
-        printf("1 %s opened in wb mode\n", firstBusPipeNameOut);
+        busPipeFileOut = fopen(busPipeNameIn, "wb");
+        printf("1 %s opened in wb mode\n", busPipeNameIn);
         printf("1 following people were successfully vaccinated: ");
         for(int i=0; i<5; i++)
         {
             if (inRecords[i].vaccinated == true)
             {
-                fwrite(&(inRecords[i].id), sizeof(int), 1, firstBusPipeFileOut);
+                fwrite(&(inRecords[i].id), sizeof(int), 1, busPipeFileOut);
             }
         }
         printf("\n");
-        fclose(firstBusPipeFileOut);
-        printf("0 %s closed\n", firstBusPipeNameOut);
+        fclose(busPipeFileOut);
+        printf("0 %s closed\n", busPipeNameIn);
 
         sleep(3);
 
@@ -190,11 +200,11 @@ void calcRecordCount()
 
 void hqBeforeFork()
 {
-    mkfifo(firstBusPipeNameIn, S_IRUSR|S_IWUSR ); // creating named pipe file
-    mkfifo(firstBusPipeNameOut, S_IRUSR|S_IWUSR ); // creating named pipe file
+    mkfifo(busPipeNameIn, S_IRUSR|S_IWUSR ); // creating named pipe file
+    mkfifo(busPipeNameIn, S_IRUSR|S_IWUSR ); // creating named pipe file
     printf("0 MKFIFO executed\n");
 
-//    mkfifo(firstBusPipeNameIn, S_IRUSR|S_IWUSR ); // creating named pipe file
+//    mkfifo(busPipeNameIn, S_IRUSR|S_IWUSR ); // creating named pipe file
 //    mkfifo(secondBusPipeName, S_IRUSR|S_IWUSR ); // creating named pipe file
 //
 //
@@ -210,28 +220,28 @@ void hqSignalHandlerMethod()
         firstBusStatus = 2;
         printf("0 Setting up list for first bus...\n");
 
-        firstBusPipeFileIn = fopen(firstBusPipeNameIn, "wb");
-        printf("0 %s opened in wb mode\n", firstBusPipeNameIn);
+        busPipeFileIn = fopen(busPipeNameIn, "wb");
+        printf("0 %s opened in wb mode\n", busPipeNameIn);
 
         int recordStart = recordIndex;
         printf("0 Following people are queued for vaccination on the FIRST bus: ");
         for(; (recordIndex < recordCount && recordIndex - recordStart < 5); recordIndex++)
         {
-            fwrite(&records[recordIndex], sizeof(struct record), 1, firstBusPipeFileIn);
+            fwrite(&records[recordIndex], sizeof(struct record), 1, busPipeFileIn);
             printf("%d ", records[recordIndex].id);
         }
         printf("\n");
 
-        fclose(firstBusPipeFileIn);
-        printf("0 %s closed\n", firstBusPipeNameIn);
+        fclose(busPipeFileIn);
+        printf("0 %s closed\n", busPipeNameIn);
 
     }
 
     if (firstBusStatus == 3)
     {
         firstBusStatus = 4;
-        firstBusPipeFileOut = fopen(firstBusPipeNameOut, "rb");
-        printf("0 %s opened in rb mode\n", firstBusPipeNameOut);
+        busPipeFileOut = fopen(busPipeNameIn, "rb");
+        printf("0 %s opened in rb mode\n", busPipeNameIn);
 
         printf("0 Following people were vaccinated: ");
 
@@ -239,7 +249,7 @@ void hqSignalHandlerMethod()
 
         int count = 0;
         int id;
-        while((fread(&id, sizeof(int), 1, firstBusPipeFileOut)))
+        while((fread(&id, sizeof(int), 1, busPipeFileOut)))
         {
 
             printf("%d, ", id);
@@ -251,8 +261,8 @@ void hqSignalHandlerMethod()
 
         printf("\n");
 
-        fclose(firstBusPipeFileOut);
-        printf("0 %s closed\n", firstBusPipeNameOut);
+        fclose(busPipeFileOut);
+        printf("0 %s closed\n", busPipeNameIn);
 
         writeVaccinationSuccess(successIds, count);
         calcRecordCount();
