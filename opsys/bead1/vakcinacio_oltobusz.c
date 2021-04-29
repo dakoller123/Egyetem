@@ -109,7 +109,6 @@ void busProcess(int busNumber)
         kill(parentId,SIGUSR2);    //HARCRA FEL!
     }
 
-    sleep(1);
 
     FILE* busPipeFileIn = fopen(busPipeNameIn[busNumber-1], "rb");
     printf("%d %s opened in rb mode\n", busNumber, busPipeNameIn[busNumber-1]);
@@ -249,24 +248,24 @@ void hqSignalHandlerMethod()
 
         FILE* busPipeFileIn = fopen(busPipeNameIn[busProcess-1], "wb");
 
-        if (!busPipeFileIn)
+        while (!busPipeFileIn)
         {
             printf("0 ERROR when opening %s in wb mode. %d %s\n", busPipeNameIn[busProcess-1], errno, strerror(errno));
-            exit(1);
+            busPipeFileIn = fopen(busPipeNameIn[busProcess-1], "wb");
         }
+
 
         printf("0 %s opened in wb mode\n", busPipeNameIn[busProcess-1]);
 
         printf("0 Following people are queued for vaccination on the #%d bus: ", busProcess);
 
-        int count = 0;
-        for(int i = recordIndex; (i < recordCount && count < 5); i++)
+        int recordStart = recordIndex;
+        for(; (recordIndex < recordCount && recordIndex - recordStart < 5); recordIndex++)
         {
-            count++;
-            fwrite(&records[i], sizeof(struct record), 1, busPipeFileIn);
-            printf("%d ", records[i].id);
+            printf("%d ", (records[recordIndex].id));
+            fwrite(&records[recordIndex], sizeof(struct record), 1, busPipeFileIn);
+
         }
-        recordIndex = recordIndex + count;
         printf("\n");
 
         fclose(busPipeFileIn);
@@ -331,15 +330,14 @@ void hqProcess()
     printf("0 Read the following records from db to memory: ");
     for (int i=0; i<recordCount; i++)
     {
-        printf("%d ", records[i].id);
+        printf(" (%d,%s)", records[i].id, records[i].firstName);
     }
     printf("\n");
 
 
     while ((firstBusStart && busStatus[0] != 2) || (secondBusStart && busStatus[1] != 2))
     {
-        //pause();
-        sleep(1);
+        pause();
         printf("0 Status: firstStart: %d status: %d signal: %d secondStart: %d status: %d signal: %d \n", firstBusStart, busStatus[0], firstSignal, secondBusStart, busStatus[1], secondSignal);
 
         hqSignalHandlerMethod();
@@ -351,12 +349,13 @@ void hqProcess()
     waitForAllProcesses();
 
     free(records);
-    sleep(3);
+
     unlink(busPipeNameIn[0]);
     unlink(busPipeNameIn[1]);
     unlink(busPipeNameOut[0]);
     unlink(busPipeNameOut[1]);
 
+    sleep(1);
     printf("0 HQ END\n");
 }
 
