@@ -167,6 +167,32 @@ void updateRecord(unsigned int id, char* firstName, char* lastName, int birthYea
 }
 
 
+void resetVaccinations()
+{
+    FILE* oldDB = fopen(DB_FILENAME, "rb");
+    FILE* tmpDB = fopen(DB_BACKUP_FILENAME, "wb");
+    struct record tmp;
+    while((fread(&tmp, sizeof(struct record), 1, oldDB)))
+    {
+        fwrite(&tmp, sizeof(struct record), 1, tmpDB);
+    }
+    fclose(tmpDB);
+    fclose(oldDB);
+
+    tmpDB = fopen(DB_BACKUP_FILENAME, "rb");
+    FILE* newDB = fopen(DB_FILENAME, "wb");
+    struct record tmp2;
+    while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
+    {
+        tmp2.vaccinated = false;
+        fwrite(&tmp2, sizeof(struct record), 1, newDB);
+    }
+
+    fclose(newDB);
+    fclose(tmpDB);
+
+}
+
 void setVaccinationStatus(unsigned int id, bool vaccinated)
 {
     FILE* oldDB = fopen(DB_FILENAME, "rb");
@@ -244,6 +270,12 @@ int main(int argc, char *argv[]) {
         FILE* fp = openFile();
         listRecords(fp, true);
         fclose(fp);
+    }
+
+    if ((argc == 2) && (operation == 'r'))
+    {
+        validArgs = true;
+        resetVaccinations();
     }
 
     if ((argc == 2) && (operation == 'l'))

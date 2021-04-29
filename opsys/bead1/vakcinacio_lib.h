@@ -49,14 +49,6 @@ int countRecord()
 
 void writeVaccinationSuccess(unsigned int* ids, int idCount)
 {
-    printf("AAAA" );
-    for (int i=0; i<idCount; i++)
-    {
-        printf(" %d ", ids[i]);
-    }
-    printf("\n");
-
-
     FILE* oldDB = fopen(DB_FILENAME, "rb");
     FILE* tmpDB = fopen(DB_BACKUP_FILENAME, "wb");
 
