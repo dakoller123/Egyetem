@@ -94,6 +94,7 @@ unsigned int listRecords(FILE* restrict fp, bool print)
     {
         if (firstFreeId == input.id)
         {
+            //bug
             firstFreeId = firstFreeId + 1;
         }
 

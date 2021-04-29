@@ -83,10 +83,7 @@ void signalHandler(int signumber)
     {
         secondSignal = true;
     }
-
 }
-
-
 
 void busProcess(int busNumber)
 {
@@ -135,12 +132,10 @@ void busProcess(int busNumber)
     printf("%d Vaccination Results:", busNumber);
     for(int i=0; i<inputCount; i++)
     {
-
-        if ((rand() % 100) > 10)
+        if ((rand() % 100) > 9)
         {
             printf(" (%d:Success)", inRecords[i].id);
             inRecords[i].vaccinated = true;
-            //fwrite(&(inRecords[i].id), sizeof(int), 1, busPipeFileOut);
         }
         else
         {
@@ -307,7 +302,6 @@ void hqSignalHandlerMethod()
         printf("0 %s closed\n", busPipeNameOut[busProcess-1]);
 
         writeVaccinationSuccess(successIds, count);
-        calcRecordCount();
         return;
     }
 }
