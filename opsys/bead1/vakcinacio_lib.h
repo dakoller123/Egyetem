@@ -22,7 +22,7 @@ FILE* openFile()
     }
     else
     {
-        printf("%s\n", "DB file was opened successfully");
+        //printf("%s\n", "DB file was opened successfully");
     }
     return fp;
 }
@@ -59,7 +59,7 @@ void writeVaccinationSuccess(unsigned int* ids, int idCount)
         {
             if (tmp.id == ids[i])
             {
-                printf("Going to set vaccination status for id: %d \n", ids[i]);
+                //printf("Going to set vaccination status for id: %d \n", ids[i]);
                 tmp.vaccinated = true;
             }
         }
