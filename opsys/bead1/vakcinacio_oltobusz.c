@@ -92,7 +92,7 @@ void busProcess(int busNumber)
 {
     printf("%d Process START\n", busNumber);
 
-    sleep(busNumber);
+    sleep(getpid() % 2);
     srand ( time(NULL) );
     pid_t parentId = getppid();
 
@@ -131,7 +131,7 @@ void busProcess(int busNumber)
     printf("%d %s closed\n", busNumber, busPipeNameIn[busNumber-1]);
 
     printf("%d Starting Vaccination...\n", busNumber);
-    sleep(1);
+    sleep(rand() % 3);
     printf("%d Vaccination Results:", busNumber);
     for(int i=0; i<inputCount; i++)
     {
@@ -197,6 +197,7 @@ void calcRecordCount()
 
 void hqBeforeFork()
 {
+    //todo error handling here
     unlink(busPipeNameIn[0]);
     unlink(busPipeNameIn[1]);
     unlink(busPipeNameOut[0]);
@@ -250,7 +251,7 @@ void hqSignalHandlerMethod()
 
         while (!busPipeFileIn)
         {
-            printf("0 ERROR when opening %s in wb mode. %d %s\n", busPipeNameIn[busProcess-1], errno, strerror(errno));
+            printf("0!!! ERROR when opening %s in wb mode. %d %s\n", busPipeNameIn[busProcess-1], errno, strerror(errno));
             busPipeFileIn = fopen(busPipeNameIn[busProcess-1], "wb");
         }
 
@@ -277,12 +278,12 @@ void hqSignalHandlerMethod()
     {
         printf("0 Process#%d sent data to HQ\n", busProcess);
         busStatus[busProcess-1] = 2;
-        FILE* busPipeFileOut = fopen(busPipeNameOut[busProcess-1], "rb");
 
-        if (!busPipeFileOut)
+        FILE* busPipeFileOut = fopen(busPipeNameOut[busProcess-1], "rb");
+        while (!busPipeFileOut)
         {
-            printf("0 ERROR when opening %s in rb mode\n", busPipeNameOut[busProcess-1]);
-            exit(1);
+            printf("0!!! ERROR when opening %s in wb mode. %d %s\n", busPipeNameIn[busProcess-1], errno, strerror(errno));
+            busPipeFileOut = fopen(busPipeNameOut[busProcess-1], "rb");
         }
 
         printf("0 %s opened in rb mode\n", busPipeNameOut[busProcess-1]);
@@ -340,6 +341,8 @@ void hqProcess()
         pause();
         printf("0 Status: firstStart: %d status: %d signal: %d secondStart: %d status: %d signal: %d \n", firstBusStart, busStatus[0], firstSignal, secondBusStart, busStatus[1], secondSignal);
 
+        //calling twice in case pause() cant consume the second signal because its fired during hqSignalHandlerMethod()
+        hqSignalHandlerMethod();
         hqSignalHandlerMethod();
     }
 
@@ -350,6 +353,7 @@ void hqProcess()
 
     free(records);
 
+    //todo error handling here
     unlink(busPipeNameIn[0]);
     unlink(busPipeNameIn[1]);
     unlink(busPipeNameOut[0]);
