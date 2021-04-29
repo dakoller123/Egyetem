@@ -28,6 +28,7 @@ FILE* openFile()
 }
 
 
+
 int countRecord()
 {
     FILE* fp = openFile();
@@ -35,47 +36,56 @@ int countRecord()
     int result = 0;
     while(fread(&input, sizeof(struct record), 1, fp))
     {
-        result = result +1;
+        if (input.vaccinated == false)
+        {
+            result = result +1;
+        }
     }
     fclose(fp);
     return result;
 }
 
 
-void setVaccinationStatus(unsigned int id, bool vaccinated)
+
+void writeVaccinationSuccess(unsigned int* ids, int idCount)
 {
+    printf("AAAA" );
+    for (int i=0; i<idCount; i++)
+    {
+        printf(" %d ", ids[i]);
+    }
+    printf("\n");
+
+
     FILE* oldDB = fopen(DB_FILENAME, "rb");
     FILE* tmpDB = fopen(DB_BACKUP_FILENAME, "wb");
-    bool found = false;
+
     struct record tmp;
     while((fread(&tmp, sizeof(struct record), 1, oldDB)))
     {
-        if (tmp.id == id)
+        for (int i=0; i<idCount; i++)
         {
-            found = true;
+            if (tmp.id == ids[i])
+            {
+                printf("Going to set vaccination status for id: %d \n", ids[i]);
+                tmp.vaccinated = true;
+            }
         }
-
         fwrite(&tmp, sizeof(struct record), 1, tmpDB);
     }
     fclose(tmpDB);
     fclose(oldDB);
 
-    if (found)
+    tmpDB = fopen(DB_BACKUP_FILENAME, "rb");
+    FILE* newDB = fopen(DB_FILENAME, "wb");
+    struct record tmp2;
+    while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
     {
-        printf("Entry found, editing...\n");
-        tmpDB = fopen(DB_BACKUP_FILENAME, "rb");
-        FILE* newDB = fopen(DB_FILENAME, "wb");
-        struct record tmp2;
-        while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
-        {
-            if (tmp2.id == id)
-            {
-                tmp2.vaccinated = vaccinated;
-            }
-            fwrite(&tmp2, sizeof(struct record), 1, newDB);
-        }
-
-        fclose(newDB);
-        fclose(tmpDB);
+        fwrite(&tmp2, sizeof(struct record), 1, newDB);
     }
+
+    fclose(newDB);
+    fclose(tmpDB);
+
+
 }
