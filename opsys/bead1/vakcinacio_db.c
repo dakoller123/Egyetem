@@ -109,20 +109,58 @@ unsigned int listRecords(FILE* restrict fp, bool print)
     return firstFreeId;
 }
 
-void createRecord(FILE *restrict fp, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
+void createRecord(char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid)
 {
-    unsigned int freeId = listRecords(fp, false);
-    printf("%s %d\n", "free id: ", freeId);
+    unsigned int freeId = 1;
     struct record newRecord;
-    newRecord.id = freeId;
     strcpy(newRecord.firstName, firstName);
     strcpy(newRecord.lastName, lastName);
     newRecord.birthYear = birthYear;
     strcpy(newRecord.phoneNumber, phoneNumber);
     newRecord.paid = paid;
     newRecord.vaccinated = false;
-    fwrite(&newRecord, sizeof(struct record), 1, fp);
+
+    FILE* oldDB = fopen(DB_FILENAME, "rb");
+    FILE* tmpDB = fopen(DB_BACKUP_FILENAME, "wb");
+
+    struct record tmp;
+    while((fread(&tmp, sizeof(struct record), 1, oldDB)))
+    {
+        if (freeId == tmp.id)
+        {
+            freeId++;
+        }
+        fwrite(&tmp, sizeof(struct record), 1, tmpDB);
+    }
+    fclose(tmpDB);
+    fclose(oldDB);
+    newRecord.id = freeId;
+    tmpDB = fopen(DB_BACKUP_FILENAME, "rb");
+    FILE* newDB = fopen(DB_FILENAME, "wb");
+    bool added = false;
+    struct record tmp2;
+    while((fread(&tmp2, sizeof(struct record), 1, tmpDB)))
+    {
+        if (tmp2.id > newRecord.id && !added)
+        {
+            fwrite(&newRecord, sizeof(struct record), 1, newDB);
+            added = true;
+        }
+        fwrite(&tmp2, sizeof(struct record), 1, newDB);
+    }
+
+    if (!added)
+    {
+        fwrite(&newRecord, sizeof(struct record), 1, newDB);
+    }
+
+
+    fclose(newDB);
+    fclose(tmpDB);
+
 }
+
+
 
 void updateRecord(unsigned int id, char* firstName, char* lastName, int birthYear, char* phoneNumber, bool paid, bool vaccinated)
 {
@@ -319,9 +357,7 @@ int main(int argc, char *argv[]) {
 
                 validArgs = true;
 
-                FILE* fp = openFile();
-                createRecord(fp, arg_fName, arg_lName, birthYear, arg_phone, paid);
-                fclose(fp);
+                createRecord(arg_fName, arg_lName, birthYear, arg_phone, paid);
             }
         }
     }
