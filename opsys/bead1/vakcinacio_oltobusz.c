@@ -16,10 +16,12 @@
 #include <string.h>
 #include <errno.h>
 
+bool verbose = false;
+
 const char* busPipeNameIn[2] = {"/tmp/firstBusPipeIn", "/tmp/secondBusPipeIn"};
 const char* busPipeNameOut[2] = {"/tmp/firstBusPipeOut", "/tmp/secondBusPipeOut"};
 
-
+const int vaccinationFailChance = 40;
 
 pid_t secondBus = 1;
 pid_t firstBus = 1;
@@ -74,7 +76,7 @@ void waitForAllProcesses()
 
 void signalHandler(int signumber)
 {
-    printf("0 Signal Received: %d\n",signumber);
+    if (verbose) printf("0 Signal Received: %d\n",signumber);
     if (signumber == 10)
     {
         firstSignal = true;
@@ -94,7 +96,7 @@ void busProcess(int busNumber)
     pid_t parentId = getppid();
 
 
-    printf("%d Signalling for reading \n", busNumber);
+    if (verbose) printf("%d Signalling for reading \n", busNumber);
 
     if (busNumber == 1)
     {
@@ -108,8 +110,8 @@ void busProcess(int busNumber)
 
 
     FILE* busPipeFileIn = fopen(busPipeNameIn[busNumber-1], "rb");
-    printf("%d %s opened in rb mode\n", busNumber, busPipeNameIn[busNumber-1]);
-    printf("%d Reading the input\n", busNumber);
+    if (verbose) printf("%d %s opened in rb mode\n", busNumber, busPipeNameIn[busNumber-1]);
+    if (verbose) printf("%d Reading the input\n", busNumber);
     struct record inRecords[5];
     struct record input;
     printf("%d Received following people: ", busNumber);
@@ -125,14 +127,14 @@ void busProcess(int busNumber)
     }
     printf("\n");
     fclose(busPipeFileIn);
-    printf("%d %s closed\n", busNumber, busPipeNameIn[busNumber-1]);
+    if (verbose) printf("%d %s closed\n", busNumber, busPipeNameIn[busNumber-1]);
 
     printf("%d Starting Vaccination...\n", busNumber);
     sleep(rand() % 3);
     printf("%d Vaccination Results:", busNumber);
     for(int i=0; i<inputCount; i++)
     {
-        if ((rand() % 100) > 9)
+        if ((rand() % 100) > vaccinationFailChance)
         {
             printf(" (%d:Success)", inRecords[i].id);
             inRecords[i].vaccinated = true;
@@ -143,7 +145,7 @@ void busProcess(int busNumber)
         }
     }
     printf("\n");
-    printf("%d Signalling for writing \n", busNumber);
+    if (verbose) printf("%d Signalling for writing \n", busNumber);
 
     if (busNumber == 1)
     {
@@ -154,7 +156,7 @@ void busProcess(int busNumber)
         kill(parentId,SIGUSR2);    //HARCRA FEL!
     }
 
-    printf("%d Writing to output pipe \n", busNumber);
+    if (verbose) printf("%d Writing to output pipe \n", busNumber);
     FILE * busPipeFileOut = fopen(busPipeNameOut[busNumber-1], "wb");
     if (!busPipeFileOut)
     {
@@ -162,7 +164,7 @@ void busProcess(int busNumber)
         exit(1);
     }
 
-    printf("%d %s opened in wb mode\n", busNumber, busPipeNameOut[busNumber-1]);
+    if (verbose) printf("%d %s opened in wb mode\n", busNumber, busPipeNameOut[busNumber-1]);
     for(int i=0; i<inputCount; i++)
     {
         if (inRecords[i].vaccinated == true)
@@ -171,7 +173,7 @@ void busProcess(int busNumber)
         }
     }
     fclose(busPipeFileOut);
-    printf("%d %s closed\n", busNumber, busPipeNameOut[busNumber-1]);
+    if (verbose) printf("%d %s closed\n", busNumber, busPipeNameOut[busNumber-1]);
     printf("%d Process END \n", busNumber);
 }
 
@@ -202,7 +204,7 @@ void hqBeforeFork()
     mkfifo(busPipeNameOut[0], S_IRUSR|S_IWUSR ); // creating named pipe file
     mkfifo(busPipeNameIn[1], S_IRUSR|S_IWUSR ); // creating named pipe file
     mkfifo(busPipeNameOut[1], S_IRUSR|S_IWUSR ); // creating named pipe file
-    printf("0 MKFIFO executed\n");
+    if (verbose) printf("0 MKFIFO executed\n");
 
     calcRecordCount();
 
@@ -211,7 +213,7 @@ void hqBeforeFork()
 
 void hqSignalHandlerMethod()
 {
-    printf("0 hqSignalHandlerMethod Status: firstStart: %d status: %d signal: %d secondStart: %d status: %d signal: %d \n", firstBusStart, busStatus[0], firstSignal, secondBusStart, busStatus[1], secondSignal);
+    if (verbose) printf("0 hqSignalHandlerMethod Status: firstStart: %d status: %d signal: %d secondStart: %d status: %d signal: %d \n", firstBusStart, busStatus[0], firstSignal, secondBusStart, busStatus[1], secondSignal);
 
 
     int busProcess = -1;
@@ -230,15 +232,15 @@ void hqSignalHandlerMethod()
 
     if (busProcess == -1)
     {
-        printf("0 nothing to do here\n");
+        if (verbose) printf("0 nothing to do here\n");
         return;
     }
 
-    printf("0 handling the signal from process #%d status: %d\n", busProcess, busStatus[busProcess-1]);
+    if (verbose) printf("0 handling the signal from process #%d status: %d\n", busProcess, busStatus[busProcess-1]);
 
     if (busStatus[busProcess-1] == 0 )
     {
-        printf("0 Process#%d is standing by to receive data from HQ\n", busProcess);
+        if (verbose) printf("0 Process#%d is standing by to receive data from HQ\n", busProcess);
         busStatus[busProcess-1] = 1;
         printf("0 Setting up list for Bus #%d...\n", busProcess);
 
@@ -251,21 +253,21 @@ void hqSignalHandlerMethod()
         }
 
 
-        printf("0 %s opened in wb mode\n", busPipeNameIn[busProcess-1]);
+        if (verbose) printf("0 %s opened in wb mode\n", busPipeNameIn[busProcess-1]);
 
         printf("0 Following people are queued for vaccination on the #%d bus: ", busProcess);
 
         int recordStart = recordIndex;
         for(; (recordIndex < recordCount && recordIndex - recordStart < 5); recordIndex++)
         {
-            printf("%d ", (records[recordIndex].id));
+            printf(" (%d:%s) ", records[recordIndex].id, records[recordIndex].firstName);
             fwrite(&records[recordIndex], sizeof(struct record), 1, busPipeFileIn);
 
         }
         printf("\n");
 
         fclose(busPipeFileIn);
-        printf("0 %s closed\n", busPipeNameIn[busProcess-1]);
+        if (verbose) printf("0 %s closed\n", busPipeNameIn[busProcess-1]);
         return;
     }
 
@@ -281,9 +283,9 @@ void hqSignalHandlerMethod()
             busPipeFileOut = fopen(busPipeNameOut[busProcess-1], "rb");
         }
 
-        printf("0 %s opened in rb mode\n", busPipeNameOut[busProcess-1]);
+        if (verbose) printf("0 %s opened in rb mode\n", busPipeNameOut[busProcess-1]);
 
-        printf("0 Following people were vaccinated: ");
+        if (verbose) printf("0 Following people were vaccinated: ");
 
         unsigned int successIds[5];
 
@@ -292,14 +294,14 @@ void hqSignalHandlerMethod()
         while((fread(&id, sizeof(int), 1, busPipeFileOut)))
         {
 
-            printf("%d, ", id);
+            if (verbose) printf("%d, ", id);
             successIds[count] = id;
             count = count +1;
         }
-        printf("\n");
+        if (verbose) printf("\n");
 
         fclose(busPipeFileOut);
-        printf("0 %s closed\n", busPipeNameOut[busProcess-1]);
+        if (verbose) printf("0 %s closed\n", busPipeNameOut[busProcess-1]);
 
         writeVaccinationSuccess(successIds, count);
         return;
@@ -322,25 +324,25 @@ void hqProcess()
 
     records = readRecords(&recordCount);
 
-    printf("0 Read the following records from db to memory: ");
+    if (verbose) printf("0 Read the following records from db to memory: ");
     for (int i=0; i<recordCount; i++)
     {
-        printf(" (%d,%s)", records[i].id, records[i].firstName);
+        if (verbose) printf(" (%d,%s)", records[i].id, records[i].firstName);
     }
-    printf("\n");
+    if (verbose) printf("\n");
 
 
     while ((firstBusStart && busStatus[0] != 2) || (secondBusStart && busStatus[1] != 2))
     {
         pause();
-        printf("0 Status: firstStart: %d status: %d signal: %d secondStart: %d status: %d signal: %d \n", firstBusStart, busStatus[0], firstSignal, secondBusStart, busStatus[1], secondSignal);
+        if (verbose) printf("0 Status: firstStart: %d status: %d signal: %d secondStart: %d status: %d signal: %d \n", firstBusStart, busStatus[0], firstSignal, secondBusStart, busStatus[1], secondSignal);
 
         //calling twice in case pause() cant consume the second signal because its fired during hqSignalHandlerMethod()
         hqSignalHandlerMethod();
         hqSignalHandlerMethod();
     }
 
-    printf("0 LOOP END Status: firstStart: %d status: %d signal: %d secondStart: %d status: %d signal: %d \n", firstBusStart, busStatus[0], firstSignal, secondBusStart, busStatus[1], secondSignal);
+    if (verbose) printf("0 LOOP END Status: firstStart: %d status: %d signal: %d secondStart: %d status: %d signal: %d \n", firstBusStart, busStatus[0], firstSignal, secondBusStart, busStatus[1], secondSignal);
 
 
     waitForAllProcesses();
@@ -365,7 +367,7 @@ int main()
 
     if (firstBusStart)
     {
-        printf("0 Going to fork to create first process!\n");
+        if (verbose) printf("0 Going to fork to create first process!\n");
         firstBus = fork();
         if (firstBus<0)
         {
@@ -383,7 +385,7 @@ int main()
 
     if (secondBusStart && firstBus > 0)
     {
-        printf("0 Going to fork to create second process!\n");
+        if (verbose) printf("0 Going to fork to create second process!\n");
         secondBus = fork();
         if (secondBus<0)
         {
