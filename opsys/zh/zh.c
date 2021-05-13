@@ -13,18 +13,14 @@
 #include <sys/msg.h>
 
 bool verbose = true;
-pid_t firstProcessId = 1;
-pid_t secondProcessId = 1;
+pid_t firstProcessId = 1; //Vahur
+pid_t secondProcessId = 1; //Ficko
 
 bool SIGUSR1_received = false;
-bool SIGUSR2_received = false;
-
-bool SIGUSR1_processed = false;
-bool SIGUSR2_processed = false;
 
 bool endLoop = false;
 
-struct sigaction sigact;
+
 
 const char* pipeNameIn[2] = {"/tmp/firstProcessPipeIn", "/tmp/secondProcessPipeIn"};
 const char* pipeNameOut[2] = {"/tmp/firstProcessPipeOut", "/tmp/secondProcessPipeOut"};
@@ -33,24 +29,45 @@ const char* pipeNameOut[2] = {"/tmp/firstProcessPipeOut", "/tmp/secondProcessPip
 key_t messageQueueKey;
 int messageQueue;
 
+
+
 struct mesg_buffer {
     long mesg_type;
-    char mesg_text[100];
+    int numberOfFoxes;
 };
+
+
+void signalHandler(int signumber)
+{
+    if (verbose) printf("Signal Received: %d\n",signumber);
+    if (signumber == 10)
+    {
+        SIGUSR1_received = true;
+    }
+
+}
+
 
 
 void mainProcessBeforeFork(int argc, char* argv[])
 {
 
-    unlink(pipeNameIn[0]);
-    unlink(pipeNameIn[1]);
-    unlink(pipeNameOut[0]);
-    unlink(pipeNameOut[1]);
+//    unlink(pipeNameIn[0]);
+//    unlink(pipeNameIn[1]);
+//    unlink(pipeNameOut[0]);
+//    unlink(pipeNameOut[1]);
+//
+//    mkfifo(pipeNameIn[0], S_IRUSR|S_IWUSR );
+//    mkfifo(pipeNameOut[0], S_IRUSR|S_IWUSR );
+//    mkfifo(pipeNameIn[1], S_IRUSR|S_IWUSR );
+//    mkfifo(pipeNameOut[1], S_IRUSR|S_IWUSR );
 
-    mkfifo(pipeNameIn[0], S_IRUSR|S_IWUSR );
-    mkfifo(pipeNameOut[0], S_IRUSR|S_IWUSR );
-    mkfifo(pipeNameIn[1], S_IRUSR|S_IWUSR );
-    mkfifo(pipeNameOut[1], S_IRUSR|S_IWUSR );
+
+    struct sigaction sigact;
+    sigact.sa_handler=signalHandler;
+    sigemptyset(&sigact.sa_mask);
+    sigact.sa_flags=0;
+    sigaction(SIGUSR1,&sigact,NULL);
 
     if (verbose) printf("%d", argc);
     messageQueueKey = ftok(argv[0],1);
@@ -63,104 +80,36 @@ void mainProcessBeforeFork(int argc, char* argv[])
 }
 
 
-
-void signalHandler(int signumber)
-{
-    if (verbose) printf("0 Signal Received: %d\n",signumber);
-    if (signumber == 10)
-    {
-        SIGUSR1_received = true;
-    }
-    else if (signumber == 12)
-    {
-        SIGUSR2_received = true;
-    }
-
-}
-
-void loopMethod()
-{
-    int processNumber = -1;
-
-    if (SIGUSR1_received)
-    {
-        SIGUSR1_received = false;
-        if (verbose) printf("0 SIGUSR1_received\n");
-        processNumber = 1;
-
-    }
-    else if (SIGUSR2_received)
-    {
-        SIGUSR2_received = false;
-        if (verbose) printf("0 SIGUSR2_received\n");
-        processNumber = 2;
-    }
-
-
-    if (processNumber == -1)
-    {
-        if (verbose) printf("0 nothing to do here\n");
-        return;
-    }
-
-    FILE* pipeFileIn = fopen(pipeNameIn[processNumber-1], "w");
-    while (!pipeFileIn)
-    {
-        printf("0!!! ERROR when opening %s in w mode. %d %s\n", pipeNameIn[processNumber-1], errno, strerror(errno));
-        pipeFileIn = fopen(pipeNameIn[processNumber-1], "w");
-    }
-    int number = 5;
-    fwrite(&number, sizeof(int), 1, pipeFileIn);
-    fclose(pipeFileIn);
-
-
-    if (processNumber == 1)
-    {
-        SIGUSR1_processed = true;
-    }
-    else if (processNumber == 2)
-    {
-        SIGUSR2_processed = true;
-    }
-
-    if (SIGUSR1_processed && SIGUSR2_processed)
-    {
-        endLoop = true;
-    }
-
-}
-
 void mainProcessAfterFork()
 {
-    if (verbose) printf("0 Main after fork START\n");
+    //VUK
+    if (verbose) printf("0 Main process (VUK) after fork START\n");
 
 
-
-    sigact.sa_handler=signalHandler;
-    sigemptyset(&sigact.sa_mask);
-    sigact.sa_flags=0;
-    sigaction(SIGUSR1,&sigact,NULL);
-    sigaction(SIGUSR2,&sigact,NULL);
-
-    while (!endLoop)
-    {
-        pause();
-        loopMethod();
-        loopMethod();
-
-
-    }
+    sleep(3);
+    kill(firstProcessId,SIGUSR1); //FELDERITES Vahurnak
+    kill(secondProcessId,SIGUSR1); //FELDERITES Ficurnak
 
     int status;
 
-    struct mesg_buffer uz;
+    struct mesg_buffer message;
 
-    status = msgrcv(messageQueue, &uz, 1024, 5, 0 );
-    printf("%s", uz.mesg_text);
+    pause();
+    pause();
+
+    status = msgrcv(messageQueue, &message, sizeof(struct mesg_buffer), 5, 0 );
 
     if ( status < 0 )
           perror("msgrcv");
 
+    printf("0 Vuk megkapta a kisrokakat Vahurtol : %d \n", message.numberOfFoxes);
+
+    status = msgrcv(messageQueue, &message, sizeof(struct mesg_buffer), 5, 0 );
+
+    if ( status < 0 )
+          perror("msgrcv");
+
+    printf("0 Vuk megkapta a kisrokakat Fickotol : %d \n", message.numberOfFoxes);
 
     waitpid(firstProcessId,&status,0);
     waitpid(secondProcessId,&status,0);
@@ -169,46 +118,38 @@ void mainProcessAfterFork()
 
 void childProcess(int processNumber)
 {
+    //ProcessNumber == 1 => Vahur
+    //ProcessNumber == 2 => Ficko
     if (verbose) printf("%d Child Process START\n", processNumber);
-    sleep(getpid() % 2);
-    srand ( time(NULL) );
+
     pid_t parentId = getppid();
-    sleep(1);
 
-    if (processNumber == 1)
+
+    pause();
+    if(SIGUSR1_received)
     {
+        sleep(getpid() % 2);
+        srand ( time(NULL) );
+        int numberOfFoxes = (rand() % 11) + 20;
+        if (verbose) printf("%d Talalt oltando kisrokak szama: %d\n", processNumber, numberOfFoxes);
+        const struct mesg_buffer message = { 5, numberOfFoxes };
+
+        int status;
+        status = msgsnd( messageQueue, &message, sizeof(message), 0 );
+        if ( status < 0 )  perror("msgsnd");
+
         kill(parentId,SIGUSR1);
+
     }
-    else
-    {
-        kill(parentId,SIGUSR2);
-    }
-
-    FILE* pipeFileIn = fopen(pipeNameIn[processNumber-1], "r");
-    int number;
-    fread(&number, sizeof(int), 1, pipeFileIn);
-
-    fclose(pipeFileIn);
-
-    printf("%d Number received: %d END\n", processNumber, number);
-
-    const struct mesg_buffer uz = { 5, "Hajra Fradi!" };
-    int status;
-
-     status = msgsnd( messageQueue, &uz, sizeof(uz) , 0 );
-	 if ( status < 0 )
-          perror("msgsnd");
-
-
     if (verbose) printf("%d Child Process END\n", processNumber);
 }
 
 int main(int argc, char* argv[])
 {
+
     mainProcessBeforeFork(argc, argv);
 
-
-    if (verbose) printf("0 Going to fork to create first process!\n");
+    if (verbose) printf("0 Going to fork to create first process (Vahur) !\n");
     firstProcessId = fork();
     if (firstProcessId<0)
     {
@@ -223,16 +164,16 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    if (verbose) printf("0 Going to fork to create second process!\n");
-    firstProcessId = fork();
-    if (firstProcessId<0)
+    if (verbose) printf("0 Going to fork to create second process (Ficko) !\n");
+    secondProcessId = fork();
+    if (secondProcessId<0)
     {
         //Error
         perror("Error on second fork");
         exit(1);
     }
 
-    if (firstProcessId==0)
+    if (secondProcessId==0)
     {
         childProcess(2);
         return 0;
