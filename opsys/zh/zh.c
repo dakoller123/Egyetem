@@ -9,6 +9,8 @@
 #include <time.h>
 #include <string.h>
 #include <errno.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
 
 bool verbose = true;
 pid_t firstProcessId = 1;
@@ -27,7 +29,17 @@ struct sigaction sigact;
 const char* pipeNameIn[2] = {"/tmp/firstProcessPipeIn", "/tmp/secondProcessPipeIn"};
 const char* pipeNameOut[2] = {"/tmp/firstProcessPipeOut", "/tmp/secondProcessPipeOut"};
 
-void mainProcessBeforeFork()
+
+key_t messageQueueKey;
+int messageQueue;
+
+struct mesg_buffer {
+    long mesg_type;
+    char mesg_text[100];
+};
+
+
+void mainProcessBeforeFork(int argc, char* argv[])
 {
 
     unlink(pipeNameIn[0]);
@@ -35,10 +47,19 @@ void mainProcessBeforeFork()
     unlink(pipeNameOut[0]);
     unlink(pipeNameOut[1]);
 
-    mkfifo(pipeNameIn[0], S_IRUSR|S_IWUSR ); // creating named pipe file
-    mkfifo(pipeNameOut[0], S_IRUSR|S_IWUSR ); // creating named pipe file
-    mkfifo(pipeNameIn[1], S_IRUSR|S_IWUSR ); // creating named pipe file
-    mkfifo(pipeNameOut[1], S_IRUSR|S_IWUSR ); // creating named pipe file
+    mkfifo(pipeNameIn[0], S_IRUSR|S_IWUSR );
+    mkfifo(pipeNameOut[0], S_IRUSR|S_IWUSR );
+    mkfifo(pipeNameIn[1], S_IRUSR|S_IWUSR );
+    mkfifo(pipeNameOut[1], S_IRUSR|S_IWUSR );
+
+    if (verbose) printf("%d", argc);
+    messageQueueKey = ftok(argv[0],1);
+    messageQueue = msgget( messageQueueKey, 0600 | IPC_CREAT );
+    if ( messageQueue < 0 ) {
+      perror("msgget");
+      exit(1);
+    }
+
 }
 
 
@@ -131,6 +152,16 @@ void mainProcessAfterFork()
     }
 
     int status;
+
+    struct mesg_buffer uz;
+
+    status = msgrcv(messageQueue, &uz, 1024, 5, 0 );
+    printf("%s", uz.mesg_text);
+
+    if ( status < 0 )
+          perror("msgrcv");
+
+
     waitpid(firstProcessId,&status,0);
     waitpid(secondProcessId,&status,0);
     if (verbose) printf("0 Main after fork END\n");
@@ -161,12 +192,20 @@ void childProcess(int processNumber)
 
     printf("%d Number received: %d END\n", processNumber, number);
 
+    const struct mesg_buffer uz = { 5, "Hajra Fradi!" };
+    int status;
+
+     status = msgsnd( messageQueue, &uz, sizeof(uz) , 0 );
+	 if ( status < 0 )
+          perror("msgsnd");
+
+
     if (verbose) printf("%d Child Process END\n", processNumber);
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-    mainProcessBeforeFork();
+    mainProcessBeforeFork(argc, argv);
 
 
     if (verbose) printf("0 Going to fork to create first process!\n");
