@@ -17,19 +17,20 @@
 <body>
 <!--content start-->
 
-    <div class="container-fluid">       
-        <header>
-            <nav>
+    <header>
+        <nav>
+            <div class="container"> 
                 <div class="row align-items-center">
                     <div class="col-md-4"><p>LOGO</p></div>
                     <div class="col-md-2"><a href="mhousi.html">Mhousi</a></div>
                     <div class="col-md-2"><a href="mhousos.html">Mhousos</a></div>
                     <div class="col-md-2"><a href="behind_the_scenes.html">Behind the Scenes</a></div>
                     <div class="col-md-2"><a href="join_us.html">Join Us</a></div>
-                </div>              
-            </nav>
-        </header>
-    </div>    
+                </div>
+            </div>
+        </nav>
+    </header>
+  
     
     <div class="container">
         <div class="row">
@@ -38,10 +39,9 @@
             </div>        
         </div>
 
-        <div class="row"></div>
-        <!--<div class="row"> -->
+        <div class="row">
             <div class="col">
-                <video width="400" controls>
+                <video width="400" controls id="introvideo">
                     <source src="assets/intro.mp4" type="video/mp4">
                     Your browser does not support HTML video.
                 </video>
@@ -66,9 +66,6 @@
                 <a href="join_us.html">Click here to join our team!</a>
             </div>
         </div>
-
-       
-
     </div>
 
     <div class="container">
@@ -79,8 +76,9 @@
       </div>
 
       <div class="row">
-        <div class="col">
+        <div class="col-lg-4">
             <section>
+                <img src="assets/scarlet_monastery.jpg" alt="Scarlet Monastery Concept Art" > 
                 <h3>Dungeon: Scarlet Monastery</h3>
                     <p>The Monastery was once a proud bastion of Lordaeron's priesthood - a center for learning and
                         enlightenment. With the rise of the undead Scourge during the Third War, the peaceful
@@ -89,17 +87,9 @@
             </section>
         </div>
 
-        <div class="col">
+        <div class="col-lg-4">
             <section>
-                <h3>Dungeon: Uldaman</h3>
-                <p>Uldaman is an ancient Titan vault that has laid buried deep within the earth since the world's
-                    creation. Dwarven excavations have recently penetrated this forgotten city, releasing the Titans'
-                    first failed creations: the Troggs.</p>
-            </section>
-        </div>
-
-        <div class="col">
-            <section>
+                <img src="assets/shimmering_flats.jpg" alt="Uldaman Concept Art" > 
                 <h3>Zone: Shimmering Flats</h3>
                 <p>Deep within the salty desert of the Shimmering Flats in the Mirage Raceway, goblins and
                     gnomes came together to decide, once and for all, which of them can make the best
@@ -107,48 +97,74 @@
             </section> 
         </div>
 
+
+        <div class="col-lg-4">
+            <section>
+                <img src="assets/uldaman.jpg" alt="Uldaman Concept Art" > 
+                <h3>Dungeon: Uldaman</h3>
+                <p>Uldaman is an ancient Titan vault that has laid buried deep within the earth since the world's
+                    creation. Dwarven excavations have recently penetrated this forgotten city, releasing the Titans'
+                    first failed creations: the Troggs.</p>
+            </section>
+        </div>
+
+
+
       </div>
     </div>
 
-    <h2>The Team</h2>
-    <section>
-        <h3>Mhousi</h3>
-        <img src="assets/mhousi.jpg" alt="Portrait of Mhousi" longdesc="Screenshot made inside the videogame and cut so only the head and torso is visible, with snowy background. Mhousi is looking directly into the camera, her head in the center. She is wearing low level leather armor." > 
-        <h4>Dwarf Hunter</h4>
-        <p>A fierce and talented young Dwarf Hunter who is always ready to praise the Alliance with some
-            honorable Horde kills and never afraid of the deepest and darkest dungeons in the World of
-            Warcraft.</p>
-        <a href="mhousi.html">I want to know more about Mhousi</a>
-    </section>
+    <div class="container">
+        <div class="row">
+             <div class="col">
+                <h2>The Team</h2>
+             </div>
+        </div>
 
-    <section>
-        <h3>Mhousos</h3>
-        <img src="assets/mhousos.jpg" alt="Portrait of Mhousos" longdesc="TODO"> 
-        <h4>Dwarf Paladin</h4>
-        <p>A brave Dwarf Paladin specialized in undead-slaying. Among his many great assets shines
-            engineering through. He is also a highly regarded amongst the dwarfs as a tinkerer.</p>
-        <a href="mhousos.html">I want to know more about Mhousos</a>
-    </section>
+        <div class="row">
+            <div class="col-lg-6">
+                <section>
+                    <h3>Mhousi</h3>
+                    <img src="assets/mhousi.jpg" alt="Portrait of Mhousi"> 
+                    <h4>Dwarf Hunter</h4>
+                    <p>A fierce and talented young Dwarf Hunter who is always ready to praise the Alliance with some
+                        honorable Horde kills and never afraid of the deepest and darkest dungeons in the World of
+                        Warcraft.</p>
+                    <a href="mhousi.html">I want to know more about Mhousi</a>
+                </section>
+            </div>
+            
+            <div class="col-lg-6">
+                <section>
+                    <h3>Mhousos</h3>
+                    <img src="assets/mhousos.jpg" alt="Portrait of Mhousos"> 
+                    <h4>Dwarf Paladin</h4>
+                    <p>A brave Dwarf Paladin specialized in undead-slaying. Among his many great assets shines
+                        engineering through. He is also a highly regarded amongst the dwarfs as a tinkerer.</p>
+                    <a href="mhousos.html">I want to know more about Mhousos</a>
+                </section>       
+            </div>
+        </div>
+    </div>
 
     <footer>
         <nav>
-            <div class="container-fluid !direction !spacing">
-                <div class="row ${1| ,row-cols-2,row-cols-3, auto,justify-content-md-center,|}">
-                    <div class="col-6 ">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
                             <h2>Site Directory</h2>
                             <a href="mhousi.html">Mhousi</a>
                             <a href="mhousos.html">Mhousos</a>  
                             <a href="behind_the_scenes.html">Behind the Scenes</a>                
                     </div> 
-                    <div class="col-6">
+                    <div class="col">
                         <a href="join_us.html">Join Us</a>
                     </div>                    
                 </div>
-                <div class="row ${1| ,row-cols-2,row-cols-3, auto,justify-content-md-center,|}">
+                <div class="row">
                     Copyright <br> All rights reserved by Mhousi and Mhousos Co. and Rustbeard International from 2021 and onwards to the end of the World... <br> ... of Warcraft.
                 </div>
+
             </div>
-            
         </nav>
     </footer>
 
