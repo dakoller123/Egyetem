@@ -5,3 +5,7 @@ h1{
 h2{
     text-align: center;
 }
+
+#hiddenlink{
+    margin-left:99999999px;
+}
