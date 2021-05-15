@@ -73,3 +73,7 @@ img {
     padding-left: 10%;
     padding-right: 10%;
 }
+
+.circularimg{
+    border-radius: 100%;
+} 
