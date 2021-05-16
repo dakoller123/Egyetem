@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1593444112 source:c:\users\tibi\documents\oktat\oep\beadandók\3\land.cpp
+	"land.h"
+	"adventurer.h"
+
+1558353558 c:\users\tibi\documents\oktat\oep\beadandók\3\land.h
+	<string>
+
+1560428884 c:\users\tibi\documents\oktat\oep\beadandók\3\adventurer.h
+	<string>
+	<ostream>
+	<stdlib.h>
+	"land.h"
+
