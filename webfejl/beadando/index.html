@@ -14,35 +14,37 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header role="navigation">
+    <header>
         <a href="#content" class="hiddenLink">Jump to content</a>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-            <a class="navbar-brand" href="index.html"><img id="logoimg" src="assets/logo2.png" /></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mhousi.html">Mhousi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mhousos.html">Mhousos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="behind_the_scenes.html">Behind the scenes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="join_us.html">Join Us</a>
-                    </li>         
-            </div>
+                <a class="navbar-brand" href="index.html"><img id="logoimg" src="assets/logo2.png" alt="Logo Image"/></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="mhousi.html">Mhousi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="mhousos.html">Mhousos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="behind_the_scenes.html">Behind the scenes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="join_us.html">Join Us</a>
+                        </li>     
+                    </ul>    
+                </div>
             </div>
         </nav>
     </header>
+    
     <main id="content">
     <div class="section1">
         <div class="container">
@@ -55,7 +57,7 @@
             <div class="row">
                 <div class="col">
                     <div class="embed-responsive embed-responsive-16by9">
-                        <video controls id="introvideo">
+                        <video controls id="introvideo" width=350>
                             <source src="assets/intro.mp4" type="video/mp4">
                             Your browser does not support HTML video.
                         </video>
@@ -147,7 +149,7 @@
     
             <div class="row">
                 <div class="col-md-6 align-self-center">
-                    <section id="mhousos"> 
+                    <section id="mhousi"> 
                         <h3>Mhousi</h3>
                         <img src="assets/Mhousi_headshot400x400-2.png" alt="Portrait of Mhousi" class="indexportrait"> 
                         <h4>Dwarf Hunter</h4>
@@ -173,8 +175,8 @@
     </article>
     </main>
     <footer class="text-center text-lg-start bg-light text-muted">
-        <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"></section>
-        <section class="">
+        <div class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"></div>
+
             <div class="container text-center text-md-start mt-5">
 
             <div class="row mt-3">
@@ -202,7 +204,6 @@
             </div>
 
             </div>
-        </section>
 
         <div id="copyright" class="text-center p-4">
             © 2021 Copyright:
