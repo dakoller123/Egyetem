@@ -9,6 +9,7 @@
         <meta name="keywords" content="Mhousi, Mhousos, WoW Classic, World of Warcraft">
         <meta name="author" content="David Koller">
         <base href="fill_this_out" target="_blank">
+        <script src="scripts.js"></script>
     </head>
     <body>
         <header>
@@ -44,7 +45,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <h1> Join Us</h1>
+                        <h1> Join Us!</h1>
                         <p>Are you a couple and want to play with us? Join our community and write history with the
                             Mhouses!</p>
                     </div>
@@ -54,27 +55,26 @@
                     <div class="col-sm-6">
                         <input type="text" placeholder="Name of your character" /> <br>
                         <label for="level">Character level</label>
-                        <input type="range" min="1" max="60" id="level" />
-              
+                        <input type="range" value="1" min="1" max="60" id="level" oninput="this.nextElementSibling.value = this.value">
+                        <output>1</output>
                     </div>
-                               
-                    <div class="col-sm-6">
 
-                        <label for="pair">Do you want to join as a pair?</label>
-                        <input type="checkbox" id="pair" name="pair" value="pair">
-        
-                       
-                    </div>
+                               
+
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <p>What is your race and class?</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="checkbox" id="pair" name="pair" value="pair">
+                        <label for="pair">I'd like to join with my gf/bf</label>  
                     </div>
                 </div>
                     
                 <div class="row">
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 text-start">
                         
                         <input type="radio" id="nighelf" name="race" value="nighelf">
                         <label for="nighelf">Night Elf</label><br>
@@ -88,7 +88,7 @@
                         <input type="radio" id="dwarf" name="race" value="dwarf">
                         <label for="dwarf">Dwarf</label><br>                       
                     </div> 
-                    <div class="col-sm-2">      
+                    <div class="col-sm-4 text-start">      
                         <input type="radio" id="hunter" name="class" value="hunter">
                         <label for="hunter">Hunter</label><br>
         
@@ -114,11 +114,19 @@
                         <label for="warrior">Warrior</label><br>
                     </div>
                     
-                    <div class="col order-1">
+                    <div class="col-sm-6">
                         <label for="textarea">Tell us about you and your motives to join us</label>
                         <textarea id="textarea" name="textarea" rows="4" cols="50"></textarea><br>                                                
-                            <input type="reset">
-                            <input type="submit" value="Submit">
+                        
+                    </div>                    
+                </div>
+
+                <div class="row justify-content-md-end">
+                    <div class="col-sm-1">
+                        <input type="reset">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="submit" value="Submit">
                     </div>
                 </div>
             </div>               
