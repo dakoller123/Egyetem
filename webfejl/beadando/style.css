@@ -1,6 +1,10 @@
 header{
     padding: 40px;
+    background-image: url("assets/background2.jpg");
+    opacity: 50%;
+    background-repeat:repeat-x;
 }
+
 .col {
     padding: 10px;
     text-align: center;
@@ -62,6 +66,9 @@ h3{
     padding-right: 5%;
     overflow: hidden;
 }
+
+
+
 img {
     display: block;
     margin-left: auto;
@@ -77,3 +84,9 @@ img {
 .circularimg{
     border-radius: 100%;
 } 
+
+#logoimg{
+    display:inline;
+    width:100px;
+    height:auto
+}
