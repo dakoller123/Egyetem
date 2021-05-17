@@ -133,3 +133,7 @@ aside{
     position: absolute;
     left: -9999px;
 }
+
+.backgroundfooter{
+    background-image: url("assets/background2.jpg");
+}
