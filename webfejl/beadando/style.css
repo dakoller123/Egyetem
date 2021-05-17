@@ -150,6 +150,8 @@ aside{
     left: -9999px;
 }
 
-.backgroundfooter{
-    background-image: url("assets/background2.jpg");
+.backgroundimage{
+    background-image: url("https://img.wallpapersafari.com/desktop/1920/1080/4/44/JgEZQu.jpg");
+    background-size:cover;
+    opacity: 80%;
 }
