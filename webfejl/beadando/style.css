@@ -1,9 +1,4 @@
-header{
-    padding: 40px;
-    background-image: url("assets/background2.jpg");
-    opacity: 50%;
-    background-repeat:repeat-x;
-}
+
 
 .col {
     padding: 10px;
@@ -67,15 +62,6 @@ h3{
     overflow: hidden;
 }
 
-
-
-img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 75%;
-  }
-
 .col-lg-4{
     padding-left: 10%;
     padding-right: 10%;
@@ -89,4 +75,19 @@ img {
     display:inline;
     width:100px;
     height:auto
+}
+
+#copyright{
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.indexportrait
+{
+    width:200px;
+    height:auto;
+    
+}
+
+#team{
+    text-align: center;
 }
