@@ -91,3 +91,18 @@ h3{
 #team{
     text-align: center;
 }
+
+.navbar-nav .nav-item .nav-link {
+    color: #2c2c34;
+}
+
+.navbar-nav .nav-item:hover .nav-link {
+    color: #2c2c34;
+    border: 2px solid #2c2c34;
+}
+
+
+.navbar-light .navbar-nav .nav-link.active   {
+    background-color:#2c2c34;
+    color:white;
+}
