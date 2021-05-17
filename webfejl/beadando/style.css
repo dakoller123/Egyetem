@@ -128,3 +128,8 @@ aside{
     margin: 25px;
 
 }
+
+.hiddenLink{
+    position: absolute;
+    left: -9999px;
+}
