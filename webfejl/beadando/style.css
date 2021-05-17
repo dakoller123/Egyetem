@@ -8,15 +8,31 @@
 
 }
 
-#section1 {
+.section1 {
     background-color: #2c2c34;
     color: #ffffff;
     padding-bottom:1%;
     font-size: 20px;
 }
 
-#section1 a{
+.section1 a{
     color:white;
+}
+
+
+.section2 {
+    padding-top: 2%;
+    padding-bottom: 2%;
+   font-weight: bold;
+
+}
+
+.section3 {
+    background-color: #babac4;
+    text-align: center;
+    padding-left:5%;
+    padding-right: 5%;
+    overflow: hidden;
 }
 
 h1{
@@ -34,12 +50,7 @@ h3{
     padding: 2%;
 }
 
-#section2 {
-    padding-top: 2%;
-    padding-bottom: 2%;
-   font-weight: bold;
 
-}
 .CTAbutton {
   background-color: #bcbcde;
   border: none;
@@ -58,13 +69,7 @@ h3{
     text-align: left;
 }
 
-#section3 {
-    background-color: #babac4;
-    text-align: center;
-    padding-left:5%;
-    padding-right: 5%;
-    overflow: hidden;
-}
+
 
 .col-lg-4{
     padding-left: 10%;
