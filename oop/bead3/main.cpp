@@ -38,7 +38,7 @@ TEST_CASE("Weather and Air")
     CHECK(oxigen->getThickness() == 3.0);
     CHECK(newLayer->getThickness() == 3.0);
     CHECK(newLayer->getType() == 2.0);
+    delete newLayer;
+    delete oxigen;
 }
-
-
 #endif // NORMAL_MODE
