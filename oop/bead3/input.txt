@@ -1,6 +1,6 @@
 4
-O Confy 60
-A Cauty 30
-B Bravy 70
-O Sury 20
-EEEEEEEEEEEEEE
+z 5
+x 0.8
+s 3
+x 4
+mmmmnnznnmm

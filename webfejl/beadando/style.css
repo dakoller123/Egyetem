@@ -76,6 +76,7 @@ h3{
 }
 #CTAtext {
     text-align: left;
+    font-size:20px;
 }
 
 .section1 .CTAbutton {
@@ -149,9 +150,16 @@ aside{
 }
 
 .backgroundimage{
-    background-image: url("https://img.wallpapersafari.com/desktop/1920/1080/4/44/JgEZQu.jpg");
+    background-image: url("assets/background.jpg");
     background-size:cover;
     opacity: 80%;
 }
 
+a#sendquestion:visited{
+    color:black;
+}
 
+.section4{
+    padding-top: 2%;
+    padding-bottom: 2%;
+}

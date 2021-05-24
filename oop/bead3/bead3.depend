@@ -1,0 +1,47 @@
+# depslib dependency file v1.0
+1621860674 source:d:\egyetem\oop\bead3\airlayer.cpp
+	"airLayer.h"
+	"weather.h"
+
+1621878647 d:\egyetem\oop\bead3\airlayer.h
+	"weather.h"
+	<string>
+
+1621879090 d:\egyetem\oop\bead3\weather.h
+	"airLayer.h"
+	<string>
+
+1621879730 source:d:\egyetem\oop\bead3\main.cpp
+	"weather.h"
+	"airLayer.h"
+	"simulation.h"
+	<iostream>
+
+1621847517 d:\egyetem\oop\bead3\weather.cpp
+	"airLayer.h"
+	"weather.h"
+
+1621847522 d:\egyetem\oop\bead3\airlayer.cpp
+	"airLayer.h"
+	"weather.h"
+
+1621868292 source:d:\egyetem\oop\bead3\weather.cpp
+	"airLayer.h"
+	"weather.h"
+
+1621879102 source:d:\egyetem\oop\bead3\simulation.cpp
+	"airLayer.h"
+	"weather.h"
+	"simulation.h"
+	<fstream>
+	<list>
+	<stdexcept>
+	<deque>
+	<iostream>
+
+1621879127 d:\egyetem\oop\bead3\simulation.h
+	"airLayer.h"
+	<vector>
+	<queue>
+	<string>
+

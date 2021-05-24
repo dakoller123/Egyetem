@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="adventureGame" />
+		<Option title="bead3" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -38,16 +38,13 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="adventurer.h" />
-		<Unit filename="catch.hpp" />
+		<Unit filename="airLayer.cpp" />
+		<Unit filename="airLayer.h" />
 		<Unit filename="input.txt" />
-		<Unit filename="land.cpp" />
-		<Unit filename="land.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="weather.cpp" />
+		<Unit filename="weather.h" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>
