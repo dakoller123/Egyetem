@@ -3,6 +3,7 @@
 #include "fogas.h"
 #include "verseny.h"
 class Verseny;
+
 class Horgasz{
 private:
     std::string _name;

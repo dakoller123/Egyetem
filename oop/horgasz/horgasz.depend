@@ -11,7 +11,7 @@
 	<vector>
 	"horgasz.h"
 
-1622376339 d:\egyetem\oop\horgasz\horgasz.h
+1622386393 d:\egyetem\oop\horgasz\horgasz.h
 	<vector>
 	"fogas.h"
 	"verseny.h"
@@ -19,13 +19,13 @@
 1622384390 d:\egyetem\oop\horgasz\fogas.h
 	<string>
 
-1622384293 d:\egyetem\oop\horgasz\verseny.h
+1622386345 d:\egyetem\oop\horgasz\verseny.h
 	<vector>
 	"fogas.h"
 	<string>
 	"horgasz.h"
 
-1622377097 source:d:\egyetem\oop\horgasz\verseny.cpp
+1622386380 source:d:\egyetem\oop\horgasz\verseny.cpp
 	<vector>
 	"verseny.h"
 	"horgasz.h"
