@@ -32,7 +32,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="fogas.h" />
+		<Unit filename="horgasz.cpp" />
+		<Unit filename="horgasz.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="tarsasag .cpp" />
+		<Unit filename="tarsasag.h" />
+		<Unit filename="verseny.cpp" />
+		<Unit filename="verseny.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
