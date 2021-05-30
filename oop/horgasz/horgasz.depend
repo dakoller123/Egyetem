@@ -1,0 +1,41 @@
+# depslib dependency file v1.0
+1622376079 source:d:\egyetem\oop\horgasz\main.cpp
+	<iostream>
+	<stdlib.h>
+	<time.h>
+
+1622371815 d:\egyetem\oop\horgasz\classes.h
+	<vector>
+
+1622384387 source:d:\egyetem\oop\horgasz\horgasz.cpp
+	<vector>
+	"horgasz.h"
+
+1622376339 d:\egyetem\oop\horgasz\horgasz.h
+	<vector>
+	"fogas.h"
+	"verseny.h"
+
+1622384390 d:\egyetem\oop\horgasz\fogas.h
+	<string>
+
+1622384293 d:\egyetem\oop\horgasz\verseny.h
+	<vector>
+	"fogas.h"
+	<string>
+	"horgasz.h"
+
+1622377097 source:d:\egyetem\oop\horgasz\verseny.cpp
+	<vector>
+	"verseny.h"
+	"horgasz.h"
+
+1622384107 source:d:\egyetem\oop\horgasz\tarsasag .cpp
+	<vector>
+	"verseny.h"
+	"tarsasag.h"
+
+1622377194 d:\egyetem\oop\horgasz\tarsasag.h
+	<vector>
+	"verseny.h"
+

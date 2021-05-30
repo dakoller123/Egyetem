@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1622040458 source:d:\egyetem\oop\kisbead3\main.cpp
+	<iostream>
+	"entry.h"
+
+1622040493 d:\egyetem\oop\kisbead3\entry.h
+

@@ -3,7 +3,7 @@
 #include "simulation.h"
 #include <iostream>
 
-//#define NORMAL_MODE
+#define NORMAL_MODE
 #ifdef NORMAL_MODE
 
 int main()
